@@ -178,8 +178,8 @@ async function loadPapers(): Promise<OpenEndoData["papers"]> {
 
   return {
     ok: true,
-    yearTotal,
-    weekTotal,
+    yearTotal: yearTotal ?? 0,
+    weekTotal: weekTotal ?? 0,
     recent,
     monthly: months.map((m, i) => ({ label: m.label, count: monthlyCounts[i] ?? 0 })),
   };

@@ -181,8 +181,9 @@ function Home() {
       <Section eyebrow={c.research.eyebrow} title={c.research.docTitle} lede="">
         <Link
           to="/research"
-          className="group block rounded-2xl border border-hairline bg-ribbon-soft/50 p-8 transition-colors hover:bg-ribbon-soft"
+          className="group block max-w-3xl rounded-2xl border border-hairline bg-ribbon-soft/50 p-7 transition-colors hover:bg-ribbon-soft sm:p-9"
         >
+
           <h3 className="max-w-xl text-[22px] font-semibold leading-snug tracking-tight">
             {c.research.titleA} <span className="accent font-normal">{c.research.titleAccent}</span>
           </h3>

@@ -43,12 +43,26 @@ const CTG = "https://clinicaltrials.gov/api/v2/studies";
 const EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils";
 const FIELDS = "NCTId|BriefTitle|OverallStatus|Phase|LeadSponsorName|LocationCountry|LastUpdatePostDate";
 
-const titleCase = (s: string) =>
-  s
+const titleCase = (s: string) => {
+  if (s === "NA" || s === "N/A") return "N/A";
+  return s
     .toLowerCase()
     .split("_")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+    .join(" ")
+    .replace(/([a-z])(\d)/g, "$1 $2");
+};
+
+/** NCBI allows ~3 requests per second without a key. Run in small, spaced batches. */
+async function throttled<T>(tasks: (() => Promise<T>)[], size = 2, gapMs = 400): Promise<T[]> {
+  const out: T[] = [];
+  for (let i = 0; i < tasks.length; i += size) {
+    const batch = tasks.slice(i, i + size).map((t) => t());
+    out.push(...(await Promise.all(batch)));
+    if (i + size < tasks.length) await new Promise((r) => setTimeout(r, gapMs));
+  }
+  return out;
+}
 
 async function json(url: string) {
   const res = await fetch(url, { headers: { accept: "application/json" } });

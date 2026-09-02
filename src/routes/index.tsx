@@ -48,40 +48,76 @@ function Home() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-hairline">
-        <RibbonMark className="pointer-events-none absolute -right-24 -top-20 h-[420px] w-[420px] opacity-[0.07]" />
-        <div className="mx-auto max-w-6xl px-6 pb-24 pt-24 sm:pt-32">
-          <p className="rise text-xs uppercase tracking-[0.18em] text-muted-foreground">
-            {c.home.eyebrow}
-          </p>
-          <h1 className="rise mt-6 max-w-3xl text-[2.6rem] font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-            {c.home.titleA} <span className="accent font-normal">{c.home.titleAccent}</span>
-          </h1>
-          <p className="rise mt-7 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
-            {c.home.lede}
-          </p>
-          <div className="rise mt-9 flex flex-wrap items-center gap-3">
-            <Link
-              to="/dashboard"
-              className="group inline-flex items-center gap-2 rounded-full bg-ribbon px-6 py-3 text-[15px] font-semibold text-ink transition-transform hover:-translate-y-0.5"
-            >
-              {c.home.cta}
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <a
-              href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full px-5 py-3 text-[15px] text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {c.home.ctaSecondary}
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
+        <RibbonMark className="pointer-events-none absolute -right-28 top-8 h-[380px] w-[380px] opacity-[0.06] lg:h-[520px] lg:w-[520px]" />
+        <div className="mx-auto max-w-6xl px-6 pb-20 pt-24 sm:pt-32 lg:pb-28">
+          <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-7">
+              <p className="rise text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                {c.home.eyebrow}
+              </p>
+              <h1 className="rise mt-6 text-[2.6rem] font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+                {c.home.titleA} <span className="accent font-normal">{c.home.titleAccent}</span>
+              </h1>
+              <p className="rise mt-7 max-w-xl text-[17px] leading-relaxed text-muted-foreground">
+                {c.home.lede}
+              </p>
+              <div className="rise mt-9 flex flex-wrap items-center gap-3">
+                <Link
+                  to="/dashboard"
+                  className="group inline-flex items-center gap-2 rounded-full bg-ribbon px-6 py-3 text-[15px] font-semibold text-ink transition-transform hover:-translate-y-0.5"
+                >
+                  {c.home.cta}
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <a
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full px-5 py-3 text-[15px] text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  {c.home.ctaSecondary}
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+              </div>
+              <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-muted-foreground">
+                {c.home.trust.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Live snapshot card */}
+            <div className="rise lg:col-span-5">
+              <div className="rounded-3xl border border-hairline bg-ribbon-soft/50 p-7 sm:p-8">
+                <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  {c.home.liveEyebrow}
+                </p>
+                <h2 className="mt-3 text-lg font-semibold tracking-tight">{c.home.liveTitle}</h2>
+                <dl className="mt-7 grid grid-cols-3 gap-4 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-hairline">
+                  {kpis.map((k) => (
+                    <div
+                      key={k.label}
+                      className="lg:flex lg:items-baseline lg:justify-between lg:gap-6 lg:py-4 lg:first:pt-0 lg:last:pb-0"
+                    >
+                      <dd className="numeral text-3xl leading-none lg:order-2 lg:text-[28px]">
+                        {k.value === undefined ? "—" : k.value.toLocaleString(locale)}
+                      </dd>
+                      <dt className="mt-2 text-xs leading-snug text-muted-foreground lg:order-1 lg:mt-0 lg:text-sm">
+                        {k.label}
+                      </dt>
+                    </div>
+                  ))}
+                </dl>
+                <Link
+                  to="/dashboard"
+                  className="mt-7 inline-flex items-center gap-2 text-[15px] font-medium"
+                >
+                  <span className="marker">{c.home.liveCta}</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
           </div>
-          <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 text-sm text-muted-foreground">
-            {c.home.trust.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
         </div>
       </section>
 
@@ -100,7 +136,7 @@ function Home() {
 
       {/* Why */}
       <Section eyebrow={c.home.whyEyebrow} title={c.home.whyTitle} lede="">
-        <div className="grid gap-x-14 gap-y-12 md:grid-cols-2">
+        <div className="grid max-w-5xl gap-x-16 gap-y-12 md:grid-cols-2">
           {facts[locale].map((f, i) => (
             <div key={f.title}>
               <p className="numeral text-sm text-muted-foreground">
@@ -114,37 +150,17 @@ function Home() {
         </div>
       </Section>
 
-      {/* Live snapshot */}
-      <Section eyebrow={c.home.liveEyebrow} title={c.home.liveTitle} lede={c.home.liveLede}>
-        <div className="grid divide-y divide-hairline border-y border-hairline sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {kpis.map((k) => (
-            <div key={k.label} className="px-2 py-8 sm:px-8 sm:first:pl-0">
-              <p className="numeral text-4xl leading-none">
-                {k.value === undefined ? "—" : k.value.toLocaleString(locale)}
-              </p>
-              <p className="mt-3 text-sm text-muted-foreground">{k.label}</p>
-            </div>
-          ))}
-        </div>
-        <Link
-          to="/dashboard"
-          className="mt-8 inline-flex items-center gap-2 text-[15px] font-medium"
-        >
-          <span className="marker">{c.home.liveCta}</span>
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </Section>
 
       {/* Funding */}
       <Section eyebrow={c.home.fundingEyebrow} title={c.home.fundingTitle} lede={c.home.fundingLede}>
-        <ul className="divide-y divide-hairline border-t border-hairline">
+        <ul className="max-w-4xl divide-y divide-hairline border-t border-hairline">
           {grantList.map((g) => (
             <li key={g.name}>
               <a
                 href={g.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 py-6 transition-colors hover:bg-secondary/50"
+                className="group -mx-3 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 rounded-xl px-3 py-6 transition-colors hover:bg-secondary/50"
               >
                 <div className="min-w-0">
                   <p className="text-[17px] font-medium tracking-tight">{g.name}</p>
@@ -165,8 +181,9 @@ function Home() {
       <Section eyebrow={c.research.eyebrow} title={c.research.docTitle} lede="">
         <Link
           to="/research"
-          className="group block rounded-2xl border border-hairline bg-ribbon-soft/50 p-8 transition-colors hover:bg-ribbon-soft"
+          className="group block max-w-3xl rounded-2xl border border-hairline bg-ribbon-soft/50 p-7 transition-colors hover:bg-ribbon-soft sm:p-9"
         >
+
           <h3 className="max-w-xl text-[22px] font-semibold leading-snug tracking-tight">
             {c.research.titleA} <span className="accent font-normal">{c.research.titleAccent}</span>
           </h3>
@@ -237,13 +254,14 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24">
+    <section className="mx-auto max-w-6xl border-b border-hairline px-6 py-20 last:border-b-0 sm:py-24">
       {eyebrow && (
         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{eyebrow}</p>
       )}
       <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
       {lede && <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{lede}</p>}
-      <div className="mt-14">{children}</div>
+      <div className="mt-10 sm:mt-12">{children}</div>
     </section>
   );
+
 }

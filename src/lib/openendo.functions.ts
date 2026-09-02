@@ -203,8 +203,13 @@ const emptyPapers: OpenEndoData["papers"] = {
   monthly: [],
 };
 
+let cache: { at: number; data: OpenEndoData } | null = null;
+const CACHE_MS = 1000 * 60 * 30;
+
 export const getOpenEndoData = createServerFn({ method: "GET" }).handler(
   async (): Promise<OpenEndoData> => {
+    if (cache && Date.now() - cache.at < CACHE_MS) return cache.data;
+
     const [trials, papers] = await Promise.all([
       loadTrials().catch((e) => {
         console.error("clinicaltrials.gov failed", e);
@@ -216,7 +221,11 @@ export const getOpenEndoData = createServerFn({ method: "GET" }).handler(
       }),
     ]);
 
-    return { fetchedAt: new Date().toISOString(), trials, papers };
+    const data: OpenEndoData = { fetchedAt: new Date().toISOString(), trials, papers };
+    // Keep the last good shape if a source blipped; only cache complete results.
+    if (trials.ok && papers.ok) cache = { at: Date.now(), data };
+    else if (cache) return { ...cache.data, fetchedAt: cache.data.fetchedAt };
+    return data;
   },
 );
 

@@ -167,19 +167,22 @@ function monthWindows(count: number) {
 async function loadPapers(): Promise<OpenEndoData["papers"]> {
   const year = new Date().getUTCFullYear();
 
-  const [yearTotal, weekTotal] = await throttled<number>([
-    () => pubmedCount(`${TERM} AND ("${year}/01/01"[dp] : "3000"[dp])`),
-    () => pubmedCount(`${TERM} AND ("last 7 days"[dp])`),
-  ]);
+  const yearTotal = await pubmedCount(`${TERM} AND ("${year}/01/01"[dp] : "3000"[dp])`);
+  await wait(450);
+  const weekTotal = await pubmedCount(`${TERM} AND ("last 7 days"[dp])`);
+  await wait(450);
 
-  const recentIds = await json(
+  const recentIds = await pubmedJson(
     `${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=25&sort=pub_date&term=${encodeURIComponent(TERM)}`,
   );
 
   const ids: string[] = recentIds?.esearchresult?.idlist ?? [];
   let recent: Paper[] = [];
   if (ids.length) {
-    const summary = await json(`${EUTILS}/esummary.fcgi?db=pubmed&retmode=json&id=${ids.join(",")}`);
+    await wait(450);
+    const summary = await pubmedJson(
+      `${EUTILS}/esummary.fcgi?db=pubmed&retmode=json&id=${ids.join(",")}`,
+    );
     const result = summary?.result ?? {};
     recent = ids
       .map((id) => result[id])

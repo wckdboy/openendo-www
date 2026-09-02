@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import { ArrowUpRight } from "lucide-react";
 import { useLang } from "@/lib/i18n";
-import { openEndoQueryOptions } from "@/lib/openendo.functions";
+import { openEndoQueryOptions, paperMonthlyQueryOptions } from "@/lib/openendo.functions";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({

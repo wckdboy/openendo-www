@@ -4,12 +4,31 @@ const en = {
   nav: {
     home: "Home",
     dashboard: "Dashboard",
+    research: "Research",
     knowledge: "Knowledge",
     access: "Find help",
     github: "GitHub",
     switch: "Dansk",
     menu: "Menu",
   },
+  research: {
+    eyebrow: "Research",
+    titleA: "What we know, what we're testing,",
+    titleAccent: "what we don't know yet.",
+    lede: "An open, plain-language tour of the OpenEndo research programme — drug targets, repurposing candidates, virtual testing, and the honest gaps. Published straight from the repository.",
+    docTitle: "Research explainer",
+    docCaption: "Sourced live from the openendo repository — updates automatically",
+    pdf: "Download PDF",
+    loading: "Loading the research explainer…",
+    errorTitle: "We could not load the research explainer",
+    errorBody: "The document did not respond. You can retry, or open the source file directly.",
+    retry: "Try again",
+    openRaw: "Open the source document",
+    homeCta: "Read the research explainer",
+    homeBody:
+      "What the evidence supports, what is being tested, and what nobody knows yet — rendered live from the open repository.",
+  },
+
   access: {
     eyebrow: "Access",
     titleA: "Where you can actually",
@@ -146,12 +165,31 @@ const da: Copy = {
   nav: {
     home: "Forside",
     dashboard: "Dashboard",
+    research: "Forskning",
     knowledge: "Viden",
     access: "Find hjælp",
     github: "GitHub",
     switch: "English",
     menu: "Menu",
   },
+  research: {
+    eyebrow: "Forskning",
+    titleA: "Det vi ved, det vi tester,",
+    titleAccent: "og det vi endnu ikke ved.",
+    lede: "En åben gennemgang i almindeligt sprog af OpenEndos forskning — lægemiddelmål, kandidater til genanvendelse, virtuel testning og de ærlige huller. Udgivet direkte fra repositoriet.",
+    docTitle: "Forskningsgennemgang",
+    docCaption: "Hentet live fra openendo-repositoriet — opdateres automatisk",
+    pdf: "Hent PDF",
+    loading: "Henter forskningsgennemgangen…",
+    errorTitle: "Vi kunne ikke hente forskningsgennemgangen",
+    errorBody: "Dokumentet svarede ikke. Prøv igen, eller åbn kildefilen direkte.",
+    retry: "Prøv igen",
+    openRaw: "Åbn kildedokumentet",
+    homeCta: "Læs forskningsgennemgangen",
+    homeBody:
+      "Hvad evidensen understøtter, hvad der bliver testet, og hvad ingen endnu ved — hentet live fra det åbne repositorium.",
+  },
+
   access: {
     eyebrow: "Adgang",
     titleA: "Hvor du faktisk kan",

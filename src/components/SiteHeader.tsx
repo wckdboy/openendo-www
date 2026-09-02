@@ -12,9 +12,11 @@ export function SiteHeader() {
   const links = [
     { to: "/", label: c.nav.home },
     { to: "/dashboard", label: c.nav.dashboard },
+    { to: "/research", label: c.nav.research },
     { to: "/access", label: c.nav.access },
     { to: "/knowledge", label: c.nav.knowledge },
   ] as const;
+
 
 
   return (

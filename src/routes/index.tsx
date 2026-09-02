@@ -153,7 +153,7 @@ function Home() {
 
       {/* Funding */}
       <Section eyebrow={c.home.fundingEyebrow} title={c.home.fundingTitle} lede={c.home.fundingLede}>
-        <ul className="divide-y divide-hairline border-t border-hairline">
+        <ul className="max-w-4xl divide-y divide-hairline border-t border-hairline">
           {grantList.map((g) => (
             <li key={g.name}>
               <a

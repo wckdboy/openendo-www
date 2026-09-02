@@ -142,13 +142,11 @@ async function loadTrials(): Promise<OpenEndoData["trials"]> {
   };
 }
 
-async function loadPapers(): Promise<OpenEndoData["papers"]> {
+function monthWindows(count: number) {
   const now = new Date();
-  const year = now.getUTCFullYear();
-
   const months: { label: string; start: string; end: string }[] = [];
-  for (let i = 8; i >= 0; i--) {
-    const d = new Date(Date.UTC(year, now.getUTCMonth() - i, 1));
+  for (let i = count - 1; i >= 0; i--) {
+    const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
     const last = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0));
     months.push({
       label: `${d.toLocaleString("en", { month: "short", timeZone: "UTC" })} ${String(d.getUTCFullYear()).slice(2)}`,
@@ -156,11 +154,15 @@ async function loadPapers(): Promise<OpenEndoData["papers"]> {
       end: `${last.getUTCFullYear()}/${pad(last.getUTCMonth() + 1)}/${pad(last.getUTCDate())}`,
     });
   }
+  return months;
+}
 
-  const [yearTotal, weekTotal, ...monthlyCounts] = await throttled<number>([
+async function loadPapers(): Promise<OpenEndoData["papers"]> {
+  const year = new Date().getUTCFullYear();
+
+  const [yearTotal, weekTotal] = await throttled<number>([
     () => pubmedCount(`${TERM} AND ("${year}/01/01"[dp] : "3000"[dp])`),
     () => pubmedCount(`${TERM} AND ("last 7 days"[dp])`),
-    ...months.map((m) => () => pubmedCount(`${TERM} AND ("${m.start}"[dp] : "${m.end}"[dp])`)),
   ]);
 
   const recentIds = await json(

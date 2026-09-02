@@ -243,3 +243,38 @@ export const openEndoQueryOptions = {
   queryFn: () => getOpenEndoData(),
   staleTime: 1000 * 60 * 30,
 };
+
+/**
+ * PubMed month-by-month counts need one request per month, and NCBI rate-limits
+ * anonymous callers hard. Kept out of the main payload and fetched lazily,
+ * one request at a time.
+ */
+let monthlyCache: { at: number; data: Counted[] } | null = null;
+
+export const getPaperMonthly = createServerFn({ method: "GET" }).handler(
+  async (): Promise<Counted[]> => {
+    if (monthlyCache && Date.now() - monthlyCache.at < CACHE_MS) return monthlyCache.data;
+
+    const months = monthWindows(9);
+    const out: Counted[] = [];
+    for (const m of months) {
+      try {
+        const count = await pubmedCount(`${TERM} AND ("${m.start}"[dp] : "${m.end}"[dp])`);
+        out.push({ label: m.label, count });
+      } catch (e) {
+        console.error("pubmed monthly failed", e);
+        break;
+      }
+      await new Promise((r) => setTimeout(r, 450));
+    }
+
+    if (out.length) monthlyCache = { at: Date.now(), data: out };
+    return out;
+  },
+);
+
+export const paperMonthlyQueryOptions = {
+  queryKey: ["openendo-paper-monthly"] as const,
+  queryFn: () => getPaperMonthly(),
+  staleTime: 1000 * 60 * 60,
+};

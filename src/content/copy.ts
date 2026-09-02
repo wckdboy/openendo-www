@@ -87,7 +87,7 @@ const en = {
     closed: "closed",
     updated: "Updated",
   },
-} as const;
+};
 
 type Copy = typeof en;
 

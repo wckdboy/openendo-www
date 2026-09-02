@@ -255,7 +255,8 @@ export const getPaperMonthly = createServerFn({ method: "GET" }).handler(
   async (): Promise<Counted[]> => {
     if (monthlyCache && Date.now() - monthlyCache.at < CACHE_MS) return monthlyCache.data;
 
-    const months = monthWindows(9);
+    // Drop the current, still-incomplete month so the trend line isn't misleading.
+    const months = monthWindows(10).slice(0, 9);
     const out: Counted[] = [];
     for (const m of months) {
       try {

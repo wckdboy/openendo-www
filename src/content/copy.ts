@@ -81,8 +81,8 @@ const en = {
 
   home: {
     eyebrow: "Endometriosis · open data",
-    titleA: "Open intelligence for a disease",
-    titleAccent: "still waved away.",
+    titleA: "Open data on endometriosis research,",
+    titleAccent: "trials and funding.",
     lede: "OpenEndo tracks every clinical trial, paper and grant on endometriosis in the open, so patients, clinicians, researchers and politicians can see the real state of the fight.",
     cta: "See the data",
     ctaSecondary: "Contribute on GitHub",
@@ -102,7 +102,7 @@ const en = {
   },
   dashboard: {
     eyebrow: "Live dashboard",
-    title: "Every number we can find",
+    title: "Endometriosis research and clinical trials dashboard",
     lede: "Clinical trial registrations and published research, fetched live from public registries. Nothing here is edited by hand.",
     kpi: {
       recruiting: "Trials recruiting worldwide",
@@ -242,8 +242,8 @@ const da: Copy = {
 
   home: {
     eyebrow: "Endometriose · åbne data",
-    titleA: "Åben indsigt i en sygdom",
-    titleAccent: "verden stadig overser.",
+    titleA: "Åbne data om endometrioseforskning,",
+    titleAccent: "forsøg og bevillinger.",
     lede: "OpenEndo følger alle kliniske forsøg, studier og bevillinger om endometriose i åbenhed, så patienter, klinikere, forskere og politikere kan se den reelle situation.",
     cta: "Se data",
     ctaSecondary: "Bidrag på GitHub",
@@ -263,7 +263,7 @@ const da: Copy = {
   },
   dashboard: {
     eyebrow: "Live dashboard",
-    title: "Alle tal vi kan finde",
+    title: "Dashboard for endometrioseforskning og kliniske forsøg",
     lede: "Kliniske forsøg og publiceret forskning, hentet live fra offentlige registre. Intet er redigeret i hånden.",
     kpi: {
       recruiting: "Forsøg der rekrutterer globalt",

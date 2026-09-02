@@ -238,6 +238,8 @@ function Dashboard() {
               ))}
             </div>
             <input
+              type="search"
+              aria-label={c.dashboard.search}
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder={c.dashboard.search}

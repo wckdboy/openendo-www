@@ -4,12 +4,31 @@ const en = {
   nav: {
     home: "Home",
     dashboard: "Dashboard",
+    research: "Research",
     knowledge: "Knowledge",
     access: "Find help",
     github: "GitHub",
     switch: "Dansk",
     menu: "Menu",
   },
+  research: {
+    eyebrow: "Research",
+    titleA: "What we know, what we're testing,",
+    titleAccent: "what we don't know yet.",
+    lede: "An open, plain-language tour of the OpenEndo research programme — drug targets, repurposing candidates, virtual testing, and the honest gaps. Published straight from the repository.",
+    docTitle: "Research explainer",
+    docCaption: "Sourced live from the openendo repository — updates automatically",
+    pdf: "Download PDF",
+    loading: "Loading the research explainer…",
+    errorTitle: "We could not load the research explainer",
+    errorBody: "The document did not respond. You can retry, or open the source file directly.",
+    retry: "Try again",
+    openRaw: "Open the source document",
+    homeCta: "Read the research explainer",
+    homeBody:
+      "What the evidence supports, what is being tested, and what nobody knows yet — rendered live from the open repository.",
+  },
+
   access: {
     eyebrow: "Access",
     titleA: "Where you can actually",

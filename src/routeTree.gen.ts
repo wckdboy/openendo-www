@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccessRouteImport } from './routes/access'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
+import { Route as ResearchRouteImport } from './routes/research'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const KnowledgeRoute = KnowledgeRouteImport.update({
   path: '/knowledge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResearchRoute = ResearchRouteImport.update({
+  id: '/research',
+  path: '/research',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/access': typeof AccessRoute
   '/dashboard': typeof DashboardRoute
   '/knowledge': typeof KnowledgeRoute
+  '/research': typeof ResearchRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/access': typeof AccessRoute
   '/dashboard': typeof DashboardRoute
   '/knowledge': typeof KnowledgeRoute
+  '/research': typeof ResearchRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/access': typeof AccessRoute
   '/dashboard': typeof DashboardRoute
   '/knowledge': typeof KnowledgeRoute
+  '/research': typeof ResearchRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/access' | '/dashboard' | '/knowledge'
+  fullPaths: '/' | '/access' | '/dashboard' | '/knowledge' | '/research'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/access' | '/dashboard' | '/knowledge'
-  id: '__root__' | '/' | '/access' | '/dashboard' | '/knowledge'
+  to: '/' | '/access' | '/dashboard' | '/knowledge' | '/research'
+  id: '__root__' | '/' | '/access' | '/dashboard' | '/knowledge' | '/research'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +76,7 @@ export interface RootRouteChildren {
   AccessRoute: typeof AccessRoute
   DashboardRoute: typeof DashboardRoute
   KnowledgeRoute: typeof KnowledgeRoute
+  ResearchRoute: typeof ResearchRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KnowledgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/research': {
+      id: '/research'
+      path: '/research'
+      fullPath: '/research'
+      preLoaderRoute: typeof ResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccessRoute: AccessRoute,
   DashboardRoute: DashboardRoute,
   KnowledgeRoute: KnowledgeRoute,
+  ResearchRoute: ResearchRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

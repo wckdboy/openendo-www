@@ -165,12 +165,31 @@ const da: Copy = {
   nav: {
     home: "Forside",
     dashboard: "Dashboard",
+    research: "Forskning",
     knowledge: "Viden",
     access: "Find hjælp",
     github: "GitHub",
     switch: "English",
     menu: "Menu",
   },
+  research: {
+    eyebrow: "Forskning",
+    titleA: "Det vi ved, det vi tester,",
+    titleAccent: "og det vi endnu ikke ved.",
+    lede: "En åben gennemgang i almindeligt sprog af OpenEndos forskning — lægemiddelmål, kandidater til genanvendelse, virtuel testning og de ærlige huller. Udgivet direkte fra repositoriet.",
+    docTitle: "Forskningsgennemgang",
+    docCaption: "Hentet live fra openendo-repositoriet — opdateres automatisk",
+    pdf: "Hent PDF",
+    loading: "Henter forskningsgennemgangen…",
+    errorTitle: "Vi kunne ikke hente forskningsgennemgangen",
+    errorBody: "Dokumentet svarede ikke. Prøv igen, eller åbn kildefilen direkte.",
+    retry: "Prøv igen",
+    openRaw: "Åbn kildedokumentet",
+    homeCta: "Læs forskningsgennemgangen",
+    homeBody:
+      "Hvad evidensen understøtter, hvad der bliver testet, og hvad ingen endnu ved — hentet live fra det åbne repositorium.",
+  },
+
   access: {
     eyebrow: "Adgang",
     titleA: "Hvor du faktisk kan",

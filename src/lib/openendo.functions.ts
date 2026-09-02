@@ -140,7 +140,7 @@ async function loadPapers(): Promise<OpenEndoData["papers"]> {
   const year = now.getUTCFullYear();
 
   const months: { label: string; start: string; end: string }[] = [];
-  for (let i = 11; i >= 0; i--) {
+  for (let i = 8; i >= 0; i--) {
     const d = new Date(Date.UTC(year, now.getUTCMonth() - i, 1));
     const last = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0));
     months.push({
@@ -150,14 +150,15 @@ async function loadPapers(): Promise<OpenEndoData["papers"]> {
     });
   }
 
-  const [yearTotal, weekTotal, monthlyCounts, recentIds] = await Promise.all([
-    pubmedCount(`${TERM} AND ("${year}/01/01"[dp] : "3000"[dp])`),
-    pubmedCount(`${TERM} AND ("last 7 days"[dp])`),
-    Promise.all(months.map((m) => pubmedCount(`${TERM} AND ("${m.start}"[dp] : "${m.end}"[dp])`))),
-    json(
-      `${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=25&sort=pub_date&term=${encodeURIComponent(TERM)}`,
-    ),
+  const [yearTotal, weekTotal, ...monthlyCounts] = await throttled<number>([
+    () => pubmedCount(`${TERM} AND ("${year}/01/01"[dp] : "3000"[dp])`),
+    () => pubmedCount(`${TERM} AND ("last 7 days"[dp])`),
+    ...months.map((m) => () => pubmedCount(`${TERM} AND ("${m.start}"[dp] : "${m.end}"[dp])`)),
   ]);
+
+  const recentIds = await json(
+    `${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=25&sort=pub_date&term=${encodeURIComponent(TERM)}`,
+  );
 
   const ids: string[] = recentIds?.esearchresult?.idlist ?? [];
   let recent: Paper[] = [];

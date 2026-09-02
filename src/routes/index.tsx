@@ -160,7 +160,7 @@ function Home() {
                 href={g.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 py-6 transition-colors hover:bg-secondary/50"
+                className="group -mx-3 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 rounded-xl px-3 py-6 transition-colors hover:bg-secondary/50"
               >
                 <div className="min-w-0">
                   <p className="text-[17px] font-medium tracking-tight">{g.name}</p>

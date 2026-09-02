@@ -53,16 +53,6 @@ const titleCase = (s: string) => {
     .replace(/([a-z])(\d)/g, "$1 $2");
 };
 
-/** NCBI allows ~3 requests per second without a key. Run in small, spaced batches. */
-async function throttled<T>(tasks: (() => Promise<T>)[], size = 2, gapMs = 400): Promise<T[]> {
-  const out: T[] = [];
-  for (let i = 0; i < tasks.length; i += size) {
-    const batch = tasks.slice(i, i + size).map((t) => t());
-    out.push(...(await Promise.all(batch)));
-    if (i + size < tasks.length) await new Promise((r) => setTimeout(r, gapMs));
-  }
-  return out;
-}
 
 async function json(url: string) {
   const res = await fetch(url, { headers: { accept: "application/json" } });

@@ -12,8 +12,10 @@ export function SiteHeader() {
   const links = [
     { to: "/", label: c.nav.home },
     { to: "/dashboard", label: c.nav.dashboard },
+    { to: "/access", label: c.nav.access },
     { to: "/knowledge", label: c.nav.knowledge },
   ] as const;
+
 
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-xl">

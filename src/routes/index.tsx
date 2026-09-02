@@ -48,8 +48,8 @@ function Home() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-hairline">
-        <RibbonMark className="pointer-events-none absolute -right-28 top-8 h-[380px] w-[380px] opacity-[0.06] lg:h-[520px] lg:w-[520px]" />
-        <div className="mx-auto max-w-6xl px-6 pb-20 pt-24 sm:pt-32 lg:pb-28">
+        <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-24 sm:pt-32 lg:pb-28">
+          <RibbonMark className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 opacity-[0.05] sm:h-[540px] sm:w-[540px] lg:h-[720px] lg:w-[720px]" />
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               <p className="rise text-xs uppercase tracking-[0.18em] text-muted-foreground">

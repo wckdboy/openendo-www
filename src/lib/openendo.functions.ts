@@ -101,18 +101,25 @@ function tally(values: string[], limit?: number): Counted[] {
   return limit ? sorted.slice(0, limit) : sorted;
 }
 
-async function pubmedCount(term: string) {
-  const url = `${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=0&term=${encodeURIComponent(term)}`;
-  for (let attempt = 0; attempt < 3; attempt++) {
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** NCBI throttles anonymous callers aggressively; retry with backoff. */
+async function pubmedJson(url: string) {
+  for (let attempt = 0; ; attempt++) {
     try {
-      const data = await json(url);
-      return Number(data?.esearchresult?.count ?? 0);
+      return await json(url);
     } catch (e) {
-      if (attempt === 2) throw e;
-      await new Promise((r) => setTimeout(r, 700 * (attempt + 1)));
+      if (attempt >= 3) throw e;
+      await wait(900 * (attempt + 1));
     }
   }
-  return 0;
+}
+
+async function pubmedCount(term: string) {
+  const data = await pubmedJson(
+    `${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=0&term=${encodeURIComponent(term)}`,
+  );
+  return Number(data?.esearchresult?.count ?? 0);
 }
 
 const TERM = "endometriosis[tiab]";

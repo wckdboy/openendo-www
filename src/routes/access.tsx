@@ -205,7 +205,7 @@ function Section({
   children,
 }: {
   title: string;
-  lede?: string;
+  lede?: string | undefined;
   children: React.ReactNode;
 }) {
   return (
@@ -217,7 +217,13 @@ function Section({
   );
 }
 
-function Meta({ verified, confidence }: { verified?: string; confidence?: string }) {
+function Meta({
+  verified,
+  confidence,
+}: {
+  verified?: string | undefined;
+  confidence?: string | undefined;
+}) {
   const { c } = useLang();
   if (!verified && !confidence) return null;
   return (
@@ -229,7 +235,7 @@ function Meta({ verified, confidence }: { verified?: string; confidence?: string
   );
 }
 
-function Sources({ sources }: { sources?: string[] }) {
+function Sources({ sources }: { sources?: string[] | undefined }) {
   const { c } = useLang();
   if (!sources?.length) return null;
   return (
@@ -260,7 +266,7 @@ function sourceLabel(url: string, i: number) {
   }
 }
 
-function ExternalLink({ href, label }: { href?: string; label: string }) {
+function ExternalLink({ href, label }: { href?: string | undefined; label: string }) {
   if (!href) return null;
   return (
     <a
@@ -284,7 +290,7 @@ function Results({
   country: Country;
   postcode: string;
   disclaimer: string;
-  updated?: string;
+  updated?: string | undefined;
 }) {
   const { c, locale } = useLang();
   const t = c.access;

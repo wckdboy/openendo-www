@@ -156,9 +156,9 @@ function Dashboard() {
 
         <div className="lg:col-span-2">
           <ChartBlock title={c.dashboard.charts.pubmed}>
-            {data?.papers.monthly.length ? (
+            {monthly.length ? (
               <ResponsiveContainer width="100%" height={280}>
-                <LineChart data={data.papers.monthly} margin={{ left: -20, right: 8, top: 8 }}>
+                <LineChart data={monthly} margin={{ left: -20, right: 8, top: 8 }}>
                   <CartesianGrid stroke="var(--color-hairline)" vertical={false} />
                   <XAxis
                     dataKey="label"

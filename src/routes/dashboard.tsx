@@ -42,6 +42,8 @@ type Tab = "global" | "denmark" | "papers";
 function Dashboard() {
   const { c, locale } = useLang();
   const { data, isLoading } = useQuery(openEndoQueryOptions);
+  const monthlyQuery = useQuery(paperMonthlyQueryOptions);
+  const monthly = monthlyQuery.data ?? [];
   const [tab, setTab] = useState<Tab>("global");
   const [q, setQ] = useState("");
 

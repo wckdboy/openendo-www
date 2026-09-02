@@ -254,13 +254,14 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24">
+    <section className="mx-auto max-w-6xl border-b border-hairline px-6 py-20 last:border-b-0 sm:py-24">
       {eyebrow && (
         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{eyebrow}</p>
       )}
       <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
       {lede && <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{lede}</p>}
-      <div className="mt-14">{children}</div>
+      <div className="mt-10 sm:mt-12">{children}</div>
     </section>
   );
+
 }

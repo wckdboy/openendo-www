@@ -161,6 +161,27 @@ function Home() {
         </ul>
       </Section>
 
+      {/* Research explainer */}
+      <Section eyebrow={c.research.eyebrow} title={c.research.docTitle} lede="">
+        <Link
+          to="/research"
+          className="group block rounded-2xl border border-hairline bg-ribbon-soft/50 p-8 transition-colors hover:bg-ribbon-soft"
+        >
+          <h3 className="max-w-xl text-[22px] font-semibold leading-snug tracking-tight">
+            {c.research.titleA} <span className="accent font-normal">{c.research.titleAccent}</span>
+          </h3>
+          <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+            {c.research.homeBody}
+          </p>
+          <span className="mt-5 inline-flex items-center gap-2 text-[15px] font-medium">
+            <span className="marker">{c.research.homeCta}</span>
+            <ArrowRight className="h-4 w-4" />
+          </span>
+        </Link>
+      </Section>
+
+
+
       {/* Action */}
       <Section eyebrow={c.home.actionEyebrow} title={c.home.actionTitle} lede="">
         <div className="grid gap-10 md:grid-cols-3">

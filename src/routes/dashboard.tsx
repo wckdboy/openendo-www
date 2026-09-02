@@ -182,6 +182,8 @@ function Dashboard() {
                   />
                 </LineChart>
               </ResponsiveContainer>
+            ) : monthlyQuery.isPending ? (
+              <div className="h-[280px] animate-pulse rounded-xl bg-hairline/40" />
             ) : (
               <Unavailable />
             )}

@@ -102,10 +102,17 @@ function tally(values: string[], limit?: number): Counted[] {
 }
 
 async function pubmedCount(term: string) {
-  const data = await json(
-    `${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=0&term=${encodeURIComponent(term)}`,
-  );
-  return Number(data?.esearchresult?.count ?? 0);
+  const url = `${EUTILS}/esearch.fcgi?db=pubmed&retmode=json&retmax=0&term=${encodeURIComponent(term)}`;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const data = await json(url);
+      return Number(data?.esearchresult?.count ?? 0);
+    } catch (e) {
+      if (attempt === 2) throw e;
+      await new Promise((r) => setTimeout(r, 700 * (attempt + 1)));
+    }
+  }
+  return 0;
 }
 
 const TERM = "endometriosis[tiab]";

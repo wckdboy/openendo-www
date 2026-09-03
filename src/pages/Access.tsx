@@ -457,7 +457,7 @@ function OrgCard({ org }: { org: Organization }) {
 }
 
 function MissingCountry({ code }: { code: string }) {
-  const { c } = useLang();
+  const { c, path } = useLang();
   const t = c.access;
   return (
     <div className="rounded-2xl border border-hairline bg-card p-8 text-center">

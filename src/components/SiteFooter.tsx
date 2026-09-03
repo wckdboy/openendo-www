@@ -14,7 +14,7 @@ const sources = [
 ];
 
 export function SiteFooter() {
-  const { c, locale, setLocale } = useLang();
+  const { c, locale, setLocale, path } = useLang();
 
   return (
     <footer className="mt-32 border-t border-hairline">
@@ -56,12 +56,12 @@ export function SiteFooter() {
           </h2>
           <ul className="mt-4 space-y-2.5 text-sm">
             <li>
-              <Link to="/dashboard" className="text-foreground/80 hover:text-foreground">
+              <Link to={path("/dashboard")} className="text-foreground/80 hover:text-foreground">
                 {c.nav.dashboard}
               </Link>
             </li>
             <li>
-              <Link to="/knowledge" className="text-foreground/80 hover:text-foreground">
+              <Link to={path("/knowledge")} className="text-foreground/80 hover:text-foreground">
                 {c.nav.knowledge}
               </Link>
             </li>

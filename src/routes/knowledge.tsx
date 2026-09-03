@@ -4,6 +4,7 @@ import { Knowledge } from "@/pages/Knowledge";
 export const Route = createFileRoute("/knowledge")({
   head: () => ({
     meta: [
+      { property: "og:locale", content: "en_GB" },
       { title: "Endometriosis explained plainly — OpenEndo Knowledge" },
       {
         name: "description",
@@ -16,6 +17,11 @@ export const Route = createFileRoute("/knowledge")({
         content:
           "A sourced, plain-language guide to endometriosis for patients, relatives and clinicians.",
       },
+    ],
+    links: [
+      { rel: "canonical", href: "https://openendo.org/knowledge" },
+      { rel: "alternate", hrefLang: "en", href: "https://openendo.org/knowledge" },
+      { rel: "alternate", hrefLang: "da", href: "https://openendo.org/da/knowledge" },
     ],
   }),
   component: Knowledge,

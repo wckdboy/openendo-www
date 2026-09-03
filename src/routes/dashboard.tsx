@@ -4,6 +4,7 @@ import { Dashboard } from "@/pages/Dashboard";
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
     meta: [
+      { property: "og:locale", content: "en_GB" },
       { title: "Live endometriosis research dashboard — OpenEndo" },
       {
         name: "description",
@@ -18,6 +19,11 @@ export const Route = createFileRoute("/dashboard")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://openendo.org/dashboard" },
+      { rel: "alternate", hrefLang: "en", href: "https://openendo.org/dashboard" },
+      { rel: "alternate", hrefLang: "da", href: "https://openendo.org/da/dashboard" },
     ],
   }),
   component: Dashboard,

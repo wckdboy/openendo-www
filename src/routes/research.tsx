@@ -4,6 +4,7 @@ import { Research } from "@/pages/Research";
 export const Route = createFileRoute("/research")({
   head: () => ({
     meta: [
+      { property: "og:locale", content: "en_GB" },
       { title: "Research explainer — what we know, what we're testing | OpenEndo" },
       {
         name: "description",
@@ -23,7 +24,11 @@ export const Route = createFileRoute("/research")({
       { property: "og:url", content: "https://openendo.org/research" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
-    links: [{ rel: "canonical", href: "https://openendo.org/research" }],
+    links: [
+      { rel: "canonical", href: "https://openendo.org/research" },
+      { rel: "alternate", hrefLang: "en", href: "https://openendo.org/research" },
+      { rel: "alternate", hrefLang: "da", href: "https://openendo.org/da/research" },
+    ],
   }),
   component: Research,
 });

@@ -4,6 +4,7 @@ import { Access } from "@/pages/Access";
 export const Route = createFileRoute("/access")({
   head: () => ({
     meta: [
+      { property: "og:locale", content: "en_GB" },
       { title: "Find help — endometriosis medication and care access by country | OpenEndo" },
       {
         name: "description",
@@ -21,6 +22,11 @@ export const Route = createFileRoute("/access")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://openendo.org/access" },
+      { rel: "alternate", hrefLang: "en", href: "https://openendo.org/access" },
+      { rel: "alternate", hrefLang: "da", href: "https://openendo.org/da/access" },
     ],
   }),
   component: Access,

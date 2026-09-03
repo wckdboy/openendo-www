@@ -6,23 +6,21 @@ import { useLang } from "@/lib/i18n";
 import { GITHUB_URL } from "@/content/data";
 
 export function SiteHeader() {
-  const { c, toggle } = useLang();
+  const { c, toggle, path } = useLang();
   const [open, setOpen] = useState(false);
 
   const links = [
-    { to: "/", label: c.nav.home },
-    { to: "/dashboard", label: c.nav.dashboard },
-    { to: "/research", label: c.nav.research },
-    { to: "/access", label: c.nav.access },
-    { to: "/knowledge", label: c.nav.knowledge },
-  ] as const;
-
-
+    { to: path("/"), label: c.nav.home, exact: true },
+    { to: path("/dashboard"), label: c.nav.dashboard, exact: false },
+    { to: path("/research"), label: c.nav.research, exact: false },
+    { to: path("/access"), label: c.nav.access, exact: false },
+    { to: path("/knowledge"), label: c.nav.knowledge, exact: false },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <Link to="/" className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
+        <Link to={path("/")} className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight">
           <RibbonMark className="h-6 w-6" />
           OpenEndo
         </Link>

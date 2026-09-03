@@ -8,7 +8,7 @@ import { actions, facts, grants, stats, GITHUB_URL } from "@/content/data";
 
 
 export function Home() {
-  const { c, locale } = useLang();
+  const { c, locale, path } = useLang();
   const { data } = useQuery(openEndoQueryOptions);
 
   const grantList = grants[locale]
@@ -41,7 +41,7 @@ export function Home() {
               </p>
               <div className="rise mt-9 flex flex-wrap items-center gap-3">
                 <Link
-                  to="/dashboard"
+                  to={path("/dashboard")}
                   className="group inline-flex items-center gap-2 rounded-full bg-ribbon px-6 py-3 text-[15px] font-semibold text-ink transition-transform hover:-translate-y-0.5"
                 >
                   {c.home.cta}
@@ -87,7 +87,7 @@ export function Home() {
                   ))}
                 </dl>
                 <Link
-                  to="/dashboard"
+                  to={path("/dashboard")}
                   className="mt-7 inline-flex items-center gap-2 text-[15px] font-medium"
                 >
                   <span className="marker">{c.home.liveCta}</span>
@@ -158,7 +158,7 @@ export function Home() {
       {/* Research explainer */}
       <Section eyebrow={c.research.eyebrow} title={c.research.docTitle} lede="">
         <Link
-          to="/research"
+          to={path("/research")}
           className="group block max-w-3xl rounded-2xl border border-hairline bg-ribbon-soft/50 p-7 transition-colors hover:bg-ribbon-soft sm:p-9"
         >
 
@@ -186,7 +186,7 @@ export function Home() {
               <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">{a.body}</p>
               {a.url.startsWith("/") ? (
                 <Link
-                  to="/dashboard"
+                  to={path("/dashboard")}
                   className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium"
                 >
                   <span className="marker">{a.cta}</span>

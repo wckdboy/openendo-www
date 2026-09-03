@@ -32,7 +32,7 @@ export function SiteHeader() {
               to={l.to}
               className="transition-colors hover:text-foreground"
               activeProps={{ className: "text-foreground" }}
-              activeOptions={{ exact: l.to === "/" }}
+              activeOptions={{ exact: l.exact }}
             >
               {l.label}
             </Link>
@@ -74,7 +74,7 @@ export function SiteHeader() {
               onClick={() => setOpen(false)}
               className="block py-2.5 text-[15px] text-muted-foreground"
               activeProps={{ className: "block py-2.5 text-[15px] text-foreground" }}
-              activeOptions={{ exact: l.to === "/" }}
+              activeOptions={{ exact: l.exact }}
             >
               {l.label}
             </Link>

@@ -7,7 +7,7 @@ export const BASE_PATHS = ["/", "/dashboard", "/research", "/access", "/knowledg
 export type BasePath = (typeof BASE_PATHS)[number];
 
 const DA_PATHS = {
-  "/": "/da/",
+  "/": "/da",
   "/dashboard": "/da/dashboard",
   "/research": "/da/research",
   "/access": "/da/access",

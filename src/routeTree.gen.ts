@@ -18,6 +18,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as DaIndexRouteImport } from './routes/da.index'
 import { Route as DaAccessRouteImport } from './routes/da.access'
 import { Route as DaDashboardRouteImport } from './routes/da.dashboard'
+import { Route as DaKnowledgeRouteImport } from './routes/da.knowledge'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -64,6 +65,11 @@ const DaDashboardRoute = DaDashboardRouteImport.update({
   path: '/da/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DaKnowledgeRoute = DaKnowledgeRouteImport.update({
+  id: '/da/knowledge',
+  path: '/da/knowledge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
+  '/da/knowledge': typeof DaKnowledgeRoute
   '/da/': typeof DaIndexRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
+  '/da/knowledge': typeof DaKnowledgeRoute
   '/da': typeof DaIndexRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
+  '/da/knowledge': typeof DaKnowledgeRoute
   '/da/': typeof DaIndexRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/da/access'
     | '/da/dashboard'
+    | '/da/knowledge'
     | '/da/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/da/access'
     | '/da/dashboard'
+    | '/da/knowledge'
     | '/da'
   id:
     | '__root__'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/da/access'
     | '/da/dashboard'
+    | '/da/knowledge'
     | '/da/'
   fileRoutesById: FileRoutesById
 }
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   DaAccessRoute: typeof DaAccessRoute
   DaDashboardRoute: typeof DaDashboardRoute
+  DaKnowledgeRoute: typeof DaKnowledgeRoute
   DaIndexRoute: typeof DaIndexRoute
 }
 
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DaDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/da/knowledge': {
+      id: '/da/knowledge'
+      path: '/da/knowledge'
+      fullPath: '/da/knowledge'
+      preLoaderRoute: typeof DaKnowledgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   DaAccessRoute: DaAccessRoute,
   DaDashboardRoute: DaDashboardRoute,
+  DaKnowledgeRoute: DaKnowledgeRoute,
   DaIndexRoute: DaIndexRoute,
 }
 export const routeTree = rootRouteImport

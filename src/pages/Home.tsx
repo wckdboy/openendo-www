@@ -215,7 +215,10 @@ export function Home() {
 
 function Countdown({ iso }: { iso: string }) {
   const { c } = useLang();
-  const days = Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000);
+  // Plain 'YYYY-MM-DD' values are treated as UTC midnight.
+  const time = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? Date.parse(`${iso}T00:00:00Z`) : Date.parse(iso);
+  if (!Number.isFinite(time)) return <span>{iso}</span>;
+  const days = Math.ceil((time - Date.now()) / 86_400_000);
   const label = days < 0 ? c.common.closed : days === 0 ? c.common.dueToday : `${days} ${c.common.daysLeft}`;
   return (
     <span>

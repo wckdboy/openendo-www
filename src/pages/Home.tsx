@@ -4,17 +4,23 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { RibbonMark } from "@/components/RibbonMark";
 import { useLang } from "@/lib/i18n";
 import { openEndoQueryOptions } from "@/lib/openendo.functions";
+import { fundingQueryOptions, openByDeadline, type FundingEntry } from "@/lib/funding.functions";
 import { actions, facts, grants, stats, GITHUB_URL } from "@/content/data";
 
 
 export function Home() {
   const { c, locale, path } = useLang();
   const { data } = useQuery(openEndoQueryOptions);
+  const { data: funding } = useQuery(fundingQueryOptions);
 
-  const grantList = grants[locale]
+  const live = openByDeadline(funding, 4);
+  // Repo is canonical; the bundled list is only a fallback so this never renders empty.
+  const fallback: FundingEntry[] = grants[locale]
     .slice()
     .sort((a, b) => a.deadline.localeCompare(b.deadline))
-    .slice(0, 4);
+    .slice(0, 4)
+    .map((g) => ({ name: g.name, org: g.funder, url: g.url, deadline: g.deadline }));
+  const grantList = live.length ? live : fallback;
 
   const kpis = [
     { value: data?.trials.globalTotal, label: c.dashboard.kpi.recruiting },
@@ -142,12 +148,10 @@ export function Home() {
               >
                 <div className="min-w-0">
                   <p className="text-[17px] font-medium tracking-tight">{g.name}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {g.funder} · {g.amount}
-                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">{g.org}</p>
                 </div>
                 <p className="numeral shrink-0 text-sm text-muted-foreground">
-                  <Countdown iso={g.deadline} />
+                  <Countdown iso={g.deadline ?? ""} />
                 </p>
               </a>
             </li>
@@ -211,7 +215,10 @@ export function Home() {
 
 function Countdown({ iso }: { iso: string }) {
   const { c } = useLang();
-  const days = Math.ceil((new Date(iso).getTime() - Date.now()) / 86_400_000);
+  // Plain 'YYYY-MM-DD' values are treated as UTC midnight.
+  const time = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? Date.parse(`${iso}T00:00:00Z`) : Date.parse(iso);
+  if (!Number.isFinite(time)) return <span>{iso}</span>;
+  const days = Math.ceil((time - Date.now()) / 86_400_000);
   const label = days < 0 ? c.common.closed : days === 0 ? c.common.dueToday : `${days} ${c.common.daysLeft}`;
   return (
     <span>

@@ -148,12 +148,10 @@ export function Home() {
               >
                 <div className="min-w-0">
                   <p className="text-[17px] font-medium tracking-tight">{g.name}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {g.funder} · {g.amount}
-                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">{g.org}</p>
                 </div>
                 <p className="numeral shrink-0 text-sm text-muted-foreground">
-                  <Countdown iso={g.deadline} />
+                  <Countdown iso={g.deadline ?? ""} />
                 </p>
               </a>
             </li>

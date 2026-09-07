@@ -4,17 +4,23 @@ import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { RibbonMark } from "@/components/RibbonMark";
 import { useLang } from "@/lib/i18n";
 import { openEndoQueryOptions } from "@/lib/openendo.functions";
+import { fundingQueryOptions, openByDeadline, type FundingEntry } from "@/lib/funding.functions";
 import { actions, facts, grants, stats, GITHUB_URL } from "@/content/data";
 
 
 export function Home() {
   const { c, locale, path } = useLang();
   const { data } = useQuery(openEndoQueryOptions);
+  const { data: funding } = useQuery(fundingQueryOptions);
 
-  const grantList = grants[locale]
+  const live = openByDeadline(funding, 4);
+  // Repo is canonical; the bundled list is only a fallback so this never renders empty.
+  const fallback: FundingEntry[] = grants[locale]
     .slice()
     .sort((a, b) => a.deadline.localeCompare(b.deadline))
-    .slice(0, 4);
+    .slice(0, 4)
+    .map((g) => ({ name: g.name, org: g.funder, url: g.url, deadline: g.deadline }));
+  const grantList = live.length ? live : fallback;
 
   const kpis = [
     { value: data?.trials.globalTotal, label: c.dashboard.kpi.recruiting },

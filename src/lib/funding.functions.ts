@@ -25,10 +25,19 @@ export const getFunding = createServerFn({ method: "GET" }).handler(
   async (): Promise<FundingEntry[]> => {
     if (cache && Date.now() - cache.at < CACHE_MS) return cache.data;
 
-    const res = await fetch(FUNDING_URL, { headers: { accept: "application/json" } });
-    if (!res.ok) throw new Error(`funding.json ${res.status}`);
-    const data = (await res.json()) as unknown;
-    if (!Array.isArray(data)) throw new Error("funding.json: unexpected shape");
+    let data: unknown;
+    try {
+      const res = await fetch(FUNDING_URL, { headers: { accept: "application/json" } });
+      if (!res.ok) throw new Error(`funding.json ${res.status}`);
+      data = await res.json();
+    } catch (e) {
+      console.error("funding.json fetch failed", e);
+      throw e;
+    }
+    if (!Array.isArray(data)) {
+      console.error("funding.json: unexpected shape");
+      throw new Error("funding.json: unexpected shape");
+    }
 
     const list = data.filter(
       (e): e is FundingEntry => Boolean(e) && typeof (e as FundingEntry).name === "string",

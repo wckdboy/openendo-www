@@ -9,13 +9,13 @@ export const Route = createFileRoute("/knowledge")({
       {
         name: "description",
         content:
-          "Plain-language reference on endometriosis: what it is, symptoms, how diagnosis works, treatment options, harmful myths and a glossary.",
+          "Sourced knowledge on endometriosis: treatments, diagnostics and research concepts, published from the open repository.",
       },
       { property: "og:title", content: "Endometriosis explained plainly — OpenEndo Knowledge" },
       {
         property: "og:description",
         content:
-          "A sourced, plain-language guide to endometriosis for patients, relatives and clinicians.",
+          "A sourced knowledge base on endometriosis treatments, diagnostics and research — fetched live from the open repository.",
       },
     ],
     links: [

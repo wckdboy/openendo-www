@@ -153,3 +153,94 @@
     transform: none;
   }
 }
+
+/* Repo markdown, rendered inside Knowledge articles. */
+.knowledge-prose {
+  font-size: 16px;
+  line-height: 1.75;
+  color: color-mix(in oklch, var(--color-foreground) 85%, transparent);
+}
+
+.knowledge-prose > * + * {
+  margin-top: 1rem;
+}
+
+.knowledge-prose h2,
+.knowledge-prose h3,
+.knowledge-prose h4 {
+  margin-top: 1.75rem;
+  color: var(--color-foreground);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.knowledge-prose h2 {
+  font-size: 1.25rem;
+}
+
+.knowledge-prose h3,
+.knowledge-prose h4 {
+  font-size: 1.05rem;
+}
+
+.knowledge-prose ul,
+.knowledge-prose ol {
+  padding-left: 1.2rem;
+}
+
+.knowledge-prose ul {
+  list-style: disc;
+}
+
+.knowledge-prose ol {
+  list-style: decimal;
+}
+
+.knowledge-prose li + li {
+  margin-top: 0.35rem;
+}
+
+.knowledge-prose a {
+  color: var(--color-foreground);
+  text-decoration: underline;
+  text-decoration-color: var(--color-hairline);
+  text-underline-offset: 3px;
+}
+
+.knowledge-prose a:hover {
+  text-decoration-color: var(--color-ribbon);
+}
+
+.knowledge-prose strong {
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.knowledge-prose table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.knowledge-prose th,
+.knowledge-prose td {
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--color-hairline);
+  text-align: left;
+  vertical-align: top;
+}
+
+.knowledge-prose th {
+  color: var(--color-foreground);
+  font-weight: 600;
+}
+
+.knowledge-prose code {
+  font-size: 0.88em;
+  padding: 0.1em 0.3em;
+  border-radius: 0.3rem;
+  background: var(--color-secondary);
+}

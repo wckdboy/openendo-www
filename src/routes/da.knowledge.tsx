@@ -3,7 +3,7 @@ import { Knowledge } from "@/pages/Knowledge";
 
 const title = "Endometriose forklaret i klart sprog — OpenEndo Viden";
 const description =
-  "Opslagsværk i almindeligt sprog om endometriose: hvad det er, symptomer, hvordan diagnosen stilles, behandlingsmuligheder, skadelige myter og en ordliste.";
+  "Vidensbase om endometriose: behandlinger, diagnostik og forskningsbegreber, publiceret fra det åbne repositorium.";
 
 export const Route = createFileRoute("/da/knowledge")({
   head: () => ({

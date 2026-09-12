@@ -87,10 +87,10 @@ export function Knowledge() {
         </h1>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
         {fromRepo && (
-          <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-            {t.caption}
-            {locale === "da" ? ` ${t.languageNote}` : null}
-          </p>
+          <div className="mt-3 max-w-xl space-y-1 text-sm text-muted-foreground">
+            <p>{t.caption}</p>
+            {locale === "da" ? <p>{t.languageNote}</p> : null}
+          </div>
         )}
       </header>
 

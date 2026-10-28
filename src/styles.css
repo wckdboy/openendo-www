@@ -1,8 +1,16 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "@fontsource/source-serif-4/latin-600.css";
+@import "@fontsource/source-serif-4/latin-700.css";
+@import "@fontsource/source-serif-4/latin-ext-600.css";
+@import "@fontsource/source-serif-4/latin-ext-700.css";
+@import "@fontsource/atkinson-hyperlegible-next/400.css";
+@import "@fontsource/atkinson-hyperlegible-next/700.css";
+@import "@fontsource/atkinson-hyperlegible-mono/400.css";
+@import "../docs/design/tokens.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is([data-theme="dark"] *));
 
 /*
  * Token layer. Change the look by editing the --token-* variables in :root.
@@ -14,101 +22,50 @@
  */
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --font-sans: var(--token-font-sans);
-  --font-serif: var(--token-font-serif);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --font-sans: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, monospace;
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
   --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
+  --color-primary-foreground: var(--on-primary);
+  --color-secondary: var(--sunken);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--sunken);
+  --color-muted-foreground: var(--ink-muted);
+  --color-accent: var(--sunken);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--hairline);
   --color-hairline: var(--hairline);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-input: var(--border-strong);
+  --color-ring: var(--primary);
   --color-ribbon: var(--ribbon);
-  --color-ribbon-soft: var(--ribbon-soft);
+  --color-ribbon-soft: var(--caution-bg);
   --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-canvas: var(--canvas);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --color-ink-soft: var(--ink-muted);
+  --color-canvas: var(--paper);
+  --color-chart-1: var(--primary);
+  --color-chart-2: var(--ink-muted);
+  --color-chart-3: var(--ink-subtle);
+  --color-chart-4: var(--border-strong);
+  --color-chart-5: var(--hairline);
 }
 
 :root {
-  --radius: var(--token-radius);
+  --on-primary: #ffffff;
+}
 
-  /* Swap these to restyle the site. */
-  --token-canvas: oklch(0.988 0.004 95);
-  --token-surface: oklch(1 0 0);
-  --token-surface-muted: oklch(0.962 0.005 95);
-  --token-ink: oklch(0.22 0.012 90);
-  --token-ink-muted: oklch(0.4 0.012 90);
-  --token-border: oklch(0.9 0.006 95);
-  --token-border-strong: oklch(0.84 0.008 95);
-  --token-accent: oklch(0.87 0.176 96);
-  --token-accent-soft: oklch(0.965 0.05 98);
-  --token-accent-ink: oklch(0.22 0.012 90);
-  --token-focus: oklch(0.42 0.11 250);
-  --token-danger: oklch(0.45 0.16 27);
-  --token-danger-ink: oklch(0.99 0 0);
-  --token-radius: 0.75rem;
-  --token-font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --token-font-serif: "Fraunces", ui-serif, Georgia, serif;
-  --token-space-page: 1.5rem;
-  --token-measure: 42rem;
-
-  --canvas: var(--token-canvas);
-  --ink: var(--token-ink);
-  --ink-soft: var(--token-ink-muted);
-  --ribbon: var(--token-accent);
-  --ribbon-soft: var(--token-accent-soft);
-
-  --background: var(--token-canvas);
-  --foreground: var(--token-ink);
-  --card: var(--token-surface);
-  --card-foreground: var(--token-ink);
-  --popover: var(--token-surface);
-  --popover-foreground: var(--token-ink);
-  --primary: var(--token-ink);
-  --primary-foreground: var(--token-canvas);
-  --secondary: var(--token-surface-muted);
-  --secondary-foreground: var(--token-ink);
-  --muted: var(--token-surface-muted);
-  --muted-foreground: var(--token-ink-muted);
-  --accent: var(--token-accent-soft);
-  --accent-foreground: var(--token-ink);
-  --destructive: var(--token-danger);
-  --destructive-foreground: var(--token-danger-ink);
-  --hairline: var(--token-border);
-  --border: var(--token-border);
-  --input: var(--token-border-strong);
-  --ring: var(--token-focus);
-
-  --chart-1: oklch(0.87 0.176 96);
-  --chart-2: oklch(0.32 0.01 90);
-  --chart-3: oklch(0.55 0.01 90);
-  --chart-4: oklch(0.72 0.008 90);
-  --chart-5: oklch(0.84 0.006 90);
+[data-theme="dark"] {
+  --on-primary: #14171a;
 }
 
 @layer base {
@@ -132,64 +89,61 @@
   }
 
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--paper);
+    color: var(--ink);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv01";
+    font-size: var(--text-md);
+    line-height: var(--leading-body);
   }
 
   :focus-visible {
-    outline: 2px solid var(--token-focus);
-    outline-offset: 3px;
+    outline: var(--focus);
+    outline-offset: var(--focus-offset);
   }
 
   h1,
   h2,
-  h3 {
-    letter-spacing: -0.02em;
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-optical-sizing: auto;
+    line-height: var(--leading-heading);
+    letter-spacing: 0;
+  }
+
+  main a {
+    color: var(--primary);
+  }
+
+  main a:visited {
+    color: var(--link-visited);
   }
 }
 
-/* Serif emphasis: editorial, never yellow text. */
 @utility accent {
   font-family: var(--font-serif);
   font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: italic;
-  letter-spacing: -0.01em;
+  font-weight: 600;
+  font-style: normal;
 }
 
 @utility numeral {
-  font-family: var(--font-serif);
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-variant-numeric: lining-nums tabular-nums;
-  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: var(--text-stat);
+  line-height: 1.1;
 }
 
-/* Single loud element: a yellow ribbon swipe behind key words. */
 @utility marker {
-  background-image: linear-gradient(
-    to top,
-    var(--color-ribbon) 0.05em,
-    var(--color-ribbon) 0.3em,
-    transparent 0.3em
-  );
+  text-decoration: underline;
+  text-decoration-color: var(--primary);
+  text-underline-offset: 3px;
 }
 
-@utility rise {
-  animation: openendo-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes openendo-rise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.mono-id {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
 }
 
 /* Off-screen sections only. Paired with contain-intrinsic-size so unsupported browsers ignore it and supported ones do not collapse height. */
@@ -200,9 +154,10 @@
 
 /* Repo markdown, rendered inside Knowledge articles. */
 .knowledge-prose {
-  font-size: 16px;
-  line-height: 1.75;
-  color: color-mix(in oklch, var(--color-foreground) 85%, transparent);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--ink);
+  max-width: var(--measure);
 }
 
 .knowledge-prose > * + * {

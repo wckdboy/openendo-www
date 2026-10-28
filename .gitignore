@@ -19,7 +19,7 @@ dist-ssr
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
-src/generated/snapshot.json
+src/generated/
 public/sitemap.xml
 
 # Editor directories and files

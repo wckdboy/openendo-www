@@ -1,8 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Sources } from "@/pages/Sources";
-import { sourcesHead } from "@/lib/seo";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/sources")({
-  head: () => sourcesHead("en"),
-  component: Sources,
+  beforeLoad: () => {
+    throw redirect({ to: "/about" });
+  },
 });

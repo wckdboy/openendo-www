@@ -1,3 +1,4 @@
+import bundledAccess from "@/generated/access.json";
 import { RAW_BASE } from "@/lib/site";
 
 /**
@@ -102,7 +103,9 @@ export async function loadAccessData(): Promise<AccessData> {
 export const accessQueryOptions = {
   queryKey: ["openendo-access"] as const,
   queryFn: loadAccessData,
-  staleTime: CACHE_MS,
+  initialData: bundledAccess as AccessData,
+  staleTime: Infinity,
+  refetchOnMount: false as const,
   retry: 1,
 };
 

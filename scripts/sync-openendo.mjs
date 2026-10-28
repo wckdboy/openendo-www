@@ -5,6 +5,7 @@
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { parseKnowledgeIndex } from "../src/lib/knowledge-markdown.ts";
 import { sitemapEntries, SITE_ORIGIN } from "../src/lib/site.ts";
 
 const RAW = "https://raw.githubusercontent.com/wckdboy/openendo/main";
@@ -86,6 +87,28 @@ const snapshot = {
 const generatedDir = path.join(ROOT, "src/generated");
 await mkdir(generatedDir, { recursive: true });
 await writeFile(path.join(generatedDir, "snapshot.json"), `${JSON.stringify(snapshot)}\n`);
+
+const access = await json("docs/data/access.json");
+await writeFile(path.join(generatedDir, "access.json"), `${JSON.stringify(access)}\n`);
+
+const researchHtml = await text("docs/what-we-know.html");
+await writeFile(path.join(generatedDir, "research.html"), researchHtml);
+
+const indexMarkdown = await text("docs/knowledge/index.md");
+const catalog = parseKnowledgeIndex(indexMarkdown).slice(0, 30);
+const knowledgePages = [];
+for (const entry of catalog) {
+  try {
+    const markdown = await text(`docs/knowledge/${entry.folder}/${entry.slug}.md`);
+    knowledgePages.push({ ...entry, markdown });
+  } catch (error) {
+    console.error(`knowledge ${entry.slug} skipped`, error);
+  }
+}
+await writeFile(
+  path.join(generatedDir, "knowledge.json"),
+  `${JSON.stringify({ indexMarkdown, pages: knowledgePages })}\n`,
+);
 
 const urls = sitemapEntries()
   .map((entry) =>

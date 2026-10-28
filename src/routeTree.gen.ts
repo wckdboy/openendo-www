@@ -10,16 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccessRouteImport } from './routes/access'
+import { Route as CareRouteImport } from './routes/care'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as EvidenceRouteImport } from './routes/evidence'
 import { Route as FindRouteImport } from './routes/find'
+import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ResearchRouteImport } from './routes/research'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SourcesRouteImport } from './routes/sources'
+import { Route as TrialsRouteImport } from './routes/trials'
+import { Route as AboutForDecisionMakersRouteImport } from './routes/about.for-decision-makers'
 import { Route as DaIndexRouteImport } from './routes/da.index'
+import { Route as DaAboutRouteImport } from './routes/da.about'
 import { Route as DaAccessRouteImport } from './routes/da.access'
 import { Route as DaDashboardRouteImport } from './routes/da.dashboard'
 import { Route as DaEvidenceRouteImport } from './routes/da.evidence'
@@ -34,6 +40,7 @@ import { Route as LearnDiagnosisRouteImport } from './routes/learn.diagnosis'
 import { Route as LearnLivingRouteImport } from './routes/learn.living'
 import { Route as LearnSymptomsRouteImport } from './routes/learn.symptoms'
 import { Route as LearnTreatmentRouteImport } from './routes/learn.treatment'
+import { Route as DaAboutForDecisionMakersRouteImport } from './routes/da.about.for-decision-makers'
 import { Route as DaLearnIndexRouteImport } from './routes/da.learn.index'
 import { Route as DaLearnDenmarkRouteImport } from './routes/da.learn.denmark'
 import { Route as DaLearnDiagnosisRouteImport } from './routes/da.learn.diagnosis'
@@ -46,9 +53,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccessRoute = AccessRouteImport.update({
   id: '/access',
   path: '/access',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareRoute = CareRouteImport.update({
+  id: '/care',
+  path: '/care',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -64,6 +81,11 @@ const EvidenceRoute = EvidenceRouteImport.update({
 const FindRoute = FindRouteImport.update({
   id: '/find',
   path: '/find',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuidesRoute = GuidesRouteImport.update({
+  id: '/guides',
+  path: '/guides',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KnowledgeRoute = KnowledgeRouteImport.update({
@@ -91,9 +113,24 @@ const SourcesRoute = SourcesRouteImport.update({
   path: '/sources',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TrialsRoute = TrialsRouteImport.update({
+  id: '/trials',
+  path: '/trials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutForDecisionMakersRoute = AboutForDecisionMakersRouteImport.update({
+  id: '/for-decision-makers',
+  path: '/for-decision-makers',
+  getParentRoute: () => AboutRoute,
+} as any)
 const DaIndexRoute = DaIndexRouteImport.update({
   id: '/da/',
   path: '/da/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DaAboutRoute = DaAboutRouteImport.update({
+  id: '/da/about',
+  path: '/da/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DaAccessRoute = DaAccessRouteImport.update({
@@ -166,6 +203,12 @@ const LearnTreatmentRoute = LearnTreatmentRouteImport.update({
   path: '/treatment',
   getParentRoute: () => LearnRoute,
 } as any)
+const DaAboutForDecisionMakersRoute =
+  DaAboutForDecisionMakersRouteImport.update({
+    id: '/for-decision-makers',
+    path: '/for-decision-makers',
+    getParentRoute: () => DaAboutRoute,
+  } as any)
 const DaLearnIndexRoute = DaLearnIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -199,15 +242,21 @@ const DaLearnTreatmentRoute = DaLearnTreatmentRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteWithChildren
   '/access': typeof AccessRoute
+  '/care': typeof CareRoute
   '/dashboard': typeof DashboardRoute
   '/evidence': typeof EvidenceRoute
   '/find': typeof FindRoute
+  '/guides': typeof GuidesRoute
   '/knowledge': typeof KnowledgeRoute
   '/learn': typeof LearnRouteWithChildren
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sources': typeof SourcesRoute
+  '/trials': typeof TrialsRoute
+  '/about/for-decision-makers': typeof AboutForDecisionMakersRoute
+  '/da/about': typeof DaAboutRouteWithChildren
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
   '/da/evidence': typeof DaEvidenceRoute
@@ -223,6 +272,7 @@ export interface FileRoutesByFullPath {
   '/learn/treatment': typeof LearnTreatmentRoute
   '/da/': typeof DaIndexRoute
   '/learn/': typeof LearnIndexRoute
+  '/da/about/for-decision-makers': typeof DaAboutForDecisionMakersRoute
   '/da/learn/denmark': typeof DaLearnDenmarkRoute
   '/da/learn/diagnosis': typeof DaLearnDiagnosisRoute
   '/da/learn/living': typeof DaLearnLivingRoute
@@ -232,14 +282,20 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteWithChildren
   '/access': typeof AccessRoute
+  '/care': typeof CareRoute
   '/dashboard': typeof DashboardRoute
   '/evidence': typeof EvidenceRoute
   '/find': typeof FindRoute
+  '/guides': typeof GuidesRoute
   '/knowledge': typeof KnowledgeRoute
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sources': typeof SourcesRoute
+  '/trials': typeof TrialsRoute
+  '/about/for-decision-makers': typeof AboutForDecisionMakersRoute
+  '/da/about': typeof DaAboutRouteWithChildren
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
   '/da/evidence': typeof DaEvidenceRoute
@@ -254,6 +310,7 @@ export interface FileRoutesByTo {
   '/learn/treatment': typeof LearnTreatmentRoute
   '/da': typeof DaIndexRoute
   '/learn': typeof LearnIndexRoute
+  '/da/about/for-decision-makers': typeof DaAboutForDecisionMakersRoute
   '/da/learn/denmark': typeof DaLearnDenmarkRoute
   '/da/learn/diagnosis': typeof DaLearnDiagnosisRoute
   '/da/learn/living': typeof DaLearnLivingRoute
@@ -264,15 +321,21 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRouteWithChildren
   '/access': typeof AccessRoute
+  '/care': typeof CareRoute
   '/dashboard': typeof DashboardRoute
   '/evidence': typeof EvidenceRoute
   '/find': typeof FindRoute
+  '/guides': typeof GuidesRoute
   '/knowledge': typeof KnowledgeRoute
   '/learn': typeof LearnRouteWithChildren
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/sources': typeof SourcesRoute
+  '/trials': typeof TrialsRoute
+  '/about/for-decision-makers': typeof AboutForDecisionMakersRoute
+  '/da/about': typeof DaAboutRouteWithChildren
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
   '/da/evidence': typeof DaEvidenceRoute
@@ -288,6 +351,7 @@ export interface FileRoutesById {
   '/learn/treatment': typeof LearnTreatmentRoute
   '/da/': typeof DaIndexRoute
   '/learn/': typeof LearnIndexRoute
+  '/da/about/for-decision-makers': typeof DaAboutForDecisionMakersRoute
   '/da/learn/denmark': typeof DaLearnDenmarkRoute
   '/da/learn/diagnosis': typeof DaLearnDiagnosisRoute
   '/da/learn/living': typeof DaLearnLivingRoute
@@ -299,15 +363,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/access'
+    | '/care'
     | '/dashboard'
     | '/evidence'
     | '/find'
+    | '/guides'
     | '/knowledge'
     | '/learn'
     | '/research'
     | '/sitemap.xml'
     | '/sources'
+    | '/trials'
+    | '/about/for-decision-makers'
+    | '/da/about'
     | '/da/access'
     | '/da/dashboard'
     | '/da/evidence'
@@ -323,6 +393,7 @@ export interface FileRouteTypes {
     | '/learn/treatment'
     | '/da/'
     | '/learn/'
+    | '/da/about/for-decision-makers'
     | '/da/learn/denmark'
     | '/da/learn/diagnosis'
     | '/da/learn/living'
@@ -332,14 +403,20 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/access'
+    | '/care'
     | '/dashboard'
     | '/evidence'
     | '/find'
+    | '/guides'
     | '/knowledge'
     | '/research'
     | '/sitemap.xml'
     | '/sources'
+    | '/trials'
+    | '/about/for-decision-makers'
+    | '/da/about'
     | '/da/access'
     | '/da/dashboard'
     | '/da/evidence'
@@ -354,6 +431,7 @@ export interface FileRouteTypes {
     | '/learn/treatment'
     | '/da'
     | '/learn'
+    | '/da/about/for-decision-makers'
     | '/da/learn/denmark'
     | '/da/learn/diagnosis'
     | '/da/learn/living'
@@ -363,15 +441,21 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/access'
+    | '/care'
     | '/dashboard'
     | '/evidence'
     | '/find'
+    | '/guides'
     | '/knowledge'
     | '/learn'
     | '/research'
     | '/sitemap.xml'
     | '/sources'
+    | '/trials'
+    | '/about/for-decision-makers'
+    | '/da/about'
     | '/da/access'
     | '/da/dashboard'
     | '/da/evidence'
@@ -387,6 +471,7 @@ export interface FileRouteTypes {
     | '/learn/treatment'
     | '/da/'
     | '/learn/'
+    | '/da/about/for-decision-makers'
     | '/da/learn/denmark'
     | '/da/learn/diagnosis'
     | '/da/learn/living'
@@ -397,15 +482,20 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRouteWithChildren
   AccessRoute: typeof AccessRoute
+  CareRoute: typeof CareRoute
   DashboardRoute: typeof DashboardRoute
   EvidenceRoute: typeof EvidenceRoute
   FindRoute: typeof FindRoute
+  GuidesRoute: typeof GuidesRoute
   KnowledgeRoute: typeof KnowledgeRoute
   LearnRoute: typeof LearnRouteWithChildren
   ResearchRoute: typeof ResearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SourcesRoute: typeof SourcesRoute
+  TrialsRoute: typeof TrialsRoute
+  DaAboutRoute: typeof DaAboutRouteWithChildren
   DaAccessRoute: typeof DaAccessRoute
   DaDashboardRoute: typeof DaDashboardRoute
   DaEvidenceRoute: typeof DaEvidenceRoute
@@ -426,11 +516,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/access': {
       id: '/access'
       path: '/access'
       fullPath: '/access'
       preLoaderRoute: typeof AccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/care': {
+      id: '/care'
+      path: '/care'
+      fullPath: '/care'
+      preLoaderRoute: typeof CareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -452,6 +556,13 @@ declare module '@tanstack/react-router' {
       path: '/find'
       fullPath: '/find'
       preLoaderRoute: typeof FindRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guides': {
+      id: '/guides'
+      path: '/guides'
+      fullPath: '/guides'
+      preLoaderRoute: typeof GuidesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/knowledge': {
@@ -489,11 +600,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trials': {
+      id: '/trials'
+      path: '/trials'
+      fullPath: '/trials'
+      preLoaderRoute: typeof TrialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about/for-decision-makers': {
+      id: '/about/for-decision-makers'
+      path: '/for-decision-makers'
+      fullPath: '/about/for-decision-makers'
+      preLoaderRoute: typeof AboutForDecisionMakersRouteImport
+      parentRoute: typeof AboutRoute
+    }
     '/da/': {
       id: '/da/'
       path: '/da'
       fullPath: '/da/'
       preLoaderRoute: typeof DaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/da/about': {
+      id: '/da/about'
+      path: '/da/about'
+      fullPath: '/da/about'
+      preLoaderRoute: typeof DaAboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/da/access': {
@@ -594,6 +726,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnTreatmentRouteImport
       parentRoute: typeof LearnRoute
     }
+    '/da/about/for-decision-makers': {
+      id: '/da/about/for-decision-makers'
+      path: '/for-decision-makers'
+      fullPath: '/da/about/for-decision-makers'
+      preLoaderRoute: typeof DaAboutForDecisionMakersRouteImport
+      parentRoute: typeof DaAboutRoute
+    }
     '/da/learn/': {
       id: '/da/learn/'
       path: '/'
@@ -639,6 +778,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AboutRouteChildren {
+  AboutForDecisionMakersRoute: typeof AboutForDecisionMakersRoute
+}
+
+const AboutRouteChildren: AboutRouteChildren = {
+  AboutForDecisionMakersRoute: AboutForDecisionMakersRoute,
+}
+
+const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
+
 interface LearnRouteChildren {
   LearnDenmarkRoute: typeof LearnDenmarkRoute
   LearnDiagnosisRoute: typeof LearnDiagnosisRoute
@@ -658,6 +807,17 @@ const LearnRouteChildren: LearnRouteChildren = {
 }
 
 const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
+
+interface DaAboutRouteChildren {
+  DaAboutForDecisionMakersRoute: typeof DaAboutForDecisionMakersRoute
+}
+
+const DaAboutRouteChildren: DaAboutRouteChildren = {
+  DaAboutForDecisionMakersRoute: DaAboutForDecisionMakersRoute,
+}
+
+const DaAboutRouteWithChildren =
+  DaAboutRoute._addFileChildren(DaAboutRouteChildren)
 
 interface DaLearnRouteChildren {
   DaLearnDenmarkRoute: typeof DaLearnDenmarkRoute
@@ -682,15 +842,20 @@ const DaLearnRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRouteWithChildren,
   AccessRoute: AccessRoute,
+  CareRoute: CareRoute,
   DashboardRoute: DashboardRoute,
   EvidenceRoute: EvidenceRoute,
   FindRoute: FindRoute,
+  GuidesRoute: GuidesRoute,
   KnowledgeRoute: KnowledgeRoute,
   LearnRoute: LearnRouteWithChildren,
   ResearchRoute: ResearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SourcesRoute: SourcesRoute,
+  TrialsRoute: TrialsRoute,
+  DaAboutRoute: DaAboutRouteWithChildren,
   DaAccessRoute: DaAccessRoute,
   DaDashboardRoute: DaDashboardRoute,
   DaEvidenceRoute: DaEvidenceRoute,

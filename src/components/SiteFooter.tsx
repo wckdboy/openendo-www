@@ -57,13 +57,13 @@ export function SiteFooter() {
           </h2>
           <ul className="mt-4 space-y-2.5 text-sm">
             <li>
-              <Link to={path("/learn")} className="text-foreground/80 hover:text-foreground">
-                {c.sections.understand.title}
+              <Link to={path("/learn")} className="text-[var(--ink)] no-underline">
+                {c.nav.guides}
               </Link>
             </li>
             <li>
-              <Link to={path("/sources")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.sources}
+              <Link to={path("/about")} className="text-[var(--ink)] no-underline">
+                {c.nav.about}
               </Link>
             </li>
             <li>

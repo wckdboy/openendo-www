@@ -1,125 +1,108 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { RibbonMark } from "./RibbonMark";
 import { useLang } from "@/lib/i18n";
-import { GITHUB_URL } from "@/lib/site";
+import type { BasePath } from "@/lib/site";
+
+const LINKS: { to: BasePath; key: "guides" | "evidence" | "trials" | "care" | "about" }[] = [
+  { to: "/learn", key: "guides" },
+  { to: "/evidence", key: "evidence" },
+  { to: "/dashboard", key: "trials" },
+  { to: "/access", key: "care" },
+  { to: "/about", key: "about" },
+];
 
 export function SiteHeader() {
   const { c, toggle, path } = useLang();
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(false);
 
-  const links = [
-    { to: path("/learn"), label: c.nav.learn, exact: false },
-    { to: path("/learn/diagnosis"), label: c.nav.diagnosis, exact: false },
-    { to: path("/learn/treatment"), label: c.nav.treatment, exact: false },
-    { to: path("/learn/living"), label: c.nav.living, exact: false },
-    { to: path("/learn/denmark"), label: c.nav.denmark, exact: true },
-    { to: path("/evidence"), label: c.nav.evidence, exact: false },
-    { to: path("/dashboard"), label: c.nav.dashboard, exact: false },
-  ];
+  useEffect(() => {
+    setDark(document.documentElement.dataset.theme === "dark");
+  }, []);
+
+  function setTheme(next: boolean) {
+    setDark(next);
+    if (next) document.documentElement.dataset.theme = "dark";
+    else delete document.documentElement.dataset.theme;
+    localStorage.setItem("theme", next ? "dark" : "light");
+  }
+
+  const labels = {
+    guides: c.nav.guides,
+    evidence: c.nav.evidenceNav,
+    trials: c.nav.trials,
+    care: c.nav.care,
+    about: c.nav.about,
+  };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-hairline bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <header className="sticky top-0 z-50 border-b border-hairline bg-background">
+      <div className="mx-auto flex h-16 max-w-[var(--container)] items-center justify-between gap-4 px-6">
         <Link
           to={path("/")}
-          className="flex items-center gap-2.5 text-[15px] font-semibold tracking-tight"
+          className="flex min-h-11 items-center gap-2 text-base font-semibold text-[var(--ink)]"
         >
           <RibbonMark className="h-6 w-6" />
           OpenEndo
         </Link>
-
-        <nav
-          aria-label={c.nav.primary}
-          className="hidden items-center gap-4 text-[13px] text-muted-foreground xl:flex"
-        >
-          {links.map((l) => (
+        <nav aria-label={c.nav.primary} className="hidden items-center gap-6 xl:flex">
+          {LINKS.map((link) => (
             <Link
-              key={l.to}
-              to={l.to}
-              className="transition-colors hover:text-foreground"
-              activeProps={{ className: "text-foreground" }}
-              activeOptions={{ exact: l.exact }}
+              key={link.to}
+              to={path(link.to)}
+              className="border-b-[3px] border-transparent py-2 text-base text-[var(--ink)] no-underline"
+              activeProps={{
+                className:
+                  "border-b-[3px] border-[var(--ribbon)] py-2 text-base text-[var(--ink)] no-underline",
+              }}
+              activeOptions={{ exact: false }}
             >
-              {l.label}
+              {labels[link.key]}
             </Link>
           ))}
         </nav>
-
         <div className="flex items-center gap-1">
           <button
+            type="button"
+            onClick={() => setTheme(!dark)}
+            className="min-h-11 rounded-full px-3 text-sm text-[var(--ink)]"
+          >
+            {dark ? c.nav.light : c.nav.dark}
+          </button>
+          <button
+            type="button"
             onClick={toggle}
-            className="rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="min-h-11 rounded-full px-3 text-sm text-[var(--ink)]"
           >
             {c.nav.switch}
           </button>
-          <Link
-            to={path("/find")}
-            className="hidden rounded-full px-3 py-1.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground sm:inline-flex"
-          >
-            {c.nav.find}
-          </Link>
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden rounded-full px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground sm:inline-flex"
-          >
-            {c.nav.github}
-          </a>
           <button
-            onClick={() => setOpen((v) => !v)}
+            type="button"
+            onClick={() => setOpen((value) => !value)}
             aria-label={c.nav.menu}
             aria-expanded={open}
-            className="ml-1 inline-flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary xl:hidden"
+            className="inline-flex h-11 w-11 items-center justify-center xl:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
-
-      {open && (
-        <nav
-          aria-label={c.nav.primary}
-          className="border-t border-hairline bg-background px-6 py-3 xl:hidden"
-        >
-          {links.map((l) => (
+      {open ? (
+        <nav aria-label={c.nav.primary} className="border-t border-hairline px-6 py-2 xl:hidden">
+          {LINKS.map((link) => (
             <Link
-              key={l.to}
-              to={l.to}
+              key={link.to}
+              to={path(link.to)}
               onClick={() => setOpen(false)}
-              className="block py-2.5 text-[15px] text-muted-foreground"
-              activeProps={{ className: "block py-2.5 text-[15px] text-foreground" }}
-              activeOptions={{ exact: l.exact }}
+              className="block min-h-11 py-2 text-base text-[var(--ink)] no-underline"
             >
-              {l.label}
+              {labels[link.key]}
             </Link>
           ))}
-          <Link
-            to={path("/find")}
-            onClick={() => setOpen(false)}
-            className="block py-2.5 text-[15px] text-muted-foreground"
-          >
-            {c.nav.find}
-          </Link>
-          <Link
-            to={path("/sources")}
-            onClick={() => setOpen(false)}
-            className="block py-2.5 text-[15px] text-muted-foreground"
-          >
-            {c.nav.sources}
-          </Link>
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block py-2.5 text-[15px] text-muted-foreground"
-          >
-            {c.nav.github}
-          </a>
         </nav>
-      )}
+      ) : null}
     </header>
   );
 }

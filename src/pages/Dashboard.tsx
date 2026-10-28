@@ -24,15 +24,18 @@ import {
   monthLabel,
   tally,
 } from "@/lib/canonical";
-import { useMounted } from "@/lib/use-mounted";
+import { useMounted, useNarrow } from "@/lib/use-mounted";
+import { DataCard } from "@/components/DataCard";
+import { openCalls } from "@/lib/open-calls";
 
 type Tab = "global" | "denmark" | "papers";
 
 export function Dashboard() {
-  const { c, locale } = useLang();
+  const { c, locale, path } = useLang();
+  const narrow = useNarrow();
   const { data, isFetching, isError } = useQuery(canonicalQueryOptions);
   const mounted = useMounted();
-  const [tab, setTab] = useState<Tab>("global");
+  const [tab, setTab] = useState<Tab>(locale === "da" ? "denmark" : "global");
   const [q, setQ] = useState("");
 
   const query = q.trim().toLowerCase();
@@ -42,7 +45,7 @@ export function Dashboard() {
       id: trial.nct_id,
       title: trial.title,
       status: displayStatus(trial.status),
-      phase: displayPhase(trial.phase),
+      phase: displayPhase(trial.phase, locale),
       sponsor: trial.sponsor,
       countries: trial.countries,
       url: trial.url,
@@ -51,7 +54,7 @@ export function Dashboard() {
       id: trial.nct_id,
       title: trial.title,
       status: displayStatus(trial.status),
-      phase: displayPhase(trial.phase),
+      phase: displayPhase(trial.phase, locale),
       sponsor: trial.sponsor,
       countries: trial.countries,
       url: trial.url,
@@ -79,7 +82,7 @@ export function Dashboard() {
       denmarkByStatus: tally(denmark.map((trial) => trial.status)),
       monthly,
     };
-  }, [data]);
+  }, [data, locale]);
 
   const filtered = useMemo(() => {
     if (!model) return { global: [], denmark: [], papers: [] };
@@ -144,16 +147,17 @@ export function Dashboard() {
 
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
         {/* KPIs */}
-        <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-hairline sm:mt-12 lg:grid-cols-4">
-          {kpis.map((k) => (
-            <div key={k.label} className="min-w-0 bg-background px-4 py-5 sm:px-6 sm:py-7">
-              <p className="numeral text-[clamp(1.6rem,7vw,2.25rem)] leading-none">
-                {k.value === undefined ? "—" : k.value.toLocaleString(locale)}
-              </p>
-              <p className="mt-2 text-[13px] leading-snug text-muted-foreground sm:text-sm">
-                {k.label}
-              </p>
-            </div>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {kpis.slice(0, 3).map((item) => (
+            <DataCard
+              key={item.label}
+              label={item.label}
+              value={item.value === undefined ? "—" : item.value.toLocaleString(locale)}
+              context={c.dashboard.sources}
+              snapshot={data?.meta.updated ?? ""}
+              href={path("/dashboard")}
+              staleLabel={c.home.staleChip}
+            />
           ))}
         </div>
 
@@ -335,6 +339,7 @@ export function Dashboard() {
                 ],
               }))}
               empty={isError ? c.dashboard.unavailable : c.dashboard.empty}
+              narrow={narrow}
             />
           ) : tab === "denmark" ? (
             <Feed
@@ -366,6 +371,7 @@ export function Dashboard() {
                 ],
               }))}
               empty={isError ? c.dashboard.unavailable : c.dashboard.empty}
+              narrow={narrow}
             />
           ) : (
             <Feed
@@ -407,6 +413,7 @@ export function Dashboard() {
                 };
               })}
               empty={isError ? c.dashboard.unavailable : c.dashboard.empty}
+              narrow={narrow}
             />
           )}
 
@@ -447,11 +454,13 @@ function Feed({
   widths,
   items,
   empty,
+  narrow,
 }: {
   head: string[];
   widths: string[];
   items: FeedItem[];
   empty: string;
+  narrow: boolean;
 }) {
   if (!items.length) return <p className="py-10 text-sm text-muted-foreground">{empty}</p>;
   const rows = items.slice(0, 60);
@@ -459,63 +468,66 @@ function Feed({
   return (
     <>
       {/* Mobile: stacked cards */}
-      <ul className="divide-y divide-hairline sm:hidden">
-        {rows.map((item) => (
-          <li key={item.key} className="py-4">
-            <p className="text-[15px] font-medium leading-snug">{item.title}</p>
-            <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-muted-foreground">
-              {item.meta.map((m, i) =>
-                m.tag ? (
-                  <span
-                    key={i}
-                    className="rounded-full bg-ribbon-soft px-2 py-0.5 text-[11px] font-medium text-foreground"
-                  >
-                    {m.value}
-                  </span>
-                ) : (
-                  <span key={i} className="flex min-w-0 max-w-full items-center gap-2">
-                    {i > 0 && (
-                      <span aria-hidden className="text-muted-foreground/50">
-                        ·
-                      </span>
-                    )}
-                    <span className="min-w-0 truncate">{m.value}</span>
-                  </span>
-                ),
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
+      {!narrow ? null : (
+        <ul className="divide-y divide-hairline">
+          {rows.map((item) => (
+            <li key={item.key} className="py-4">
+              <p className="text-[15px] font-medium leading-snug">{item.title}</p>
+              <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs text-muted-foreground">
+                {item.meta.map((m, i) =>
+                  m.tag ? (
+                    <span
+                      key={i}
+                      className="rounded-full bg-ribbon-soft px-2 py-0.5 text-[11px] font-medium text-foreground"
+                    >
+                      {m.value}
+                    </span>
+                  ) : (
+                    <span key={i} className="flex min-w-0 max-w-full items-center gap-2">
+                      {i > 0 && (
+                        <span aria-hidden className="text-muted-foreground/50">
+                          ·
+                        </span>
+                      )}
+                      <span className="min-w-0 truncate">{m.value}</span>
+                    </span>
+                  ),
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
 
-      {/* Desktop: table */}
-      <div className="hidden sm:block">
-        <table className="w-full table-fixed border-collapse text-left text-sm">
-          <thead>
-            <tr>
-              {head.map((h, i) => (
-                <th
-                  key={h}
-                  className={`${widths[i] ?? ""} border-b border-hairline py-3 pr-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground`}
-                >
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((item) => (
-              <tr key={item.key} className="border-b border-hairline align-top">
-                {item.cells.map((cell, j) => (
-                  <td key={j} className="py-4 pr-5 leading-snug">
-                    {cell === null ? item.title : cell}
-                  </td>
+      {narrow ? null : (
+        <div>
+          <table className="w-full table-fixed border-collapse text-left text-sm">
+            <thead>
+              <tr>
+                {head.map((h, i) => (
+                  <th
+                    key={h}
+                    className={`${widths[i] ?? ""} border-b border-hairline py-3 pr-5 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground`}
+                  >
+                    {h}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {rows.map((item) => (
+                <tr key={item.key} className="border-b border-hairline align-top">
+                  {item.cells.map((cell, j) => (
+                    <td key={j} className="py-4 pr-5 leading-snug">
+                      {cell === null ? item.title : cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </>
   );
 }
@@ -530,7 +542,7 @@ function CountryTable({ rows }: { rows: { label: string; count: number }[] }) {
             <th scope="row" className="py-2 pr-4 text-left font-medium">
               {row.label}
             </th>
-            <td className="numeral py-2 text-right">{row.count}</td>
+            <td className="py-2 text-right tabular-nums">{row.count}</td>
           </tr>
         ))}
       </tbody>
@@ -548,7 +560,7 @@ function MonthTable({ rows }: { rows: { label: string; count: number }[] }) {
             <th scope="row" className="py-2 pr-4 text-left font-medium">
               {row.label}
             </th>
-            <td className="numeral py-2 text-right">{row.count}</td>
+            <td className="py-2 text-right tabular-nums">{row.count}</td>
           </tr>
         ))}
       </tbody>

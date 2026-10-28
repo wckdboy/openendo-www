@@ -1,10 +1,11 @@
-import type { KnowledgeIndexEntry } from "@/content/knowledge-index";
+import type { KnowledgeFolder, KnowledgeIndexEntry } from "@/content/knowledge-index";
 import {
   parseKnowledgeIndex,
   parseKnowledgePage,
   renderKnowledgeMarkdown,
 } from "@/lib/knowledge-markdown";
 import type { KnowledgePage, KnowledgePayload } from "@/lib/knowledge.types";
+import bundledKnowledge from "@/generated/knowledge.json";
 import { RAW_BASE } from "@/lib/site";
 
 /**
@@ -87,9 +88,43 @@ export async function loadKnowledge(): Promise<KnowledgePayload> {
   return { source: "live", pages };
 }
 
+function pagesFromBundle(): KnowledgePage[] {
+  const titles = new Map<string, string>();
+  const docs = bundledKnowledge.pages
+    .map((entry) => {
+      const parsed = parseKnowledgePage(
+        entry.markdown,
+        { slug: entry.slug, folder: entry.folder as KnowledgeFolder },
+        `${KNOWLEDGE_BLOB_BASE}/${entry.folder}/${entry.slug}.md`,
+      );
+      return parsed;
+    })
+    .filter((doc): doc is NonNullable<typeof doc> => Boolean(doc));
+  for (const doc of docs) titles.set(doc.id, doc.heading);
+  return docs.map((doc) => {
+    const page: KnowledgePage = {
+      id: doc.id,
+      heading: doc.heading,
+      html: renderKnowledgeMarkdown(doc.bodyMarkdown, titles),
+      sources: doc.sources,
+      url: doc.url,
+      kind: doc.kind,
+    };
+    if (doc.confidence) page.confidence = doc.confidence;
+    if (doc.contested) page.contested = true;
+    if (doc.updated) page.updated = doc.updated;
+    if (doc.tags.length) page.tags = doc.tags;
+    return page;
+  });
+}
+
+const bundledPages = pagesFromBundle();
+
 export const knowledgeQueryOptions = {
   queryKey: ["openendo-knowledge"] as const,
   queryFn: loadKnowledge,
-  staleTime: CACHE_MS,
+  initialData: { source: "live" as const, pages: bundledPages },
+  staleTime: Infinity,
+  refetchOnMount: false as const,
   retry: 1,
 };

@@ -27,6 +27,8 @@ export const BASE_PATHS = [
   "/knowledge",
   "/sources",
   "/find",
+  "/about",
+  "/about/for-decision-makers",
 ] as const;
 
 export type BasePath = (typeof BASE_PATHS)[number];
@@ -46,7 +48,9 @@ export type AppPath =
   | "/da/access"
   | "/da/knowledge"
   | "/da/sources"
-  | "/da/find";
+  | "/da/find"
+  | "/da/about"
+  | "/da/about/for-decision-makers";
 
 const SITEMAP_META: Record<BasePath, { changefreq: string; priority: string }> = {
   "/": { changefreq: "daily", priority: "1.0" },
@@ -63,6 +67,8 @@ const SITEMAP_META: Record<BasePath, { changefreq: string; priority: string }> =
   "/knowledge": { changefreq: "weekly", priority: "0.7" },
   "/sources": { changefreq: "monthly", priority: "0.6" },
   "/find": { changefreq: "monthly", priority: "0.5" },
+  "/about": { changefreq: "monthly", priority: "0.5" },
+  "/about/for-decision-makers": { changefreq: "monthly", priority: "0.4" },
 };
 
 export function localizedPath(path: BasePath, locale: SiteLocale): AppPath {

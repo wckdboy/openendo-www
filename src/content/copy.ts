@@ -11,10 +11,13 @@ const en = {
     access: "Care finder",
     sources: "How we verify",
     find: "Index",
-    diagnosis: "Diagnosis",
-    treatment: "Treatment",
-    living: "Living",
-    denmark: "Denmark",
+    guides: "Guides",
+    evidenceNav: "Evidence",
+    trials: "Trials & funding",
+    care: "Find care",
+    about: "About",
+    dark: "Dark",
+    light: "Light",
     github: "GitHub",
     switch: "Dansk",
     menu: "Menu",
@@ -90,6 +93,23 @@ const en = {
   },
 
   home: {
+    promise: "Clear, sourced information about endometriosis",
+    sub: "Plain language first, with the guideline or dataset named under every claim.",
+    readGuides: "Read the guides",
+    readEvidence: "This week's evidence",
+    weekTitle: "This week in research",
+    readDigest: "Read the digest",
+    dataTitle: "The open dataset",
+    cardRecruiting:
+      "Recruiting worldwide. Source: ClinicalTrials.gov, via the weekly OpenEndo extract.",
+    cardDenmark:
+      "Registered in Denmark. Source: ClinicalTrials.gov, via the weekly OpenEndo extract.",
+    cardPapers: "New papers in the last 7 days. Source: PubMed, via the weekly OpenEndo extract.",
+    checkTitle: "How we check",
+    checkBody:
+      "Guides are checked against the pages below. Trial and paper counts are the weekly open dataset, with the snapshot date on each card.",
+    staleChip: "Data from",
+    staleRefresh: "Couldn't refresh. Showing the last snapshot.",
     eyebrow: "Endometriosis",
     titleA: "A plain-language reference",
     titleAccent: "with sources.",
@@ -117,7 +137,7 @@ const en = {
   },
   dashboard: {
     eyebrow: "Live dashboard",
-    title: "Endometriosis research and clinical trials dashboard",
+    title: "Trials and funding",
     lede: "Clinical trial registrations and published research from the weekly OpenEndo extract. Nothing here is edited by hand.",
     kpi: {
       recruiting: "Trials recruiting worldwide",
@@ -187,7 +207,12 @@ const en = {
     guidesLabel: "Guides",
     readGuide: "Read the guide",
     faqTitle: "Short answers",
-    reviewed: "Checked against the cited pages on",
+    reviewed: "Last reviewed",
+    nextReview: "Next review",
+    inShort: "In short",
+    quietDisclaimer: "General information, not medical advice.",
+    howToUse: "How to use this site",
+    alsoEnglish: "Also in English",
     notAdviceTitle: "Not medical advice",
     notAdviceBody:
       "These pages explain published guidance and open data. They do not diagnose or recommend a treatment for you. Decisions about care belong with you and a clinician.",
@@ -207,11 +232,20 @@ const en = {
     error: "That digest did not load.",
     disclaimer:
       "A digest reports what papers say and how sure that evidence is. It is not a recommendation to start, stop, or change treatment.",
+    patientOnly: "Patient-relevant only",
+    found: "What it found.",
+    matters: "Why it matters.",
+    details: "Details",
+    method: "How this digest was made",
   },
   sections: {
     understand: {
       title: "Understand endometriosis",
       summary: "What it is, and which symptoms WHO and NICE name.",
+    },
+    symptoms: {
+      title: "Symptoms",
+      summary: "The symptoms WHO lists, and when NICE says to suspect endometriosis.",
     },
     diagnosis: {
       title: "Diagnosis and care",
@@ -224,11 +258,11 @@ const en = {
         "Pain medicines, hormones, surgery, and fertility care, as guidelines describe them.",
     },
     living: {
-      title: "Living with it",
-      summary: "Work, school, fatigue, and where to read further. Practical, not a personal plan.",
+      title: "Living with endometriosis",
+      summary: "Work, school, fatigue, and where to read further.",
     },
     denmark: {
-      title: "Denmark",
+      title: "Care in Denmark",
       summary: "The sourced care path, centres, and medicines for Denmark.",
     },
     research: {
@@ -265,6 +299,20 @@ const en = {
     limitsBody:
       "The site does not diagnose, rank treatments for an individual, or fill gaps with unsourced numbers. If a file does not load, the page says so.",
   },
+  about: {
+    title: "About this site",
+    lede: "How the pages are checked, what the dataset is, and where advocacy material lives.",
+    whoTitle: "Who checks this",
+    whoBody:
+      "The guide text was checked against the cited WHO fact sheet and NICE NG73 on 28 Oct 2026. There has not been a separate clinical review.",
+    policyTitle: "Editorial policy",
+    policyBody:
+      "Say what a source says, name the source, and leave out numbers that are not in that source. Use established, likely, uncertain, or not yet shown.",
+    decision: "For decision-makers",
+    decisionLede:
+      "Funding calls that are still open, and links to public briefings. Past deadlines are not listed.",
+    links: "Briefings",
+  },
   footer: {
     tagline: "A plain-language reference and open dataset for endometriosis.",
     notAdvice:
@@ -299,10 +347,13 @@ const da: Copy = {
     access: "Find behandling",
     sources: "Sådan tjekker vi",
     find: "Indeks",
-    diagnosis: "Diagnose",
-    treatment: "Behandling",
-    living: "Hverdag",
-    denmark: "Danmark",
+    guides: "Guider",
+    evidenceNav: "Evidens",
+    trials: "Forsøg og bevillinger",
+    care: "Find behandling",
+    about: "Om",
+    dark: "Mørk",
+    light: "Lys",
     github: "GitHub",
     switch: "English",
     menu: "Menu",
@@ -378,6 +429,22 @@ const da: Copy = {
   },
 
   home: {
+    promise: "Klar, kildebelagt viden om endometriose",
+    sub: "Almindeligt sprog først, med retningslinje eller datasæt nævnt under hvert udsagn.",
+    readGuides: "Læs guiderne",
+    readEvidence: "Ugens evidens",
+    weekTitle: "Ugen i forskningen",
+    readDigest: "Læs digestet",
+    dataTitle: "Det åbne datasæt",
+    cardRecruiting:
+      "Rekrutterer på verdensplan. Kilde: ClinicalTrials.gov via OpenEndos ugentlige udtræk.",
+    cardDenmark: "Registreret i Danmark. Kilde: ClinicalTrials.gov via OpenEndos ugentlige udtræk.",
+    cardPapers: "Nye studier de seneste 7 dage. Kilde: PubMed via OpenEndos ugentlige udtræk.",
+    checkTitle: "Sådan tjekker vi",
+    checkBody:
+      "Guiderne er tjekket mod siderne nedenfor. Tal for forsøg og studier er det ugentlige åbne datasæt, med dato på hvert kort.",
+    staleChip: "Data fra",
+    staleRefresh: "Kunne ikke opdatere. Viser det seneste snapshot.",
     eyebrow: "Endometriose",
     titleA: "Et referenceværk",
     titleAccent: "med kilder.",
@@ -405,7 +472,7 @@ const da: Copy = {
   },
   dashboard: {
     eyebrow: "Live dashboard",
-    title: "Dashboard for endometrioseforskning og kliniske forsøg",
+    title: "Forsøg og bevillinger",
     lede: "Kliniske forsøg og publiceret forskning fra OpenEndos ugentlige udtræk. Intet er redigeret i hånden.",
     kpi: {
       recruiting: "Forsøg der rekrutterer globalt",
@@ -475,7 +542,12 @@ const da: Copy = {
     guidesLabel: "Guider",
     readGuide: "Læs guiden",
     faqTitle: "Korte svar",
-    reviewed: "Tjekket mod de citerede sider den",
+    reviewed: "Sidst gennemgået",
+    nextReview: "Næste gennemgang",
+    inShort: "Kort fortalt",
+    quietDisclaimer: "Generel information, ikke lægefaglig rådgivning.",
+    howToUse: "Sådan bruges siden",
+    alsoEnglish: "Også på engelsk",
     notAdviceTitle: "Ikke lægefaglig rådgivning",
     notAdviceBody:
       "Siderne forklarer udgivne retningslinjer og åbne data. De stiller ikke en diagnose og anbefaler ikke en behandling til dig. Beslutninger om behandling hører til hos dig og en læge.",
@@ -495,11 +567,20 @@ const da: Copy = {
     error: "Det digest blev ikke hentet.",
     disclaimer:
       "Et digest gengiver, hvad artiklerne siger, og hvor sikker evidensen er. Det er ikke en anbefaling om at starte, stoppe eller ændre behandling.",
+    patientOnly: "Kun patientrelevant",
+    found: "Hvad det fandt.",
+    matters: "Hvorfor det betyder noget.",
+    details: "Detaljer",
+    method: "Sådan er digestet lavet",
   },
   sections: {
     understand: {
       title: "Forstå endometriose",
       summary: "Hvad det er, og hvilke symptomer WHO og NICE nævner.",
+    },
+    symptoms: {
+      title: "Symptomer",
+      summary: "De symptomer WHO nævner, og hvornår NICE siger man skal mistænke endometriose.",
     },
     diagnosis: {
       title: "Diagnose og forløb",
@@ -512,13 +593,12 @@ const da: Copy = {
         "Smertestillende, hormoner, kirurgi og fertilitetshjælp, som retningslinjerne beskriver dem.",
     },
     living: {
-      title: "At leve med det",
-      summary:
-        "Arbejde, skole, træthed og hvor man kan læse videre. Praktisk, ikke en personlig plan.",
+      title: "At leve med endometriose",
+      summary: "Arbejde, skole, træthed og hvor man kan læse videre.",
     },
     denmark: {
-      title: "Danmark",
-      summary: "Det kildebelagte forløb, centrene og medicinen for Danmark.",
+      title: "Behandling i Danmark",
+      summary: "Det kildebelagte forløb, centrene og medicinen i Danmark.",
     },
     research: {
       title: "Forskning og evidens",
@@ -553,6 +633,20 @@ const da: Copy = {
     limitsTitle: "Grænser",
     limitsBody:
       "Siden stiller ikke diagnoser, rangerer ikke behandlinger for en enkelt person og udfylder ikke huller med tal uden kilde. Hvis en fil ikke kan hentes, siger siden det.",
+  },
+  about: {
+    title: "Om siden",
+    lede: "Hvordan siderne tjekkes, hvad datasættet er, og hvor materiale til beslutningstagere ligger.",
+    whoTitle: "Hvem tjekker det",
+    whoBody:
+      "Guideteksten er tjekket mod det citerede WHO-faktaark og NICE NG73 den 28. oktober 2026. Der har ikke været en særskilt klinisk gennemgang.",
+    policyTitle: "Redaktionel linje",
+    policyBody:
+      "Skriv det en kilde siger, nævn kilden, og udelad tal der ikke står i kilden. Brug etableret, sandsynligt, usikkert eller endnu ikke vist.",
+    decision: "Til beslutningstagere",
+    decisionLede:
+      "Bevillinger der stadig er åbne, og links til offentlige notater. Frister der er passeret, vises ikke.",
+    links: "Notater",
   },
   footer: {
     tagline: "Et referenceværk og et åbent datasæt om endometriose.",

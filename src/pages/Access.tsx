@@ -34,9 +34,11 @@ export function Access() {
   const t = c.access;
   const query = useQuery(accessQueryOptions);
 
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(locale === "da" ? "DK" : "");
   const [postcode, setPostcode] = useState("");
-  const [submitted, setSubmitted] = useState<{ code: string; postcode: string } | null>(null);
+  const [submitted, setSubmitted] = useState<{ code: string; postcode: string } | null>(
+    locale === "da" ? { code: "DK", postcode: "" } : null,
+  );
 
   const countries = useMemo(() => {
     const entries = Object.entries(query.data?.countries ?? {});

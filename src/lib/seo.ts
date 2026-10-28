@@ -121,6 +121,18 @@ export function learnArticleHead(locale: Locale, slug: LearnSlug): Head {
   });
 }
 
+export function aboutHead(locale: Locale): Head {
+  return pageHead({
+    locale,
+    path: "/about",
+    title: locale === "da" ? "Om siden — OpenEndo" : "About — OpenEndo",
+    description:
+      locale === "da"
+        ? "Metode, kilder og afgrænsning for OpenEndo. Ingen særskilt klinisk gennemgang."
+        : "Method, sources, and limits for OpenEndo. No separate clinical review.",
+  });
+}
+
 export function sourcesHead(locale: Locale): Head {
   return pageHead({
     locale,

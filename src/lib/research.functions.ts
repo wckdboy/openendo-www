@@ -1,3 +1,4 @@
+import bundledResearch from "@/generated/research.html?raw";
 import { RAW_BASE } from "@/lib/site";
 
 /**
@@ -25,5 +26,7 @@ export async function loadResearchHtml(): Promise<string> {
 export const researchQueryOptions = {
   queryKey: ["openendo-research-html"] as const,
   queryFn: loadResearchHtml,
-  staleTime: CACHE_MS,
+  initialData: bundledResearch.replace(/(["'(])assets\/fonts\//g, `$1${ASSET_BASE}assets/fonts/`),
+  staleTime: Infinity,
+  refetchOnMount: false as const,
 };

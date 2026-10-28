@@ -1,0 +1,54 @@
+/* OpenEndo design tokens v0.1 (Percival). Contrast ratios in contrast.json (WCAG 2.x). */
+:root {
+  /* surfaces */
+  --paper: #FBFAF7; --surface: #FFFFFF; --sunken: #F3F1EC;
+  --hairline: #DAD6CE;          /* decorative dividers only (1.4:1) */
+  --border-strong: #8C857A;     /* input/control boundaries, 3.5:1 */
+  /* text */
+  --ink: #1B1F23;               /* 15.9:1 on paper */
+  --ink-muted: #4A525A;         /* 7.6:1 */
+  --ink-subtle: #5F6770;        /* 5.5:1, metadata only */
+  /* brand + links */
+  --primary: #1D5C66;           /* links, buttons, focus; 7.3:1; white on it 7.6:1 */
+  --primary-hover: #154850;     /* 9.7:1 */
+  --link-visited: #4B3F72;      /* 8.9:1 */
+  --ribbon: #E8B931;            /* brand mark + 3px rules ONLY, never text (1.8:1 on paper) */
+  --ribbon-text: #7A5C00;       /* when the ribbon colour must carry text, 6.0:1 */
+  /* status (calm, never alarm) */
+  --info: #1F4E8C; --caution: #8A5A00; --danger: #B3261E; --success: #1E6B45;
+  --info-bg: #EAF0F8; --caution-bg: #FBF3E2; --danger-bg: #FBEAE8; --success-bg: #E8F3EC;
+  --focus: 2px solid var(--primary); --focus-offset: 2px;
+
+  /* type */
+  --font-serif: "Source Serif 4", Georgia, serif;           /* headings, OFL 1.1 */
+  --font-sans: "Atkinson Hyperlegible Next", system-ui, sans-serif; /* body + UI, OFL 1.1 */
+  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, monospace; /* PMIDs, NCT ids */
+  --text-xs: 0.875rem;  /* 14px meta, badges */
+  --text-sm: 1rem;      /* 16px UI, captions */
+  --text-md: 1.125rem;  /* 18px body */
+  --text-lg: 1.375rem;  /* 22px h4 / lead */
+  --text-xl: 1.75rem;   /* 28px h3 */
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.4vw, 2.125rem);  /* h2 28-34 */
+  --text-3xl: clamp(2.125rem, 1.6rem + 2.2vw, 2.75rem);  /* h1 34-44 */
+  --text-stat: clamp(2.25rem, 1.8rem + 1.8vw, 3rem);     /* data card value */
+  --leading-body: 1.6; --leading-heading: 1.2; --measure: 68ch;
+
+  /* space (4px base) */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
+  --container: 1200px; --content: 680px; --toc: 220px;
+  --tap: 44px;
+  --shadow-card: 0 1px 2px rgb(27 31 35 / 0.06), 0 0 0 1px var(--hairline);
+  --dur: 150ms; --ease: cubic-bezier(.2,.0,.0,1);
+}
+[data-theme="dark"] {
+  --paper: #14171A; --surface: #1B1F23; --sunken: #101315;
+  --hairline: #2C3238; --border-strong: #6E747B;
+  --ink: #ECEAE5; --ink-muted: #B5B9BE; --ink-subtle: #9AA0A7;
+  --primary: #7CC4CE; --primary-hover: #9AD3DB; --link-visited: #B9AEE0;
+  --ribbon: #E8B931; --ribbon-text: #E8B931;
+  --info: #8DB4EA; --caution: #E9B35A; --danger: #F2938B; --success: #7FCB9E;
+  --info-bg: #17263A; --caution-bg: #2E2410; --danger-bg: #331A18; --success-bg: #15291E;
+}
+@media (prefers-reduced-motion: reduce) { :root { --dur: 0ms; } }
+:lang(da) { hyphens: auto; }  /* long Danish compounds */

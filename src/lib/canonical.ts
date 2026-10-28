@@ -408,9 +408,18 @@ export function displayStatus(status: string): string {
     .join(" ");
 }
 
-export function displayPhase(phase: string): string {
-  if (!phase || phase === "NA" || phase === "N/A") return "N/A";
+export function displayPhase(phase: string, locale: "en" | "da" = "en"): string {
+  if (!phase || phase === "NA" || phase === "N/A" || phase === "NOT_APPLICABLE") {
+    return locale === "da" ? "Observationelt / ingen fase" : "Observational / not phased";
+  }
   return displayStatus(phase);
+}
+
+/** True when a YYYY-MM-DD snapshot is more than 8 days before `today`. */
+export function snapshotIsStale(isoDate: string, today = new Date()): boolean {
+  const time = Date.parse(`${isoDate.slice(0, 10)}T00:00:00Z`);
+  if (!Number.isFinite(time)) return false;
+  return today.getTime() - time > 8 * 86_400_000;
 }
 
 export function monthLabel(isoMonth: string): string {

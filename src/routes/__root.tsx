@@ -93,12 +93,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Manrope:wght@400;500;600;700&display=swap",
-      },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
     ],
     scripts: [
@@ -128,6 +122,12 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang={lang}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var q=new URLSearchParams(location.search).get('theme');var t=q||localStorage.getItem('theme');var dark=t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches);if(dark)document.documentElement.dataset.theme='dark';else delete document.documentElement.dataset.theme;}catch(e){}",
+          }}
+        />
         <HeadContent />
       </head>
       <body>
@@ -154,6 +154,9 @@ function RefreshCanonical() {
   const queryClient = useQueryClient();
   useEffect(() => {
     void queryClient.refetchQueries({ queryKey: canonicalQueryOptions.queryKey });
+    void queryClient.refetchQueries({ queryKey: ["openendo-knowledge"] });
+    void queryClient.refetchQueries({ queryKey: ["openendo-access"] });
+    void queryClient.refetchQueries({ queryKey: ["openendo-research-html"] });
   }, [queryClient]);
   return null;
 }

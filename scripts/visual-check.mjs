@@ -8,7 +8,7 @@
  */
 import { spawn } from "node:child_process";
 import { createServer } from "node:http";
-import { existsSync } from "node:fs";
+import { existsSync, openSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join, normalize, resolve } from "node:path";
@@ -172,8 +172,9 @@ function startServer() {
   });
 }
 
-async function debuggerUrl(port) {
-  for (let attempt = 0; attempt < 50; attempt += 1) {
+async function debuggerUrl(port, chrome, logPath) {
+  for (let attempt = 0; attempt < 200; attempt += 1) {
+    if (chrome.exitCode !== null) break;
     try {
       const res = await fetch(`http://127.0.0.1:${port}/json/version`);
       if (res.ok) {
@@ -185,7 +186,10 @@ async function debuggerUrl(port) {
     }
     await new Promise((resolveDelay) => setTimeout(resolveDelay, 100));
   }
-  throw new Error("Chrome did not open a debugger port");
+  const log = await readFile(logPath, "utf8").catch(() => "");
+  throw new Error(
+    `Chrome did not open a debugger port (exit ${chrome.exitCode})\n${log.slice(-4000)}`,
+  );
 }
 
 function connect(wsUrl) {
@@ -281,22 +285,27 @@ async function main() {
 
   const port = 9400 + Math.floor(Math.random() * 500);
   const userData = await mkdtemp(join(tmpdir(), "oe-chrome-"));
+  const logPath = join(userData, "chrome.log");
   const chrome = spawn(
     chromePath(),
     [
       "--headless=new",
       "--no-sandbox",
-      "--disable-gpu",
+      "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--no-zygote",
+      "--no-first-run",
+      "--remote-debugging-address=127.0.0.1",
       `--remote-debugging-port=${port}`,
       `--user-data-dir=${userData}`,
       "about:blank",
     ],
-    { stdio: ["ignore", "ignore", "pipe"] },
+    { stdio: ["ignore", "ignore", openSync(logPath, "a")] },
   );
   const failures = [];
   try {
-    const version = await debuggerUrl(port);
+    const version = await debuggerUrl(port, chrome, logPath);
     const browser = await connect(version);
     const { targetId } = await browser.send("Target.createTarget", { url: "about:blank" });
     const { webSocketDebuggerUrl } = await (

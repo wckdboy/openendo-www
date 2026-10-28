@@ -3,12 +3,18 @@ export type Locale = "en" | "da";
 const en = {
   nav: {
     home: "Home",
-    learn: "Guides",
-    dashboard: "Dashboard",
-    evidence: "Evidence",
-    research: "Research",
+    learn: "Understand",
+    dashboard: "Data",
+    evidence: "Research",
+    research: "Research notes",
     knowledge: "Knowledge",
-    access: "Find help",
+    access: "Care finder",
+    sources: "How we verify",
+    find: "Index",
+    diagnosis: "Diagnosis",
+    treatment: "Treatment",
+    living: "Living",
+    denmark: "Denmark",
     github: "GitHub",
     switch: "Dansk",
     menu: "Menu",
@@ -84,18 +90,18 @@ const en = {
   },
 
   home: {
-    eyebrow: "Endometriosis · open data",
-    titleA: "Open data on endometriosis research,",
-    titleAccent: "trials and funding.",
-    lede: "OpenEndo tracks every clinical trial, paper and grant on endometriosis in the open, so patients, clinicians, researchers and politicians can see the real state of the fight.",
+    eyebrow: "Endometriosis",
+    titleA: "A plain-language reference",
+    titleAccent: "with sources.",
+    lede: "OpenEndo explains endometriosis for people with the condition, clinicians, and researchers. Medical statements link to a guideline or the open dataset. Trial and paper counts are the weekly extract.",
     cta: "See the data",
     ctaSecondary: "Contribute on GitHub",
-    trust: ["No paywall", "No spin", "Open source"],
-    statsTitle: "Where things stand",
-    whyEyebrow: "Why this exists",
-    whyTitle: "Four facts that should not still be true",
-    liveEyebrow: "Live",
-    liveTitle: "Research, as it happens",
+    trust: ["Sources on every page", "Open data", "Not medical advice"],
+    statsTitle: "Current dataset",
+    whyEyebrow: "Start here",
+    whyTitle: "Choose a section",
+    liveEyebrow: "Dataset",
+    liveTitle: "This week's extract",
     liveLede:
       "Weekly extract of ClinicalTrials.gov and PubMed, published in the open repository and refreshed when this page loads.",
     fundingEmpty:
@@ -103,10 +109,11 @@ const en = {
     fundingChecking: "Checking which calls are still open…",
     liveCta: "Open the full dashboard",
     fundingEyebrow: "Funding",
-    fundingTitle: "Grants worth chasing",
-    fundingLede: "Deadlines that could move the field, if anyone applies.",
-    actionEyebrow: "Take action",
-    actionTitle: "What actually helps",
+    fundingTitle: "Open calls",
+    fundingLede:
+      "Calls still open in the current funding file. A past deadline is hidden even if the file still marks the call open.",
+    actionEyebrow: "Also",
+    actionTitle: "Care finder and research notes",
   },
   dashboard: {
     eyebrow: "Live dashboard",
@@ -172,10 +179,10 @@ const en = {
     },
   },
   learn: {
-    eyebrow: "Guides",
+    eyebrow: "Understand",
     titleA: "Endometriosis,",
     titleAccent: "in plain language.",
-    lede: "Symptoms, diagnosis, treatment, daily life, and how care is organised in Denmark. Every medical claim links to WHO, NICE, or the open dataset. This is not a personal care plan.",
+    lede: "What the condition is, how it is recognised, and which treatments guidelines name. Each page lists its sources and the date it was checked.",
     indexLabel: "All guides",
     guidesLabel: "Guides",
     readGuide: "Read the guide",
@@ -183,7 +190,7 @@ const en = {
     reviewed: "Checked against the cited pages on",
     notAdviceTitle: "Not medical advice",
     notAdviceBody:
-      "OpenEndo explains published guidance and open data. It does not diagnose, prescribe, or replace a clinician. Decisions about your care belong with you and a qualified professional.",
+      "These pages explain published guidance and open data. They do not diagnose or recommend a treatment for you. Decisions about care belong with you and a clinician.",
     loadingAccess: "Loading the Denmark access file…",
     accessErrorTitle: "The Denmark access file did not load",
     accessErrorBody:
@@ -201,10 +208,67 @@ const en = {
     disclaimer:
       "A digest reports what papers say and how sure that evidence is. It is not a recommendation to start, stop, or change treatment.",
   },
+  sections: {
+    understand: {
+      title: "Understand endometriosis",
+      summary: "What it is, and which symptoms WHO and NICE name.",
+    },
+    diagnosis: {
+      title: "Diagnosis and care",
+      summary:
+        "History, ultrasound, MRI, and why a normal scan does not rule it out. Then the care finder.",
+    },
+    treatment: {
+      title: "Treatment",
+      summary:
+        "Pain medicines, hormones, surgery, and fertility care, as guidelines describe them.",
+    },
+    living: {
+      title: "Living with it",
+      summary: "Work, school, fatigue, and where to read further. Practical, not a personal plan.",
+    },
+    denmark: {
+      title: "Denmark",
+      summary: "The sourced care path, centres, and medicines for Denmark.",
+    },
+    research: {
+      title: "Research and evidence",
+      summary: "The weekly literature digest, the research explainer, and the knowledge base.",
+    },
+    data: {
+      title: "Data",
+      summary: "Recruiting trials, Denmark trials, and recent papers from the weekly extract.",
+    },
+  },
+  find: {
+    eyebrow: "Index",
+    title: "Find a page",
+    lede: "Search titles and the first lines of each section. This is the site index, not a medical search.",
+    placeholder: "Search pages",
+    empty: "Nothing matches that.",
+    count: "pages and sections",
+  },
+  sources: {
+    eyebrow: "How we verify",
+    title: "Sources and method",
+    lede: "What this site will and will not say, and where each kind of statement comes from.",
+    guidesTitle: "Guides",
+    guidesBody:
+      "The understand, diagnosis, treatment, living, and Denmark pages were checked against the WHO fact sheet updated 15 October 2025 and the NICE NG73 recommendations. The ESHRE 2022 guideline is linked (PMID 35350465). Its recommendations are not rewritten line by line here.",
+    dataTitle: "Trials, papers, and funding",
+    dataBody:
+      "Counts and lists are the weekly files in the OpenEndo repository, produced from ClinicalTrials.gov and PubMed. The site reads those files at build time and again in the browser. It does not keep a second, hand-edited copy.",
+    fundingTitle: "Open calls",
+    fundingBody:
+      "A funding call is shown as open only when the file marks it open and any deadline is today or later. A deadline that has passed is hidden even if the file still says open.",
+    limitsTitle: "Limits",
+    limitsBody:
+      "The site does not diagnose, rank treatments for an individual, or fill gaps with unsourced numbers. If a file does not load, the page says so.",
+  },
   footer: {
-    tagline: "Open analytics on endometriosis research, trials and funding.",
+    tagline: "A plain-language reference and open dataset for endometriosis.",
     notAdvice:
-      "Not medical advice. Figures come from the open OpenEndo dataset and from the guidelines linked on each page.",
+      "Not medical advice. Medical statements cite a guideline. Counts cite the OpenEndo dataset.",
     sources: "Data sources",
     project: "Project",
     license: "MIT licensed. Reuse everything.",
@@ -227,12 +291,18 @@ type Copy = typeof en;
 const da: Copy = {
   nav: {
     home: "Forside",
-    learn: "Guider",
-    dashboard: "Dashboard",
-    evidence: "Evidens",
-    research: "Forskning",
+    learn: "Forstå",
+    dashboard: "Data",
+    evidence: "Forskning",
+    research: "Forskningsnoter",
     knowledge: "Viden",
-    access: "Find hjælp",
+    access: "Find behandling",
+    sources: "Sådan tjekker vi",
+    find: "Indeks",
+    diagnosis: "Diagnose",
+    treatment: "Behandling",
+    living: "Hverdag",
+    denmark: "Danmark",
     github: "GitHub",
     switch: "English",
     menu: "Menu",
@@ -308,18 +378,18 @@ const da: Copy = {
   },
 
   home: {
-    eyebrow: "Endometriose · åbne data",
-    titleA: "Åbne data om endometrioseforskning,",
-    titleAccent: "forsøg og bevillinger.",
-    lede: "OpenEndo følger alle kliniske forsøg, studier og bevillinger om endometriose i åbenhed, så patienter, klinikere, forskere og politikere kan se den reelle situation.",
+    eyebrow: "Endometriose",
+    titleA: "Et referenceværk",
+    titleAccent: "med kilder.",
+    lede: "OpenEndo forklarer endometriose for mennesker med sygdommen, klinikere og forskere. Medicinske udsagn linker til en retningslinje eller det åbne datasæt. Tal for forsøg og studier er det ugentlige udtræk.",
     cta: "Se data",
     ctaSecondary: "Bidrag på GitHub",
-    trust: ["Ingen betalingsmur", "Ingen spin", "Åben kildekode"],
-    statsTitle: "Sådan ser det ud",
-    whyEyebrow: "Derfor findes siden",
-    whyTitle: "Fire fakta der ikke burde være sande",
-    liveEyebrow: "Live",
-    liveTitle: "Forskning, mens den sker",
+    trust: ["Kilder på hver side", "Åbne data", "Ikke lægefaglig rådgivning"],
+    statsTitle: "Aktuelt datasæt",
+    whyEyebrow: "Start her",
+    whyTitle: "Vælg et afsnit",
+    liveEyebrow: "Datasæt",
+    liveTitle: "Ugens udtræk",
     liveLede:
       "Ugentligt udtræk fra ClinicalTrials.gov og PubMed, udgivet i det åbne repositorium og genhentet når siden indlæses.",
     fundingEmpty:
@@ -327,10 +397,11 @@ const da: Copy = {
     fundingChecking: "Tjekker hvilke puljer der stadig er åbne…",
     liveCta: "Åbn hele dashboardet",
     fundingEyebrow: "Bevillinger",
-    fundingTitle: "Puljer værd at søge",
-    fundingLede: "Frister der kan flytte feltet, hvis nogen søger.",
-    actionEyebrow: "Handling",
-    actionTitle: "Det der faktisk hjælper",
+    fundingTitle: "Åbne puljer",
+    fundingLede:
+      "Puljer der stadig er åbne i den aktuelle fil. En frist der er passeret, skjules, også hvis filen stadig markerer puljen som åben.",
+    actionEyebrow: "Også",
+    actionTitle: "Find behandling og forskningsnoter",
   },
   dashboard: {
     eyebrow: "Live dashboard",
@@ -396,10 +467,10 @@ const da: Copy = {
     },
   },
   learn: {
-    eyebrow: "Guider",
+    eyebrow: "Forstå",
     titleA: "Endometriose,",
     titleAccent: "på almindeligt dansk.",
-    lede: "Symptomer, diagnose, behandling, hverdag og hvordan forløbet er organiseret i Danmark. Ethvert medicinsk udsagn linker til WHO, NICE eller det åbne datasæt. Det er ikke en personlig behandlingsplan.",
+    lede: "Hvad sygdommen er, hvordan den genkendes, og hvilke behandlinger retningslinjerne nævner. Hver side viser sine kilder og den dato, den er tjekket.",
     indexLabel: "Alle guider",
     guidesLabel: "Guider",
     readGuide: "Læs guiden",
@@ -407,7 +478,7 @@ const da: Copy = {
     reviewed: "Tjekket mod de citerede sider den",
     notAdviceTitle: "Ikke lægefaglig rådgivning",
     notAdviceBody:
-      "OpenEndo forklarer udgivne retningslinjer og åbne data. Siden stiller ikke diagnoser, udskriver ikke medicin og erstatter ikke en læge. Beslutninger om din behandling hører til hos dig og en kvalificeret behandler.",
+      "Siderne forklarer udgivne retningslinjer og åbne data. De stiller ikke en diagnose og anbefaler ikke en behandling til dig. Beslutninger om behandling hører til hos dig og en læge.",
     loadingAccess: "Henter den danske adgangsfil…",
     accessErrorTitle: "Den danske adgangsfil blev ikke hentet",
     accessErrorBody:
@@ -425,10 +496,68 @@ const da: Copy = {
     disclaimer:
       "Et digest gengiver, hvad artiklerne siger, og hvor sikker evidensen er. Det er ikke en anbefaling om at starte, stoppe eller ændre behandling.",
   },
+  sections: {
+    understand: {
+      title: "Forstå endometriose",
+      summary: "Hvad det er, og hvilke symptomer WHO og NICE nævner.",
+    },
+    diagnosis: {
+      title: "Diagnose og forløb",
+      summary:
+        "Sygehistorie, ultralyd, MR, og hvorfor en normal scanning ikke udelukker sygdommen. Derefter find behandling.",
+    },
+    treatment: {
+      title: "Behandling",
+      summary:
+        "Smertestillende, hormoner, kirurgi og fertilitetshjælp, som retningslinjerne beskriver dem.",
+    },
+    living: {
+      title: "At leve med det",
+      summary:
+        "Arbejde, skole, træthed og hvor man kan læse videre. Praktisk, ikke en personlig plan.",
+    },
+    denmark: {
+      title: "Danmark",
+      summary: "Det kildebelagte forløb, centrene og medicinen for Danmark.",
+    },
+    research: {
+      title: "Forskning og evidens",
+      summary: "Det ugentlige litteraturdigest, forskningsgennemgangen og vidensbasen.",
+    },
+    data: {
+      title: "Data",
+      summary: "Rekrutterende forsøg, danske forsøg og nye studier fra det ugentlige udtræk.",
+    },
+  },
+  find: {
+    eyebrow: "Indeks",
+    title: "Find en side",
+    lede: "Søg i titler og de første linjer i hvert afsnit. Det er sidens indeks, ikke en medicinsk søgning.",
+    placeholder: "Søg på sider",
+    empty: "Ingen sider matcher.",
+    count: "sider og afsnit",
+  },
+  sources: {
+    eyebrow: "Sådan tjekker vi",
+    title: "Kilder og metode",
+    lede: "Hvad siden vil og ikke vil sige, og hvor hver type udsagn kommer fra.",
+    guidesTitle: "Guider",
+    guidesBody:
+      "Siderne om at forstå sygdommen, diagnose, behandling, hverdag og Danmark er tjekket mod WHO's faktaark opdateret 15. oktober 2025 og NICE NG73. ESHRE-retningslinjen fra 2022 er linket (PMID 35350465). Dens anbefalinger er ikke gengivet linje for linje her.",
+    dataTitle: "Forsøg, studier og bevillinger",
+    dataBody:
+      "Tal og lister er de ugentlige filer i OpenEndo-repositoriet, lavet ud fra ClinicalTrials.gov og PubMed. Siden læser filerne ved build og igen i browseren. Den gemmer ikke en anden, håndredigeret kopi.",
+    fundingTitle: "Åbne puljer",
+    fundingBody:
+      "En pulje vises som åben kun når filen markerer den som åben, og en eventuel frist er i dag eller senere. En frist der er passeret, skjules, også hvis filen stadig siger åben.",
+    limitsTitle: "Grænser",
+    limitsBody:
+      "Siden stiller ikke diagnoser, rangerer ikke behandlinger for en enkelt person og udfylder ikke huller med tal uden kilde. Hvis en fil ikke kan hentes, siger siden det.",
+  },
   footer: {
-    tagline: "Åbne analyser af endometrioseforskning, forsøg og bevillinger.",
+    tagline: "Et referenceværk og et åbent datasæt om endometriose.",
     notAdvice:
-      "Ikke lægefaglig rådgivning. Tallene kommer fra det åbne OpenEndo-datasæt og fra de retningslinjer, siderne linker til.",
+      "Ikke lægefaglig rådgivning. Medicinske udsagn citerer en retningslinje. Tal citerer OpenEndo-datasættet.",
     sources: "Datakilder",
     project: "Projekt",
     license: "MIT-licens. Genbrug det hele.",

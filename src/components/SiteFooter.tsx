@@ -58,7 +58,17 @@ export function SiteFooter() {
           <ul className="mt-4 space-y-2.5 text-sm">
             <li>
               <Link to={path("/learn")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.learn}
+                {c.sections.understand.title}
+              </Link>
+            </li>
+            <li>
+              <Link to={path("/sources")} className="text-foreground/80 hover:text-foreground">
+                {c.nav.sources}
+              </Link>
+            </li>
+            <li>
+              <Link to={path("/find")} className="text-foreground/80 hover:text-foreground">
+                {c.nav.find}
               </Link>
             </li>
             <li>

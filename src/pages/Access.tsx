@@ -2,8 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowUpRight, Info, MapPin, ShieldAlert } from "lucide-react";
+import { PageCredits } from "@/components/PageCredits";
+import { LEARN_REVIEWED } from "@/content/learn";
 import { useLang } from "@/lib/i18n";
-import { GITHUB_URL } from "@/lib/site";
+import { GITHUB_URL, RAW_BASE } from "@/lib/site";
 import {
   accessQueryOptions,
   pick,
@@ -56,6 +58,10 @@ export function Access() {
           {t.titleA} <span className="accent font-normal">{t.titleAccent}</span>
         </h1>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
+        <PageCredits
+          reviewed={query.data?.updated ?? LEARN_REVIEWED}
+          citations={[{ label: "OpenEndo access.json", href: `${RAW_BASE}/docs/data/access.json` }]}
+        />
       </header>
 
       {/* Input card */}

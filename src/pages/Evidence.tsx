@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { marked } from "marked";
+import { Link } from "@tanstack/react-router";
 import { Disclaimer } from "@/components/Disclaimer";
 import { GuideNav } from "@/components/GuideNav";
+import { PageCredits } from "@/components/PageCredits";
+import { LEARN_REVIEWED } from "@/content/learn";
 import { canonicalQueryOptions, fetchDigestMarkdown } from "@/lib/canonical";
 import { useLang } from "@/lib/i18n";
 import { RAW_BASE } from "@/lib/site";
@@ -14,7 +17,7 @@ function renderMarkdown(markdown: string): string {
 }
 
 export function Evidence() {
-  const { c } = useLang();
+  const { c, path } = useLang();
   const t = c.evidence;
   const snapshot = useQuery(canonicalQueryOptions);
   const data = snapshot.data;
@@ -41,7 +44,31 @@ export function Evidence() {
           {t.titleA} <span className="accent font-normal">{t.titleAccent}</span>
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
+        <PageCredits
+          reviewed={data?.latestDigest.date ?? LEARN_REVIEWED}
+          citations={
+            date
+              ? [
+                  {
+                    label: `digest-${date}.md`,
+                    href: `${RAW_BASE}/docs/research/evidence/digest-${date}.md`,
+                  },
+                ]
+              : []
+          }
+        />
         <GuideNav current="/evidence" />
+        <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+          <Link to={path("/research")} className="underline underline-offset-4">
+            {c.nav.research}
+          </Link>
+          <Link to={path("/knowledge")} className="underline underline-offset-4">
+            {c.nav.knowledge}
+          </Link>
+          <Link to={path("/sources")} className="underline underline-offset-4">
+            {c.nav.sources}
+          </Link>
+        </p>
       </header>
 
       <div className="mt-8">

@@ -10,13 +10,13 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
 
   const links = [
-    { to: path("/"), label: c.nav.home, exact: true },
     { to: path("/learn"), label: c.nav.learn, exact: false },
-    { to: path("/dashboard"), label: c.nav.dashboard, exact: false },
+    { to: path("/learn/diagnosis"), label: c.nav.diagnosis, exact: false },
+    { to: path("/learn/treatment"), label: c.nav.treatment, exact: false },
+    { to: path("/learn/living"), label: c.nav.living, exact: false },
+    { to: path("/learn/denmark"), label: c.nav.denmark, exact: true },
     { to: path("/evidence"), label: c.nav.evidence, exact: false },
-    { to: path("/research"), label: c.nav.research, exact: false },
-    { to: path("/access"), label: c.nav.access, exact: false },
-    { to: path("/knowledge"), label: c.nav.knowledge, exact: false },
+    { to: path("/dashboard"), label: c.nav.dashboard, exact: false },
   ];
 
   return (
@@ -32,7 +32,7 @@ export function SiteHeader() {
 
         <nav
           aria-label={c.nav.primary}
-          className="hidden items-center gap-5 text-[13px] text-muted-foreground lg:flex"
+          className="hidden items-center gap-4 text-[13px] text-muted-foreground xl:flex"
         >
           {links.map((l) => (
             <Link
@@ -54,6 +54,12 @@ export function SiteHeader() {
           >
             {c.nav.switch}
           </button>
+          <Link
+            to={path("/find")}
+            className="hidden rounded-full px-3 py-1.5 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground sm:inline-flex"
+          >
+            {c.nav.find}
+          </Link>
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -66,7 +72,7 @@ export function SiteHeader() {
             onClick={() => setOpen((v) => !v)}
             aria-label={c.nav.menu}
             aria-expanded={open}
-            className="ml-1 inline-flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary lg:hidden"
+            className="ml-1 inline-flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-secondary xl:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -76,7 +82,7 @@ export function SiteHeader() {
       {open && (
         <nav
           aria-label={c.nav.primary}
-          className="border-t border-hairline bg-background px-6 py-3 lg:hidden"
+          className="border-t border-hairline bg-background px-6 py-3 xl:hidden"
         >
           {links.map((l) => (
             <Link
@@ -90,6 +96,20 @@ export function SiteHeader() {
               {l.label}
             </Link>
           ))}
+          <Link
+            to={path("/find")}
+            onClick={() => setOpen(false)}
+            className="block py-2.5 text-[15px] text-muted-foreground"
+          >
+            {c.nav.find}
+          </Link>
+          <Link
+            to={path("/sources")}
+            onClick={() => setOpen(false)}
+            className="block py-2.5 text-[15px] text-muted-foreground"
+          >
+            {c.nav.sources}
+          </Link>
           <a
             href={GITHUB_URL}
             target="_blank"

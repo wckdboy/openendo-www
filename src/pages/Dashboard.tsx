@@ -13,7 +13,10 @@ import {
   YAxis,
 } from "recharts";
 import { ArrowUpRight } from "lucide-react";
+import { PageCredits } from "@/components/PageCredits";
+import { LEARN_REVIEWED } from "@/content/learn";
 import { useLang } from "@/lib/i18n";
+import { RAW_BASE } from "@/lib/site";
 import {
   canonicalQueryOptions,
   displayPhase,
@@ -121,6 +124,17 @@ export function Dashboard() {
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
             {c.dashboard.lede}
           </p>
+          <PageCredits
+            reviewed={data?.meta.updated ?? LEARN_REVIEWED}
+            citations={[
+              {
+                label: "OpenEndo weekly dataset",
+                href: `${RAW_BASE}/docs/data/meta.json`,
+              },
+              { label: "ClinicalTrials.gov", href: "https://clinicaltrials.gov/" },
+              { label: "PubMed", href: "https://pubmed.ncbi.nlm.nih.gov/" },
+            ]}
+          />
           {isFetching && (
             <p className="mt-3 text-sm text-muted-foreground">{c.common.refreshing}</p>
           )}

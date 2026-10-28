@@ -1,5 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { PageCredits } from "@/components/PageCredits";
+import { LEARN_REVIEWED } from "@/content/learn";
 import { useLang } from "@/lib/i18n";
 import { KNOWLEDGE_INDEX_URL, knowledgeQueryOptions } from "@/lib/knowledge.functions";
 import type { KnowledgeConfidence, KnowledgeKind, KnowledgePage } from "@/lib/knowledge.types";
@@ -80,6 +82,10 @@ export function Knowledge() {
           <span className="accent font-normal">{t.title.split(",").slice(1).join(",").trim()}</span>
         </h1>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
+        <PageCredits
+          reviewed={LEARN_REVIEWED}
+          citations={[{ label: "OpenEndo knowledge index", href: KNOWLEDGE_INDEX_URL }]}
+        />
         {entries.length > 0 && (
           <div className="mt-3 max-w-xl space-y-1 text-sm text-muted-foreground">
             <p>{t.caption}</p>

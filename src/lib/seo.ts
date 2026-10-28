@@ -121,6 +121,30 @@ export function learnArticleHead(locale: Locale, slug: LearnSlug): Head {
   });
 }
 
+export function sourcesHead(locale: Locale): Head {
+  return pageHead({
+    locale,
+    path: "/sources",
+    title: locale === "da" ? "Kilder og metode — OpenEndo" : "Sources and method — OpenEndo",
+    description:
+      locale === "da"
+        ? "Hvordan OpenEndo tjekker guider mod WHO og NICE, og hvordan forsøg, studier og bevillinger hentes fra det åbne datasæt."
+        : "How OpenEndo checks guides against WHO and NICE, and how trials, papers, and funding are read from the open dataset.",
+  });
+}
+
+export function findHead(locale: Locale): Head {
+  return pageHead({
+    locale,
+    path: "/find",
+    title: locale === "da" ? "Indeks — OpenEndo" : "Index — OpenEndo",
+    description:
+      locale === "da"
+        ? "Indeks over OpenEndos sider om endometriose, diagnose, behandling, Danmark, forskning og data."
+        : "Index of OpenEndo pages on endometriosis, diagnosis, treatment, Denmark, research, and data.",
+  });
+}
+
 export function evidenceHead(locale: Locale): Head {
   return pageHead({
     locale,

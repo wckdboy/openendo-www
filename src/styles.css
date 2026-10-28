@@ -5,9 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * OpenEndo design system.
- * Quiet, near-white canvas. Ink text. Ribbon yellow used sparingly.
- * Fraunces = editorial accent (emphasis + numerals). Manrope = everything else.
+ * Token layer. Change the look by editing the --token-* variables in :root.
+ * Components use the Tailwind theme, which only aliases these tokens.
+ * Do not hard-code palette colours in page components.
+ *
+ * --token-ink-muted is set dark enough for WCAG AA body text on --token-canvas.
+ * --token-focus is the keyboard focus colour (non-text contrast against the canvas).
  */
 
 @theme inline {
@@ -17,8 +20,8 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: var(--token-font-sans);
+  --font-serif: var(--token-font-serif);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -52,34 +55,54 @@
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: var(--token-radius);
 
-  --canvas: oklch(0.988 0.004 95);
-  --ink: oklch(0.19 0.008 90);
-  --ink-soft: oklch(0.46 0.008 90);
-  --ribbon: oklch(0.87 0.176 96);
-  --ribbon-soft: oklch(0.965 0.05 98);
+  /* Swap these to restyle the site. */
+  --token-canvas: oklch(0.988 0.004 95);
+  --token-surface: oklch(1 0 0);
+  --token-surface-muted: oklch(0.962 0.005 95);
+  --token-ink: oklch(0.22 0.012 90);
+  --token-ink-muted: oklch(0.4 0.012 90);
+  --token-border: oklch(0.9 0.006 95);
+  --token-border-strong: oklch(0.84 0.008 95);
+  --token-accent: oklch(0.87 0.176 96);
+  --token-accent-soft: oklch(0.965 0.05 98);
+  --token-accent-ink: oklch(0.22 0.012 90);
+  --token-focus: oklch(0.42 0.11 250);
+  --token-danger: oklch(0.45 0.16 27);
+  --token-danger-ink: oklch(0.99 0 0);
+  --token-radius: 0.75rem;
+  --token-font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --token-font-serif: "Fraunces", ui-serif, Georgia, serif;
+  --token-space-page: 1.5rem;
+  --token-measure: 42rem;
 
-  --background: var(--canvas);
-  --foreground: var(--ink);
-  --card: oklch(1 0 0);
-  --card-foreground: var(--ink);
-  --popover: oklch(1 0 0);
-  --popover-foreground: var(--ink);
-  --primary: var(--ink);
-  --primary-foreground: oklch(0.988 0.004 95);
-  --secondary: oklch(0.958 0.006 95);
-  --secondary-foreground: var(--ink);
-  --muted: oklch(0.962 0.005 95);
-  --muted-foreground: var(--ink-soft);
-  --accent: var(--ribbon-soft);
-  --accent-foreground: var(--ink);
-  --destructive: oklch(0.55 0.19 27);
-  --destructive-foreground: oklch(0.99 0 0);
-  --hairline: oklch(0.9 0.006 95);
-  --border: oklch(0.912 0.006 95);
-  --input: oklch(0.9 0.006 95);
-  --ring: oklch(0.75 0.05 96);
+  --canvas: var(--token-canvas);
+  --ink: var(--token-ink);
+  --ink-soft: var(--token-ink-muted);
+  --ribbon: var(--token-accent);
+  --ribbon-soft: var(--token-accent-soft);
+
+  --background: var(--token-canvas);
+  --foreground: var(--token-ink);
+  --card: var(--token-surface);
+  --card-foreground: var(--token-ink);
+  --popover: var(--token-surface);
+  --popover-foreground: var(--token-ink);
+  --primary: var(--token-ink);
+  --primary-foreground: var(--token-canvas);
+  --secondary: var(--token-surface-muted);
+  --secondary-foreground: var(--token-ink);
+  --muted: var(--token-surface-muted);
+  --muted-foreground: var(--token-ink-muted);
+  --accent: var(--token-accent-soft);
+  --accent-foreground: var(--token-ink);
+  --destructive: var(--token-danger);
+  --destructive-foreground: var(--token-danger-ink);
+  --hairline: var(--token-border);
+  --border: var(--token-border);
+  --input: var(--token-border-strong);
+  --ring: var(--token-focus);
 
   --chart-1: oklch(0.87 0.176 96);
   --chart-2: oklch(0.32 0.01 90);
@@ -113,6 +136,11 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv01";
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--token-focus);
+    outline-offset: 3px;
   }
 
   h1,

@@ -13,17 +13,21 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccessRouteImport } from './routes/access'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as EvidenceRouteImport } from './routes/evidence'
+import { Route as FindRouteImport } from './routes/find'
 import { Route as KnowledgeRouteImport } from './routes/knowledge'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as ResearchRouteImport } from './routes/research'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SourcesRouteImport } from './routes/sources'
 import { Route as DaIndexRouteImport } from './routes/da.index'
 import { Route as DaAccessRouteImport } from './routes/da.access'
 import { Route as DaDashboardRouteImport } from './routes/da.dashboard'
 import { Route as DaEvidenceRouteImport } from './routes/da.evidence'
+import { Route as DaFindRouteImport } from './routes/da.find'
 import { Route as DaKnowledgeRouteImport } from './routes/da.knowledge'
 import { Route as DaLearnRouteImport } from './routes/da.learn'
 import { Route as DaResearchRouteImport } from './routes/da.research'
+import { Route as DaSourcesRouteImport } from './routes/da.sources'
 import { Route as LearnIndexRouteImport } from './routes/learn.index'
 import { Route as LearnDenmarkRouteImport } from './routes/learn.denmark'
 import { Route as LearnDiagnosisRouteImport } from './routes/learn.diagnosis'
@@ -57,6 +61,11 @@ const EvidenceRoute = EvidenceRouteImport.update({
   path: '/evidence',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FindRoute = FindRouteImport.update({
+  id: '/find',
+  path: '/find',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KnowledgeRoute = KnowledgeRouteImport.update({
   id: '/knowledge',
   path: '/knowledge',
@@ -75,6 +84,11 @@ const ResearchRoute = ResearchRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SourcesRoute = SourcesRouteImport.update({
+  id: '/sources',
+  path: '/sources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DaIndexRoute = DaIndexRouteImport.update({
@@ -97,6 +111,11 @@ const DaEvidenceRoute = DaEvidenceRouteImport.update({
   path: '/da/evidence',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DaFindRoute = DaFindRouteImport.update({
+  id: '/da/find',
+  path: '/da/find',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DaKnowledgeRoute = DaKnowledgeRouteImport.update({
   id: '/da/knowledge',
   path: '/da/knowledge',
@@ -110,6 +129,11 @@ const DaLearnRoute = DaLearnRouteImport.update({
 const DaResearchRoute = DaResearchRouteImport.update({
   id: '/da/research',
   path: '/da/research',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DaSourcesRoute = DaSourcesRouteImport.update({
+  id: '/da/sources',
+  path: '/da/sources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnIndexRoute = LearnIndexRouteImport.update({
@@ -178,16 +202,20 @@ export interface FileRoutesByFullPath {
   '/access': typeof AccessRoute
   '/dashboard': typeof DashboardRoute
   '/evidence': typeof EvidenceRoute
+  '/find': typeof FindRoute
   '/knowledge': typeof KnowledgeRoute
   '/learn': typeof LearnRouteWithChildren
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sources': typeof SourcesRoute
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
   '/da/evidence': typeof DaEvidenceRoute
+  '/da/find': typeof DaFindRoute
   '/da/knowledge': typeof DaKnowledgeRoute
   '/da/learn': typeof DaLearnRouteWithChildren
   '/da/research': typeof DaResearchRoute
+  '/da/sources': typeof DaSourcesRoute
   '/learn/denmark': typeof LearnDenmarkRoute
   '/learn/diagnosis': typeof LearnDiagnosisRoute
   '/learn/living': typeof LearnLivingRoute
@@ -207,14 +235,18 @@ export interface FileRoutesByTo {
   '/access': typeof AccessRoute
   '/dashboard': typeof DashboardRoute
   '/evidence': typeof EvidenceRoute
+  '/find': typeof FindRoute
   '/knowledge': typeof KnowledgeRoute
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sources': typeof SourcesRoute
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
   '/da/evidence': typeof DaEvidenceRoute
+  '/da/find': typeof DaFindRoute
   '/da/knowledge': typeof DaKnowledgeRoute
   '/da/research': typeof DaResearchRoute
+  '/da/sources': typeof DaSourcesRoute
   '/learn/denmark': typeof LearnDenmarkRoute
   '/learn/diagnosis': typeof LearnDiagnosisRoute
   '/learn/living': typeof LearnLivingRoute
@@ -235,16 +267,20 @@ export interface FileRoutesById {
   '/access': typeof AccessRoute
   '/dashboard': typeof DashboardRoute
   '/evidence': typeof EvidenceRoute
+  '/find': typeof FindRoute
   '/knowledge': typeof KnowledgeRoute
   '/learn': typeof LearnRouteWithChildren
   '/research': typeof ResearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/sources': typeof SourcesRoute
   '/da/access': typeof DaAccessRoute
   '/da/dashboard': typeof DaDashboardRoute
   '/da/evidence': typeof DaEvidenceRoute
+  '/da/find': typeof DaFindRoute
   '/da/knowledge': typeof DaKnowledgeRoute
   '/da/learn': typeof DaLearnRouteWithChildren
   '/da/research': typeof DaResearchRoute
+  '/da/sources': typeof DaSourcesRoute
   '/learn/denmark': typeof LearnDenmarkRoute
   '/learn/diagnosis': typeof LearnDiagnosisRoute
   '/learn/living': typeof LearnLivingRoute
@@ -266,16 +302,20 @@ export interface FileRouteTypes {
     | '/access'
     | '/dashboard'
     | '/evidence'
+    | '/find'
     | '/knowledge'
     | '/learn'
     | '/research'
     | '/sitemap.xml'
+    | '/sources'
     | '/da/access'
     | '/da/dashboard'
     | '/da/evidence'
+    | '/da/find'
     | '/da/knowledge'
     | '/da/learn'
     | '/da/research'
+    | '/da/sources'
     | '/learn/denmark'
     | '/learn/diagnosis'
     | '/learn/living'
@@ -295,14 +335,18 @@ export interface FileRouteTypes {
     | '/access'
     | '/dashboard'
     | '/evidence'
+    | '/find'
     | '/knowledge'
     | '/research'
     | '/sitemap.xml'
+    | '/sources'
     | '/da/access'
     | '/da/dashboard'
     | '/da/evidence'
+    | '/da/find'
     | '/da/knowledge'
     | '/da/research'
+    | '/da/sources'
     | '/learn/denmark'
     | '/learn/diagnosis'
     | '/learn/living'
@@ -322,16 +366,20 @@ export interface FileRouteTypes {
     | '/access'
     | '/dashboard'
     | '/evidence'
+    | '/find'
     | '/knowledge'
     | '/learn'
     | '/research'
     | '/sitemap.xml'
+    | '/sources'
     | '/da/access'
     | '/da/dashboard'
     | '/da/evidence'
+    | '/da/find'
     | '/da/knowledge'
     | '/da/learn'
     | '/da/research'
+    | '/da/sources'
     | '/learn/denmark'
     | '/learn/diagnosis'
     | '/learn/living'
@@ -352,16 +400,20 @@ export interface RootRouteChildren {
   AccessRoute: typeof AccessRoute
   DashboardRoute: typeof DashboardRoute
   EvidenceRoute: typeof EvidenceRoute
+  FindRoute: typeof FindRoute
   KnowledgeRoute: typeof KnowledgeRoute
   LearnRoute: typeof LearnRouteWithChildren
   ResearchRoute: typeof ResearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SourcesRoute: typeof SourcesRoute
   DaAccessRoute: typeof DaAccessRoute
   DaDashboardRoute: typeof DaDashboardRoute
   DaEvidenceRoute: typeof DaEvidenceRoute
+  DaFindRoute: typeof DaFindRoute
   DaKnowledgeRoute: typeof DaKnowledgeRoute
   DaLearnRoute: typeof DaLearnRouteWithChildren
   DaResearchRoute: typeof DaResearchRoute
+  DaSourcesRoute: typeof DaSourcesRoute
   DaIndexRoute: typeof DaIndexRoute
 }
 
@@ -395,6 +447,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EvidenceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/find': {
+      id: '/find'
+      path: '/find'
+      fullPath: '/find'
+      preLoaderRoute: typeof FindRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/knowledge': {
       id: '/knowledge'
       path: '/knowledge'
@@ -421,6 +480,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sources': {
+      id: '/sources'
+      path: '/sources'
+      fullPath: '/sources'
+      preLoaderRoute: typeof SourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/da/': {
@@ -451,6 +517,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DaEvidenceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/da/find': {
+      id: '/da/find'
+      path: '/da/find'
+      fullPath: '/da/find'
+      preLoaderRoute: typeof DaFindRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/da/knowledge': {
       id: '/da/knowledge'
       path: '/da/knowledge'
@@ -470,6 +543,13 @@ declare module '@tanstack/react-router' {
       path: '/da/research'
       fullPath: '/da/research'
       preLoaderRoute: typeof DaResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/da/sources': {
+      id: '/da/sources'
+      path: '/da/sources'
+      fullPath: '/da/sources'
+      preLoaderRoute: typeof DaSourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/': {
@@ -605,16 +685,20 @@ const rootRouteChildren: RootRouteChildren = {
   AccessRoute: AccessRoute,
   DashboardRoute: DashboardRoute,
   EvidenceRoute: EvidenceRoute,
+  FindRoute: FindRoute,
   KnowledgeRoute: KnowledgeRoute,
   LearnRoute: LearnRouteWithChildren,
   ResearchRoute: ResearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SourcesRoute: SourcesRoute,
   DaAccessRoute: DaAccessRoute,
   DaDashboardRoute: DaDashboardRoute,
   DaEvidenceRoute: DaEvidenceRoute,
+  DaFindRoute: DaFindRoute,
   DaKnowledgeRoute: DaKnowledgeRoute,
   DaLearnRoute: DaLearnRouteWithChildren,
   DaResearchRoute: DaResearchRoute,
+  DaSourcesRoute: DaSourcesRoute,
   DaIndexRoute: DaIndexRoute,
 }
 export const routeTree = rootRouteImport

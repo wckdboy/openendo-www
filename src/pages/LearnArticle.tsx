@@ -1,12 +1,27 @@
-import { LEARN_REVIEWED, learnPage, type LearnSlug } from "@/content/learn";
+import { Link } from "@tanstack/react-router";
+import { LEARN_REVIEWED, learnPage, type Citation, type LearnSlug } from "@/content/learn";
 import { DenmarkAccess } from "@/components/DenmarkAccess";
 import { Disclaimer } from "@/components/Disclaimer";
 import { GuideNav } from "@/components/GuideNav";
+import { PageCredits } from "@/components/PageCredits";
 import { useLang } from "@/lib/i18n";
 import type { BasePath } from "@/lib/site";
 
+function uniqueCitations(sections: { citations: Citation[] }[]): Citation[] {
+  const seen = new Set<string>();
+  const list: Citation[] = [];
+  for (const section of sections) {
+    for (const citation of section.citations) {
+      if (seen.has(citation.href)) continue;
+      seen.add(citation.href);
+      list.push(citation);
+    }
+  }
+  return list;
+}
+
 export function LearnArticle({ slug }: { slug: LearnSlug }) {
-  const { c, locale } = useLang();
+  const { c, locale, path } = useLang();
   const page = learnPage(locale, slug);
   const current = `/learn/${slug}` as BasePath;
 
@@ -21,9 +36,7 @@ export function LearnArticle({ slug }: { slug: LearnSlug }) {
           {page.title}
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">{page.lede}</p>
-        <p className="mt-3 text-xs text-muted-foreground">
-          {c.learn.reviewed} {LEARN_REVIEWED}
-        </p>
+        <PageCredits reviewed={LEARN_REVIEWED} citations={uniqueCitations(page.sections)} />
         <GuideNav current={current} />
       </header>
 
@@ -63,6 +76,13 @@ export function LearnArticle({ slug }: { slug: LearnSlug }) {
         ))}
       </div>
 
+      {slug === "diagnosis" ? (
+        <p className="mt-10 text-sm">
+          <Link to={path("/access")} className="underline underline-offset-4">
+            {c.nav.access}
+          </Link>
+        </p>
+      ) : null}
       {slug === "denmark" ? <DenmarkAccess /> : null}
     </div>
   );

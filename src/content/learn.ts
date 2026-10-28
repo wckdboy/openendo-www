@@ -72,8 +72,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           id: "daily-life",
           heading: "When symptoms stop ordinary life",
           paragraphs: [
-            "WHO says some people have pain or other symptoms that stop them going to work or school, with lost income for them and their families. It also says these impacts are made worse by stigma and by the belief that period pain is something to ignore.",
-            "Pain that keeps someone out of school, work, or daily life is a reason to ask for care. It is not a measure of how strong they are.",
+            "WHO says some people have pain or other symptoms that stop them going to work or school, with lost income for them and their families. It also says these impacts are made worse by stigma and by the belief that period pain is something to ignore. That is a reason to ask for care.",
           ],
           citations: [who],
         },
@@ -142,7 +141,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           heading: "No cure — symptom control",
           paragraphs: [
             "WHO says there is currently no cure, and no treatment that definitively cures the disease. Treatment aims to control symptoms and limit long-term impacts. The choice depends on severity, individual preferences, side effects, long-term safety, cost, availability, and whether pregnancy is desired.",
-            "Symptoms can continue or return after treatment starts. That is part of the disease WHO describes, not a personal failure.",
+            "WHO says symptoms can continue or return after treatment starts.",
           ],
           citations: [who],
         },
@@ -293,8 +292,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           id: "daily-life",
           heading: "Når symptomerne stopper hverdagen",
           paragraphs: [
-            "WHO skriver, at nogle har smerter eller andre symptomer, der holder dem væk fra arbejde eller skole, med tabt indtægt for dem og deres familie. Virkningen bliver værre af stigma og af forestillingen om, at menstruationssmerter bare skal ignoreres.",
-            "Smerter, der holder nogen væk fra skole, arbejde eller hverdag, er en grund til at søge hjælp. Det er ikke et mål for, hvor stærk man er.",
+            "WHO skriver, at nogle har smerter eller andre symptomer, der holder dem væk fra arbejde eller skole, med tabt indtægt for dem og deres familie. Virkningen bliver værre af stigma og af forestillingen om, at menstruationssmerter bare skal ignoreres. Det er en grund til at søge hjælp.",
           ],
           citations: [who],
         },
@@ -363,7 +361,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           heading: "Ingen kur — symptomkontrol",
           paragraphs: [
             "WHO skriver, at der i dag ikke findes en kur, og ingen behandling der endegyldigt helbreder sygdommen. Behandling sigter mod at kontrollere symptomer og begrænse langtidseffekter. Valget afhænger af sværhedsgrad, ønsker, bivirkninger, langsigtet sikkerhed, pris, tilgængelighed og om graviditet ønskes.",
-            "Symptomer kan fortsætte eller vende tilbage, efter behandling er startet. Det er en del af den sygdom, WHO beskriver — ikke en personlig fiasko.",
+            "WHO skriver, at symptomer kan fortsætte eller vende tilbage, efter behandling er startet.",
           ],
           citations: [who],
         },

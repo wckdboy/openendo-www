@@ -109,8 +109,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "Organization",
           name: "OpenEndo",
           url: "https://openendo.org/",
-          description:
-            "Open analytics on endometriosis research, clinical trials, funding and policy.",
+          description: "Plain-language reference and open data on endometriosis, with citations.",
           sameAs: ["https://github.com/wckdboy/openendo"],
         }),
       },

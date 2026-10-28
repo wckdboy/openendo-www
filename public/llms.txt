@@ -3,8 +3,12 @@
 > Patient-facing explainers and an open data hub for endometriosis. Not medical advice.
 > Canonical datasets, weekly digests, and knowledge pages live in https://github.com/wckdboy/openendo and are fetched at build time and again in the browser from raw.githubusercontent.com. This file describes the public site.
 
+## How to read the site
+- [How we verify](https://openendo.org/sources): sources, method, and limits
+- [Index](https://openendo.org/find): page and section index
+
 ## Guides
-- [Guides](https://openendo.org/learn): symptoms, diagnosis, treatment, living with endometriosis, Denmark
+- [Understand](https://openendo.org/learn): symptoms, diagnosis, treatment, living with endometriosis, Denmark
 - [Symptoms](https://openendo.org/learn/symptoms)
 - [Diagnosis](https://openendo.org/learn/diagnosis)
 - [Treatment](https://openendo.org/learn/treatment)

@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Download } from "lucide-react";
+import { PageCredits } from "@/components/PageCredits";
+import { LEARN_REVIEWED } from "@/content/learn";
 import { useLang } from "@/lib/i18n";
 import {
   RESEARCH_HTML_URL,
@@ -46,6 +48,10 @@ export function Research() {
           {t.titleA} <span className="accent font-normal">{t.titleAccent}</span>
         </h1>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
+        <PageCredits
+          reviewed={LEARN_REVIEWED}
+          citations={[{ label: "what-we-know.html", href: RESEARCH_HTML_URL }]}
+        />
       </header>
 
       {/* Toolbar */}

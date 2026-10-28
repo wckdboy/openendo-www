@@ -143,7 +143,28 @@
 
 .mono-id {
   font-family: var(--font-mono);
-  font-size: 0.95em;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+}
+
+summary.toc {
+  list-style: none;
+}
+
+summary.toc::-webkit-details-marker {
+  display: none;
+}
+
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  details.explainer-text {
+    display: block;
+  }
 }
 
 /* Off-screen sections only. Paired with contain-intrinsic-size so unsupported browsers ignore it and supported ones do not collapse height. */

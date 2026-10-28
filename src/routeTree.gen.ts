@@ -35,16 +35,22 @@ import { Route as DaLearnRouteImport } from './routes/da.learn'
 import { Route as DaResearchRouteImport } from './routes/da.research'
 import { Route as DaSourcesRouteImport } from './routes/da.sources'
 import { Route as LearnIndexRouteImport } from './routes/learn.index'
+import { Route as LearnAppointmentRouteImport } from './routes/learn.appointment'
 import { Route as LearnDenmarkRouteImport } from './routes/learn.denmark'
 import { Route as LearnDiagnosisRouteImport } from './routes/learn.diagnosis'
+import { Route as LearnHowItWorksRouteImport } from './routes/learn.how-it-works'
 import { Route as LearnLivingRouteImport } from './routes/learn.living'
+import { Route as LearnManagingSymptomsRouteImport } from './routes/learn.managing-symptoms'
 import { Route as LearnSymptomsRouteImport } from './routes/learn.symptoms'
 import { Route as LearnTreatmentRouteImport } from './routes/learn.treatment'
 import { Route as DaAboutForDecisionMakersRouteImport } from './routes/da.about.for-decision-makers'
 import { Route as DaLearnIndexRouteImport } from './routes/da.learn.index'
+import { Route as DaLearnAppointmentRouteImport } from './routes/da.learn.appointment'
 import { Route as DaLearnDenmarkRouteImport } from './routes/da.learn.denmark'
 import { Route as DaLearnDiagnosisRouteImport } from './routes/da.learn.diagnosis'
+import { Route as DaLearnHowItWorksRouteImport } from './routes/da.learn.how-it-works'
 import { Route as DaLearnLivingRouteImport } from './routes/da.learn.living'
+import { Route as DaLearnManagingSymptomsRouteImport } from './routes/da.learn.managing-symptoms'
 import { Route as DaLearnSymptomsRouteImport } from './routes/da.learn.symptoms'
 import { Route as DaLearnTreatmentRouteImport } from './routes/da.learn.treatment'
 
@@ -178,6 +184,11 @@ const LearnIndexRoute = LearnIndexRouteImport.update({
   path: '/',
   getParentRoute: () => LearnRoute,
 } as any)
+const LearnAppointmentRoute = LearnAppointmentRouteImport.update({
+  id: '/appointment',
+  path: '/appointment',
+  getParentRoute: () => LearnRoute,
+} as any)
 const LearnDenmarkRoute = LearnDenmarkRouteImport.update({
   id: '/denmark',
   path: '/denmark',
@@ -188,9 +199,19 @@ const LearnDiagnosisRoute = LearnDiagnosisRouteImport.update({
   path: '/diagnosis',
   getParentRoute: () => LearnRoute,
 } as any)
+const LearnHowItWorksRoute = LearnHowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => LearnRoute,
+} as any)
 const LearnLivingRoute = LearnLivingRouteImport.update({
   id: '/living',
   path: '/living',
+  getParentRoute: () => LearnRoute,
+} as any)
+const LearnManagingSymptomsRoute = LearnManagingSymptomsRouteImport.update({
+  id: '/managing-symptoms',
+  path: '/managing-symptoms',
   getParentRoute: () => LearnRoute,
 } as any)
 const LearnSymptomsRoute = LearnSymptomsRouteImport.update({
@@ -214,6 +235,11 @@ const DaLearnIndexRoute = DaLearnIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DaLearnRoute,
 } as any)
+const DaLearnAppointmentRoute = DaLearnAppointmentRouteImport.update({
+  id: '/appointment',
+  path: '/appointment',
+  getParentRoute: () => DaLearnRoute,
+} as any)
 const DaLearnDenmarkRoute = DaLearnDenmarkRouteImport.update({
   id: '/denmark',
   path: '/denmark',
@@ -224,9 +250,19 @@ const DaLearnDiagnosisRoute = DaLearnDiagnosisRouteImport.update({
   path: '/diagnosis',
   getParentRoute: () => DaLearnRoute,
 } as any)
+const DaLearnHowItWorksRoute = DaLearnHowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => DaLearnRoute,
+} as any)
 const DaLearnLivingRoute = DaLearnLivingRouteImport.update({
   id: '/living',
   path: '/living',
+  getParentRoute: () => DaLearnRoute,
+} as any)
+const DaLearnManagingSymptomsRoute = DaLearnManagingSymptomsRouteImport.update({
+  id: '/managing-symptoms',
+  path: '/managing-symptoms',
   getParentRoute: () => DaLearnRoute,
 } as any)
 const DaLearnSymptomsRoute = DaLearnSymptomsRouteImport.update({
@@ -265,17 +301,23 @@ export interface FileRoutesByFullPath {
   '/da/learn': typeof DaLearnRouteWithChildren
   '/da/research': typeof DaResearchRoute
   '/da/sources': typeof DaSourcesRoute
+  '/learn/appointment': typeof LearnAppointmentRoute
   '/learn/denmark': typeof LearnDenmarkRoute
   '/learn/diagnosis': typeof LearnDiagnosisRoute
+  '/learn/how-it-works': typeof LearnHowItWorksRoute
   '/learn/living': typeof LearnLivingRoute
+  '/learn/managing-symptoms': typeof LearnManagingSymptomsRoute
   '/learn/symptoms': typeof LearnSymptomsRoute
   '/learn/treatment': typeof LearnTreatmentRoute
   '/da/': typeof DaIndexRoute
   '/learn/': typeof LearnIndexRoute
   '/da/about/for-decision-makers': typeof DaAboutForDecisionMakersRoute
+  '/da/learn/appointment': typeof DaLearnAppointmentRoute
   '/da/learn/denmark': typeof DaLearnDenmarkRoute
   '/da/learn/diagnosis': typeof DaLearnDiagnosisRoute
+  '/da/learn/how-it-works': typeof DaLearnHowItWorksRoute
   '/da/learn/living': typeof DaLearnLivingRoute
+  '/da/learn/managing-symptoms': typeof DaLearnManagingSymptomsRoute
   '/da/learn/symptoms': typeof DaLearnSymptomsRoute
   '/da/learn/treatment': typeof DaLearnTreatmentRoute
   '/da/learn/': typeof DaLearnIndexRoute
@@ -303,17 +345,23 @@ export interface FileRoutesByTo {
   '/da/knowledge': typeof DaKnowledgeRoute
   '/da/research': typeof DaResearchRoute
   '/da/sources': typeof DaSourcesRoute
+  '/learn/appointment': typeof LearnAppointmentRoute
   '/learn/denmark': typeof LearnDenmarkRoute
   '/learn/diagnosis': typeof LearnDiagnosisRoute
+  '/learn/how-it-works': typeof LearnHowItWorksRoute
   '/learn/living': typeof LearnLivingRoute
+  '/learn/managing-symptoms': typeof LearnManagingSymptomsRoute
   '/learn/symptoms': typeof LearnSymptomsRoute
   '/learn/treatment': typeof LearnTreatmentRoute
   '/da': typeof DaIndexRoute
   '/learn': typeof LearnIndexRoute
   '/da/about/for-decision-makers': typeof DaAboutForDecisionMakersRoute
+  '/da/learn/appointment': typeof DaLearnAppointmentRoute
   '/da/learn/denmark': typeof DaLearnDenmarkRoute
   '/da/learn/diagnosis': typeof DaLearnDiagnosisRoute
+  '/da/learn/how-it-works': typeof DaLearnHowItWorksRoute
   '/da/learn/living': typeof DaLearnLivingRoute
+  '/da/learn/managing-symptoms': typeof DaLearnManagingSymptomsRoute
   '/da/learn/symptoms': typeof DaLearnSymptomsRoute
   '/da/learn/treatment': typeof DaLearnTreatmentRoute
   '/da/learn': typeof DaLearnIndexRoute
@@ -344,17 +392,23 @@ export interface FileRoutesById {
   '/da/learn': typeof DaLearnRouteWithChildren
   '/da/research': typeof DaResearchRoute
   '/da/sources': typeof DaSourcesRoute
+  '/learn/appointment': typeof LearnAppointmentRoute
   '/learn/denmark': typeof LearnDenmarkRoute
   '/learn/diagnosis': typeof LearnDiagnosisRoute
+  '/learn/how-it-works': typeof LearnHowItWorksRoute
   '/learn/living': typeof LearnLivingRoute
+  '/learn/managing-symptoms': typeof LearnManagingSymptomsRoute
   '/learn/symptoms': typeof LearnSymptomsRoute
   '/learn/treatment': typeof LearnTreatmentRoute
   '/da/': typeof DaIndexRoute
   '/learn/': typeof LearnIndexRoute
   '/da/about/for-decision-makers': typeof DaAboutForDecisionMakersRoute
+  '/da/learn/appointment': typeof DaLearnAppointmentRoute
   '/da/learn/denmark': typeof DaLearnDenmarkRoute
   '/da/learn/diagnosis': typeof DaLearnDiagnosisRoute
+  '/da/learn/how-it-works': typeof DaLearnHowItWorksRoute
   '/da/learn/living': typeof DaLearnLivingRoute
+  '/da/learn/managing-symptoms': typeof DaLearnManagingSymptomsRoute
   '/da/learn/symptoms': typeof DaLearnSymptomsRoute
   '/da/learn/treatment': typeof DaLearnTreatmentRoute
   '/da/learn/': typeof DaLearnIndexRoute
@@ -386,17 +440,23 @@ export interface FileRouteTypes {
     | '/da/learn'
     | '/da/research'
     | '/da/sources'
+    | '/learn/appointment'
     | '/learn/denmark'
     | '/learn/diagnosis'
+    | '/learn/how-it-works'
     | '/learn/living'
+    | '/learn/managing-symptoms'
     | '/learn/symptoms'
     | '/learn/treatment'
     | '/da/'
     | '/learn/'
     | '/da/about/for-decision-makers'
+    | '/da/learn/appointment'
     | '/da/learn/denmark'
     | '/da/learn/diagnosis'
+    | '/da/learn/how-it-works'
     | '/da/learn/living'
+    | '/da/learn/managing-symptoms'
     | '/da/learn/symptoms'
     | '/da/learn/treatment'
     | '/da/learn/'
@@ -424,17 +484,23 @@ export interface FileRouteTypes {
     | '/da/knowledge'
     | '/da/research'
     | '/da/sources'
+    | '/learn/appointment'
     | '/learn/denmark'
     | '/learn/diagnosis'
+    | '/learn/how-it-works'
     | '/learn/living'
+    | '/learn/managing-symptoms'
     | '/learn/symptoms'
     | '/learn/treatment'
     | '/da'
     | '/learn'
     | '/da/about/for-decision-makers'
+    | '/da/learn/appointment'
     | '/da/learn/denmark'
     | '/da/learn/diagnosis'
+    | '/da/learn/how-it-works'
     | '/da/learn/living'
+    | '/da/learn/managing-symptoms'
     | '/da/learn/symptoms'
     | '/da/learn/treatment'
     | '/da/learn'
@@ -464,17 +530,23 @@ export interface FileRouteTypes {
     | '/da/learn'
     | '/da/research'
     | '/da/sources'
+    | '/learn/appointment'
     | '/learn/denmark'
     | '/learn/diagnosis'
+    | '/learn/how-it-works'
     | '/learn/living'
+    | '/learn/managing-symptoms'
     | '/learn/symptoms'
     | '/learn/treatment'
     | '/da/'
     | '/learn/'
     | '/da/about/for-decision-makers'
+    | '/da/learn/appointment'
     | '/da/learn/denmark'
     | '/da/learn/diagnosis'
+    | '/da/learn/how-it-works'
     | '/da/learn/living'
+    | '/da/learn/managing-symptoms'
     | '/da/learn/symptoms'
     | '/da/learn/treatment'
     | '/da/learn/'
@@ -691,6 +763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnIndexRouteImport
       parentRoute: typeof LearnRoute
     }
+    '/learn/appointment': {
+      id: '/learn/appointment'
+      path: '/appointment'
+      fullPath: '/learn/appointment'
+      preLoaderRoute: typeof LearnAppointmentRouteImport
+      parentRoute: typeof LearnRoute
+    }
     '/learn/denmark': {
       id: '/learn/denmark'
       path: '/denmark'
@@ -705,11 +784,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnDiagnosisRouteImport
       parentRoute: typeof LearnRoute
     }
+    '/learn/how-it-works': {
+      id: '/learn/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/learn/how-it-works'
+      preLoaderRoute: typeof LearnHowItWorksRouteImport
+      parentRoute: typeof LearnRoute
+    }
     '/learn/living': {
       id: '/learn/living'
       path: '/living'
       fullPath: '/learn/living'
       preLoaderRoute: typeof LearnLivingRouteImport
+      parentRoute: typeof LearnRoute
+    }
+    '/learn/managing-symptoms': {
+      id: '/learn/managing-symptoms'
+      path: '/managing-symptoms'
+      fullPath: '/learn/managing-symptoms'
+      preLoaderRoute: typeof LearnManagingSymptomsRouteImport
       parentRoute: typeof LearnRoute
     }
     '/learn/symptoms': {
@@ -740,6 +833,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DaLearnIndexRouteImport
       parentRoute: typeof DaLearnRoute
     }
+    '/da/learn/appointment': {
+      id: '/da/learn/appointment'
+      path: '/appointment'
+      fullPath: '/da/learn/appointment'
+      preLoaderRoute: typeof DaLearnAppointmentRouteImport
+      parentRoute: typeof DaLearnRoute
+    }
     '/da/learn/denmark': {
       id: '/da/learn/denmark'
       path: '/denmark'
@@ -754,11 +854,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DaLearnDiagnosisRouteImport
       parentRoute: typeof DaLearnRoute
     }
+    '/da/learn/how-it-works': {
+      id: '/da/learn/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/da/learn/how-it-works'
+      preLoaderRoute: typeof DaLearnHowItWorksRouteImport
+      parentRoute: typeof DaLearnRoute
+    }
     '/da/learn/living': {
       id: '/da/learn/living'
       path: '/living'
       fullPath: '/da/learn/living'
       preLoaderRoute: typeof DaLearnLivingRouteImport
+      parentRoute: typeof DaLearnRoute
+    }
+    '/da/learn/managing-symptoms': {
+      id: '/da/learn/managing-symptoms'
+      path: '/managing-symptoms'
+      fullPath: '/da/learn/managing-symptoms'
+      preLoaderRoute: typeof DaLearnManagingSymptomsRouteImport
       parentRoute: typeof DaLearnRoute
     }
     '/da/learn/symptoms': {
@@ -789,18 +903,24 @@ const AboutRouteChildren: AboutRouteChildren = {
 const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
 
 interface LearnRouteChildren {
+  LearnAppointmentRoute: typeof LearnAppointmentRoute
   LearnDenmarkRoute: typeof LearnDenmarkRoute
   LearnDiagnosisRoute: typeof LearnDiagnosisRoute
+  LearnHowItWorksRoute: typeof LearnHowItWorksRoute
   LearnLivingRoute: typeof LearnLivingRoute
+  LearnManagingSymptomsRoute: typeof LearnManagingSymptomsRoute
   LearnSymptomsRoute: typeof LearnSymptomsRoute
   LearnTreatmentRoute: typeof LearnTreatmentRoute
   LearnIndexRoute: typeof LearnIndexRoute
 }
 
 const LearnRouteChildren: LearnRouteChildren = {
+  LearnAppointmentRoute: LearnAppointmentRoute,
   LearnDenmarkRoute: LearnDenmarkRoute,
   LearnDiagnosisRoute: LearnDiagnosisRoute,
+  LearnHowItWorksRoute: LearnHowItWorksRoute,
   LearnLivingRoute: LearnLivingRoute,
+  LearnManagingSymptomsRoute: LearnManagingSymptomsRoute,
   LearnSymptomsRoute: LearnSymptomsRoute,
   LearnTreatmentRoute: LearnTreatmentRoute,
   LearnIndexRoute: LearnIndexRoute,
@@ -820,18 +940,24 @@ const DaAboutRouteWithChildren =
   DaAboutRoute._addFileChildren(DaAboutRouteChildren)
 
 interface DaLearnRouteChildren {
+  DaLearnAppointmentRoute: typeof DaLearnAppointmentRoute
   DaLearnDenmarkRoute: typeof DaLearnDenmarkRoute
   DaLearnDiagnosisRoute: typeof DaLearnDiagnosisRoute
+  DaLearnHowItWorksRoute: typeof DaLearnHowItWorksRoute
   DaLearnLivingRoute: typeof DaLearnLivingRoute
+  DaLearnManagingSymptomsRoute: typeof DaLearnManagingSymptomsRoute
   DaLearnSymptomsRoute: typeof DaLearnSymptomsRoute
   DaLearnTreatmentRoute: typeof DaLearnTreatmentRoute
   DaLearnIndexRoute: typeof DaLearnIndexRoute
 }
 
 const DaLearnRouteChildren: DaLearnRouteChildren = {
+  DaLearnAppointmentRoute: DaLearnAppointmentRoute,
   DaLearnDenmarkRoute: DaLearnDenmarkRoute,
   DaLearnDiagnosisRoute: DaLearnDiagnosisRoute,
+  DaLearnHowItWorksRoute: DaLearnHowItWorksRoute,
   DaLearnLivingRoute: DaLearnLivingRoute,
+  DaLearnManagingSymptomsRoute: DaLearnManagingSymptomsRoute,
   DaLearnSymptomsRoute: DaLearnSymptomsRoute,
   DaLearnTreatmentRoute: DaLearnTreatmentRoute,
   DaLearnIndexRoute: DaLearnIndexRoute,

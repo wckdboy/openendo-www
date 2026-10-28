@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { GuideNav } from "@/components/GuideNav";
 import { PageCredits } from "@/components/PageCredits";
 import { LEARN_REVIEWED } from "@/content/learn";
 import { canonicalQueryOptions, fetchDigestMarkdown } from "@/lib/canonical";
 import { useLang } from "@/lib/i18n";
 import { parseDigest, type StudyType } from "@/lib/digest";
+import { formatDate } from "@/lib/dates";
 import { RAW_BASE } from "@/lib/site";
 
 export function Evidence() {
-  const { c, path } = useLang();
+  const { c, path, locale } = useLang();
   const t = c.evidence;
   const snapshot = useQuery(canonicalQueryOptions);
   const data = snapshot.data;
@@ -43,8 +43,8 @@ export function Evidence() {
       <header>
         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{t.eyebrow}</p>
         <div className="mt-3 h-1 w-16 rounded-full bg-ribbon" />
-        <h1 className="mt-5 text-[clamp(2rem,7vw,3.25rem)] font-semibold leading-[1.05] tracking-tight">
-          {t.titleA} <span className="accent font-normal">{t.titleAccent}</span>
+        <h1 className="mt-5 text-[var(--text-3xl)]">
+          {t.titleA} {t.titleAccent}
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
         <PageCredits
@@ -60,7 +60,6 @@ export function Evidence() {
               : []
           }
         />
-        <GuideNav current="/evidence" />
         <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
           <Link to={path("/research")} className="underline underline-offset-4">
             {c.nav.research}
@@ -78,42 +77,20 @@ export function Evidence() {
 
       {data ? (
         <div className="mt-10">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-            {t.archive}
-          </h2>
-          <div className="mt-3 flex gap-2 overflow-x-auto pb-1">
-            {data.digestIndex.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => setSelected(item)}
-                aria-pressed={item === date}
-                className={
-                  item === date
-                    ? "shrink-0 rounded-full bg-foreground px-3 py-1.5 text-[13px] font-medium text-background"
-                    : "shrink-0 rounded-full bg-secondary px-3 py-1.5 text-[13px] text-muted-foreground"
-                }
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-          <p className="mt-4 text-xs text-muted-foreground">
-            {t.sourceNote}{" "}
-            <a
-              href={`${RAW_BASE}/docs/research/evidence/digest-${date}.md`}
-              className="underline decoration-hairline underline-offset-4"
+          <label className="mt-4 block text-sm text-[var(--ink-muted)]">
+            {parsed?.weekLabel ?? formatDate(date, "en")}
+            <select
+              className="mt-1 block min-h-11 w-full max-w-xs rounded-[var(--radius-md)] border border-[var(--border-strong)] bg-[var(--surface)] px-3 text-base text-[var(--ink)]"
+              value={date}
+              onChange={(event) => setSelected(event.target.value)}
             >
-              digest-{date}.md
-            </a>
-            {" · "}
-            <a
-              href={`${RAW_BASE}/docs/research/evidence/weekly/${date}.json`}
-              className="underline decoration-hairline underline-offset-4"
-            >
-              {date}.json
-            </a>
-          </p>
+              {data.digestIndex.map((item) => (
+                <option key={item} value={item}>
+                  {formatDate(item, "en")}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       ) : null}
 
@@ -163,8 +140,9 @@ export function Evidence() {
               >
                 <h3 className="text-[var(--text-lg)]">{entry.title}</h3>
                 <p className="mt-2 text-sm text-[var(--ink-muted)]">
-                  <Badge type={entry.studyType} /> {entry.certainty}
-                  {entry.people ? ` · ${entry.people}` : ""}
+                  <Badge type={entry.studyType} />
+                  {locale === "da" ? "Evidens" : "Evidence"}: {entry.certainty}
+                  {entry.people ? ` (${entry.people})` : ""}
                 </p>
                 <p className="mt-3">
                   <span className="font-semibold">{t.found} </span>
@@ -176,7 +154,10 @@ export function Evidence() {
                 </p>
                 {entry.pmid ? (
                   <p className="mt-3">
-                    <a className="mono-id" href={`https://pubmed.ncbi.nlm.nih.gov/${entry.pmid}/`}>
+                    <a
+                      className="mono-id text-sm"
+                      href={`https://pubmed.ncbi.nlm.nih.gov/${entry.pmid}/`}
+                    >
                       PMID {entry.pmid}
                     </a>
                   </p>
@@ -192,6 +173,11 @@ export function Evidence() {
             <summary className="min-h-11 cursor-pointer text-base font-semibold">
               {t.method}
             </summary>
+            <p className="mt-3 text-sm">
+              <a href={`${RAW_BASE}/docs/research/evidence/digest-${date}.md`}>digest-{date}.md</a>
+              {" · "}
+              <a href={`${RAW_BASE}/docs/research/evidence/weekly/${date}.json`}>{date}.json</a>
+            </p>
             <p className="mt-3 whitespace-pre-wrap text-base text-[var(--ink-muted)]">
               {parsed.method}
             </p>

@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { ArrowUpRight, Info, MapPin, ShieldAlert } from "lucide-react";
 import { PageCredits } from "@/components/PageCredits";
 import { LEARN_REVIEWED } from "@/content/learn";
+import { formatDate } from "@/lib/dates";
 import { useLang } from "@/lib/i18n";
 import { GITHUB_URL, RAW_BASE } from "@/lib/site";
 import {
@@ -34,11 +35,12 @@ export function Access() {
   const t = c.access;
   const query = useQuery(accessQueryOptions);
 
-  const [code, setCode] = useState(locale === "da" ? "DK" : "");
+  const [code, setCode] = useState("DK");
   const [postcode, setPostcode] = useState("");
-  const [submitted, setSubmitted] = useState<{ code: string; postcode: string } | null>(
-    locale === "da" ? { code: "DK", postcode: "" } : null,
-  );
+  const [submitted, setSubmitted] = useState<{ code: string; postcode: string }>({
+    code: "DK",
+    postcode: "",
+  });
 
   const countries = useMemo(() => {
     const entries = Object.entries(query.data?.countries ?? {});
@@ -54,14 +56,10 @@ export function Access() {
   return (
     <div className="mx-auto max-w-5xl px-6 pt-16 sm:pt-20">
       <header>
-        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{t.eyebrow}</p>
-        <div className="mt-3 h-1 w-16 rounded-full bg-ribbon" />
-        <h1 className="mt-5 max-w-2xl text-[clamp(2rem,7vw,3.25rem)] font-semibold leading-[1.05] tracking-tight">
-          {t.titleA} <span className="accent font-normal">{t.titleAccent}</span>
-        </h1>
+        <h1 className="max-w-2xl text-[var(--text-3xl)]">{t.titleA}</h1>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
         <PageCredits
-          reviewed={query.data?.updated ?? LEARN_REVIEWED}
+          reviewed={selected?.verified ?? query.data?.updated ?? LEARN_REVIEWED}
           citations={[{ label: "OpenEndo access.json", href: `${RAW_BASE}/docs/data/access.json` }]}
         />
       </header>
@@ -85,6 +83,7 @@ export function Access() {
               onChange={(e) => {
                 setCode(e.target.value);
                 setPostcode("");
+                setSubmitted({ code: e.target.value, postcode: "" });
               }}
               disabled={query.isLoading || query.isError}
               className={`mt-2 w-full appearance-none rounded-xl border border-input bg-background px-3.5 py-2.5 text-[15px] text-foreground disabled:opacity-50 ${focusRing}`}
@@ -151,18 +150,18 @@ export function Access() {
         </div>
       )}
 
-      {submitted && query.data && (
+      {query.data && (
         <div className="mt-14 pb-8">
           {selected ? (
             <Results
               country={selected}
-              postcode={submitted.postcode}
+              postcode={submitted?.postcode ?? ""}
               disclaimer={pick(query.data.disclaimer, locale)}
               updated={query.data.updated}
             />
-          ) : (
+          ) : submitted.code ? (
             <MissingCountry code={submitted.code} />
-          )}
+          ) : null}
         </div>
       )}
     </div>
@@ -299,7 +298,7 @@ function Results({
       </h2>
       {updated && (
         <p className="mt-2 text-[13px] text-muted-foreground">
-          {t.updated} {updated}
+          {t.updated} {formatDate(updated, locale)}
         </p>
       )}
 
@@ -318,12 +317,6 @@ function Results({
             {t.yourRegion}
           </p>
           <p className="numeral mt-2 text-2xl">{region.region}</p>
-          {nearest && (
-            <p className="mt-2 text-sm text-muted-foreground">
-              {t.nearestCenter}:{" "}
-              <span className="text-foreground">{pick(nearest.name, locale)}</span>
-            </p>
-          )}
         </div>
       )}
 
@@ -334,13 +327,18 @@ function Results({
         </div>
       )}
 
-      {meds.length > 0 && (
-        <Section title={t.medsTitle} lede={t.medsLede}>
-          <div className="grid gap-4 lg:grid-cols-2">
-            {meds.map((m) => (
-              <MedicationCard key={m.id ?? m.name} med={m} />
+      {path.length > 0 && (
+        <Section title={t.pathTitle} lede={t.pathLede}>
+          <ol id="your-gp" className="space-y-4 border-l border-hairline pl-6">
+            {path.map((step, i) => (
+              <li key={step} className="relative text-[15px] leading-relaxed">
+                <span className="absolute -left-[2.05rem] flex h-6 w-6 items-center justify-center rounded-full bg-primary text-[13px] text-[var(--on-primary)]">
+                  {i + 1}
+                </span>
+                {step}
+              </li>
             ))}
-          </div>
+          </ol>
         </Section>
       )}
 
@@ -354,18 +352,18 @@ function Results({
         </Section>
       )}
 
-      {path.length > 0 && (
-        <Section title={t.pathTitle} lede={t.pathLede}>
-          <ol className="space-y-4 border-l border-hairline pl-6">
-            {path.map((step, i) => (
-              <li key={i} className="relative text-[15px] leading-relaxed">
-                <span className="numeral absolute -left-[2.05rem] flex h-6 w-6 items-center justify-center rounded-full bg-ribbon text-[13px] text-ink">
-                  {i + 1}
-                </span>
-                {step}
-              </li>
-            ))}
-          </ol>
+      {meds.length > 0 && (
+        <Section title={t.medsTitle} lede={t.medsLede}>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {[...meds]
+              .sort(
+                (a, b) =>
+                  Number(b.access_level === "reimbursed") - Number(a.access_level === "reimbursed"),
+              )
+              .map((m) => (
+                <MedicationCard key={m.id ?? m.name} med={m} />
+              ))}
+          </div>
         </Section>
       )}
 

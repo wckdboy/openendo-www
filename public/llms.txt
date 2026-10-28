@@ -9,6 +9,9 @@
 
 ## Guides
 - [Understand](https://openendo.org/learn): symptoms, diagnosis, treatment, living with endometriosis, Denmark
+- [How endometriosis works](https://openendo.org/learn/how-it-works)
+- [Managing symptoms](https://openendo.org/learn/managing-symptoms)
+- [Bring this to your appointment](https://openendo.org/learn/appointment)
 - [Symptoms](https://openendo.org/learn/symptoms)
 - [Diagnosis](https://openendo.org/learn/diagnosis)
 - [Treatment](https://openendo.org/learn/treatment)

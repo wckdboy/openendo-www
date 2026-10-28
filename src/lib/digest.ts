@@ -35,6 +35,20 @@ const TOPIC: Record<string, string> = {
   "pharmacology and supportive care": "Treatment",
 };
 
+/** One plain sentence for the homepage. Drops study shorthand and parentheticals. */
+export function plainHeadline(signal: string): string {
+  const cleaned = signal
+    .replace(/\([^)]*\)/g, "")
+    .replace(/\[[^\]]*\]/g, "")
+    .replace(/\bPMID\s*\d+/gi, "")
+    .replace(/\bGRADE\b/gi, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s+([.;,])/g, "$1")
+    .trim();
+  const sentence = cleaned.split(/(?<=\.)\s/)[0] ?? cleaned;
+  return sentence.length > 180 ? `${sentence.slice(0, 177).replace(/\s+\S*$/, "")}` : sentence;
+}
+
 export function parseDigest(markdown: string): ParsedDigest {
   const heading = markdown.split("\n")[0] ?? "";
   const week = heading.match(/week\s+(\d{4}-\d{2}-\d{2})\.\.(\d{2}-\d{2})/i);

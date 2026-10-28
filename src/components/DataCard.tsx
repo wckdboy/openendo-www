@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { snapshotIsStale } from "@/lib/canonical";
+import { formatDate } from "@/lib/dates";
+import { useLang } from "@/lib/i18n";
 import type { AppPath } from "@/lib/site";
 
 export function DataCard({
@@ -17,7 +19,9 @@ export function DataCard({
   href: AppPath;
   staleLabel: string;
 }) {
+  const { locale } = useLang();
   const stale = snapshotIsStale(snapshot);
+  const when = formatDate(snapshot, locale);
   return (
     <article className="rounded-[var(--radius-md)] bg-card p-5 shadow-[var(--shadow-card)]">
       <p className="text-sm font-medium uppercase tracking-[0.04em] text-[var(--ink-subtle)]">
@@ -26,10 +30,10 @@ export function DataCard({
       <p className="numeral mt-2 text-[var(--ink)]">{value}</p>
       <p className="mt-2 text-base text-[var(--ink-muted)]">{context}</p>
       <p className="mt-4 text-sm text-[var(--ink-subtle)]">
-        Snapshot {snapshot}
+        Snapshot {when}
         {stale ? (
           <span className="ml-2 inline-flex rounded-full bg-[var(--caution-bg)] px-2 py-0.5 text-[var(--caution)]">
-            {staleLabel} {snapshot}
+            {staleLabel} {when}
           </span>
         ) : null}
         {" · "}

@@ -19,4 +19,4 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - name: Static client build exists
-        run: test -f .output/public/index.html && test -f .output/public/learn/symptoms/index.html && test -f .output/public/sitemap.xml && test -f .output/public/llms.txt
+        run: test -f .output/public/index.html && test -f .output/public/learn/symptoms/index.html && test -f .output/public/learn/how-it-works/index.html && test -f .output/public/sitemap.xml && test -f .output/public/llms.txt && grep -q '<svg' .output/public/dashboard/index.html

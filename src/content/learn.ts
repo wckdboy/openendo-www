@@ -10,6 +10,8 @@ export type LearnSection = {
   id: string;
   heading: string;
   paragraphs: string[];
+  items?: { label: string; detail: string }[];
+  callout?: { title: string; body: string };
   citations: Citation[];
 };
 
@@ -28,6 +30,10 @@ const who: Citation = {
   href: WHO_FACT_SHEET,
 };
 const nice: Citation = { label: "NICE NG73 recommendations", href: NICE_NG73_RECS };
+const nhs: Citation = {
+  label: "NHS, endometriosis",
+  href: "https://www.nhs.uk/conditions/endometriosis/",
+};
 const eshre: Citation = {
   label: "ESHRE guideline: endometriosis, 2022 (PMID 35350465)",
   href: ESHRE_PMID,
@@ -47,15 +53,15 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
       title: "Symptoms",
       description:
         "Endometriosis symptoms as described by WHO, and when NICE says to suspect the condition. Not a diagnosis.",
-      lede: "Symptoms vary widely. Some people are very unwell. Some have endometriosis and few symptoms. This page lists what the World Health Organization and NICE actually name — it does not diagnose you.",
+      lede: "Common signs are periods painful enough to stop daily life, pain during or after sex, painful bowel movements or peeing around your period, and trouble getting pregnant. A normal scan does not rule it out.",
       sections: [
         {
           id: "what-who-lists",
           heading: "What WHO lists as symptoms",
           paragraphs: [
-            "WHO describes endometriosis as a chronic disease. The symptoms it names are severe pain during menstruation, heavy menstrual bleeding, chronic pelvic pain that does not go away when the period ends, infertility, and abdominal bloating and nausea.",
-            "It can also affect sex, bowel movements, and urination, and it can affect mental health, including depression and anxiety. The disease is most often in the pelvis. In some people it occurs elsewhere, including the abdomen and chest.",
-            "WHO also says some people with endometriosis are asymptomatic, and that symptoms are variable enough that health workers may not recognise them easily.",
+            "Endometriosis is a chronic disease. Named symptoms are severe pain during a period, heavy bleeding, pelvic pain that continues after the period, trouble getting pregnant, and bloating and nausea.",
+            "It can affect sex, bowel movements, urination, and mood, including depression and anxiety. It is most often in the pelvis. In some people it is in the abdomen or chest.",
+            "Some people have endometriosis and no symptoms. The pattern varies enough that a clinician may not recognise it at once.",
           ],
           citations: [who],
         },
@@ -63,10 +69,28 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           id: "when-to-suspect",
           heading: "When NICE says to suspect it",
           paragraphs: [
-            "NICE guideline NG73 is written for the NHS in England. It says to suspect endometriosis in women and people, including those aged 17 and under, who have one or more of: chronic pelvic pain; period-related pain that affects daily activities and quality of life; deep pain during or after sex; period-related or cyclical gastrointestinal symptoms, especially painful bowel movements; period-related or cyclical urinary symptoms, especially blood in the urine or pain passing urine; or infertility together with one or more of those.",
-            "NICE also says a pain and symptom diary can help the conversation with a clinician, and that a normal examination does not exclude the condition. A diary is a record, not a diagnosis.",
+            "NICE guideline NG73, written for the NHS in England, says to suspect endometriosis, including in people aged 17 and under, when one or more of these are present.",
+            "A pain and symptom diary can help the conversation. A normal examination does not rule the condition out. A parent, sister, brother, or child with endometriosis makes it more likely.",
           ],
-          citations: [nice],
+          items: [
+            { label: "Pelvic pain", detail: "Pain in the pelvis that continues" },
+            { label: "Period pain", detail: "Pain with a period that affects daily life" },
+            { label: "Pain with sex", detail: "Deep pain during or after sex" },
+            { label: "Bowel", detail: "Painful bowel movements around a period" },
+            {
+              label: "Bladder",
+              detail: "Pain passing urine, or blood in the urine, around a period",
+            },
+            {
+              label: "Pregnancy",
+              detail: "Trouble conceiving, together with one of the signs above",
+            },
+          ],
+          callout: {
+            title: "When to see a doctor",
+            body: "See a GP if you think you might have endometriosis, if symptoms affect everyday life, work, or relationships, or if treatment has not helped. NHS marks this as non-urgent. Chest pain, shortness of breath, or coughing up blood should be told to a doctor.",
+          },
+          citations: [nice, nhs],
         },
         {
           id: "daily-life",
@@ -134,7 +158,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
       title: "Treatment",
       description:
         "Endometriosis treatments named by WHO and NICE: pain medicines, hormones, surgery, and fertility care. There is no cure. Not a personal treatment plan.",
-      lede: "There is no cure. Treatment aims to control symptoms. Which option fits depends on the person, the side effects, whether pregnancy is wanted, and what is available. This is a map of the options guidelines name, not a prescription.",
+      lede: "There is no cure. Treatment aims to control symptoms. The choice depends on side effects, whether pregnancy is wanted, and what is available.",
       sections: [
         {
           id: "no-cure",
@@ -195,7 +219,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
       title: "Living with endometriosis",
       description:
         "Work, school, fatigue, mood, and stigma: what WHO reports about life with endometriosis, plus where to find care. Not medical advice.",
-      lede: "Endometriosis is not only a list of treatments. WHO describes effects on work, school, sex, mood, and money. This page stays inside those statements and points to support. It does not tell you how to live.",
+      lede: "Severe pain, heavy bleeding, fatigue, low mood, and trouble getting pregnant can reduce quality of life, including work and school.",
       sections: [
         {
           id: "quality",
@@ -211,7 +235,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           heading: "Pain is still treated as normal",
           paragraphs: [
             "WHO says that in many countries the public, families, and most health workers do not recognise that this chronic pelvic pain is not normal. Normalising the pain, and the stigma around periods, harms mental health.",
-            "If a clinician dismisses symptoms as ordinary periods, that is a reason to ask for another assessment. NICE's suspect-list is a useful thing to take to that conversation. It is a UK guideline, so a Danish or other clinic may follow a different pathway. The symptoms themselves are not jurisdiction-specific.",
+            "If a clinician treats the symptoms as ordinary period pain, ask for another assessment. Take NICE's list to that conversation. A clinic outside England may use a different pathway.",
           ],
           citations: [who, nice],
         },
@@ -267,15 +291,15 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
       title: "Symptomer",
       description:
         "Symptomer på endometriose som WHO beskriver dem, og hvornår NICE siger man skal mistænke sygdommen. Ikke en diagnose.",
-      lede: "Symptomerne varierer. Nogle er meget syge. Nogle har endometriose og få symptomer. Siden gengiver det, WHO og NICE faktisk nævner — den stiller ikke en diagnose.",
+      lede: "Almindelige tegn er menstruationer, der er så smertefulde, at hverdagen stopper, smerter under eller efter sex, smerter ved afføring eller vandladning omkring menstruationen og svært ved at blive gravid. En normal scanning udelukker det ikke.",
       sections: [
         {
           id: "what-who-lists",
           heading: "Det WHO nævner som symptomer",
           paragraphs: [
-            "WHO beskriver endometriose som en kronisk sygdom. Symptomerne er kraftige menstruationssmerter, kraftig blødning, kroniske underlivssmerter der ikke forsvinder når menstruationen slutter, infertilitet samt oppustethed og kvalme.",
-            "Sygdommen kan også påvirke sex, afføring og vandladning og den psykiske sundhed, herunder depression og angst. Den sidder oftest i bækkenet. Hos nogle findes den andre steder, også i maven og brystkassen.",
-            "WHO skriver også, at nogle med endometriose ingen symptomer har, og at symptomerne er så forskellige, at sundhedspersoner ikke altid genkender dem.",
+            "Endometriose er en kronisk sygdom. De nævnte symptomer er kraftige menstruationssmerter, kraftig blødning, underlivssmerter der fortsætter efter menstruationen, svært ved at blive gravid samt oppustethed og kvalme.",
+            "Den kan påvirke sex, afføring, vandladning og humør, herunder depression og angst. Den sidder oftest i bækkenet. Hos nogle er den i maven eller brystkassen.",
+            "Nogle har endometriose uden symptomer. Mønstret varierer så meget, at en kliniker ikke altid genkender det med det samme.",
           ],
           citations: [who],
         },
@@ -283,10 +307,31 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           id: "when-to-suspect",
           heading: "Hvornår NICE siger, man skal mistænke det",
           paragraphs: [
-            "NICE-retningslinjen NG73 er skrevet til NHS i England. Den siger, at man skal mistænke endometriose hos kvinder og personer, også under 18 år, med ét eller flere af disse: kroniske underlivssmerter; menstruationssmerter der påvirker hverdag og livskvalitet; dybe smerter under eller efter sex; menstruationsrelaterede eller cykliske mave-tarm-symptomer, især smerter ved afføring; menstruationsrelaterede eller cykliske urinvejssymptomer, især blod i urinen eller smerter ved vandladning; eller infertilitet sammen med ét af de andre.",
-            "NICE siger også, at en smerte- og symptomdagbog kan hjælpe samtalen med en læge, og at en normal undersøgelse ikke udelukker sygdommen. En dagbog er et notat, ikke en diagnose.",
+            "NICE-retningslinjen NG73, skrevet til NHS i England, siger, at man skal mistænke endometriose, også hos personer på 17 år og derunder, når ét eller flere af disse tegn er der.",
+            "En smerte- og symptomdagbog kan hjælpe samtalen. En normal undersøgelse udelukker ikke sygdommen. En forælder, søster, bror eller et barn med endometriose gør den mere sandsynlig.",
           ],
-          citations: [nice],
+          items: [
+            { label: "Underlivssmerter", detail: "Smerter i underlivet, der fortsætter" },
+            {
+              label: "Menstruationssmerter",
+              detail: "Smerter ved menstruation, der påvirker hverdagen",
+            },
+            { label: "Smerter ved sex", detail: "Dybe smerter under eller efter sex" },
+            { label: "Tarm", detail: "Smerter ved afføring omkring menstruationen" },
+            {
+              label: "Blære",
+              detail: "Smerter ved vandladning eller blod i urinen omkring menstruationen",
+            },
+            {
+              label: "Graviditet",
+              detail: "Svært ved at blive gravid sammen med et af tegnene ovenfor",
+            },
+          ],
+          callout: {
+            title: "Hvornår du skal til læge",
+            body: "Gå til lægen, hvis du tror, du kan have endometriose, hvis symptomerne påvirker hverdag, arbejde eller relationer, eller hvis behandling ikke har hjulpet. NHS markerer det som ikke-akut. Brystsmerter, åndenød eller blodig hoste skal siges til en læge.",
+          },
+          citations: [nice, nhs],
         },
         {
           id: "daily-life",
@@ -354,7 +399,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
       title: "Behandling",
       description:
         "Behandlinger WHO og NICE nævner: smertestillende, hormoner, kirurgi og fertilitetshjælp. Der findes ingen kur. Ikke en personlig behandlingsplan.",
-      lede: "Der findes ingen kur. Behandling sigter mod at dæmpe symptomer. Hvad der passer, afhænger af personen, bivirkningerne, om graviditet ønskes, og hvad der er tilgængeligt. Dette er et kort over de muligheder, retningslinjerne nævner — ikke en recept.",
+      lede: "Der findes ingen kur. Behandling sigter mod at dæmpe symptomer. Valget afhænger af bivirkninger, om graviditet ønskes, og hvad der er tilgængeligt.",
       sections: [
         {
           id: "no-cure",
@@ -415,7 +460,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
       title: "At leve med endometriose",
       description:
         "Arbejde, skole, træthed, humør og stigma: det WHO skriver om livet med endometriose, og hvor man finder hjælp. Ikke lægefaglig rådgivning.",
-      lede: "Endometriose er ikke kun en liste over behandlinger. WHO beskriver følger for arbejde, skole, sex, humør og økonomi. Siden holder sig til de udsagn og peger på støtte. Den fortæller dig ikke, hvordan du skal leve.",
+      lede: "Stærke smerter, kraftig blødning, træthed, nedtrykthed og svært ved at blive gravid kan sænke livskvaliteten, også på arbejde og i skole.",
       sections: [
         {
           id: "quality",
@@ -431,7 +476,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           heading: "Smerter bliver stadig kaldt normale",
           paragraphs: [
             "WHO skriver, at offentligheden, familier og de fleste sundhedspersoner i mange lande ikke anerkender, at de kroniske underlivssmerter ikke er normale. At normalisere smerterne, og stigmaet omkring menstruation, skader den psykiske sundhed.",
-            "Hvis en læge affærdiger symptomer som almindelig menstruation, er det en grund til at bede om en ny vurdering. NICE's liste over mistanke er noget, man kan tage med til samtalen. Det er en britisk retningslinje, så et dansk forløb kan være et andet. Symptomerne selv er ikke begrænset til ét land.",
+            "Hvis en læge kalder symptomerne almindelige menstruationssmerter, så bed om en ny vurdering. Tag NICE's liste med til samtalen. En klinik uden for England kan bruge et andet forløb.",
           ],
           citations: [who, nice],
         },

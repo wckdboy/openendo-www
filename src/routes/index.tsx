@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Live, open analytics on endometriosis clinical trials, research and funding. Because 190 million people deserve to be taken seriously.",
+          "Clear, sourced information about endometriosis: symptoms, care, and the open research dataset.",
       },
       {
         property: "og:title",
@@ -17,8 +17,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:description",
-        content:
-          "Every endometriosis trial, paper and grant, tracked in the open and refreshed from public registries.",
+        content: "Guides with citations, and trial and paper counts from the open dataset.",
       },
     ],
     links: [

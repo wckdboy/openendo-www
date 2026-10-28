@@ -2,16 +2,15 @@ import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { DataCard } from "@/components/DataCard";
 import { canonicalQueryOptions } from "@/lib/canonical";
-import { parseDigest } from "@/lib/digest";
+import { parseDigest, plainHeadline } from "@/lib/digest";
 import { useLang } from "@/lib/i18n";
 import { ESHRE_PMID, NICE_NG73, WHO_FACT_SHEET } from "@/lib/site";
 
 const GUIDES = [
-  { to: "/learn/symptoms" as const, title: "symptoms" as const },
+  { to: "/learn/how-it-works" as const, title: "how" as const },
   { to: "/learn/diagnosis" as const, title: "diagnosis" as const },
-  { to: "/learn/treatment" as const, title: "treatment" as const },
+  { to: "/learn/managing-symptoms" as const, title: "managing" as const },
   { to: "/learn/living" as const, title: "living" as const },
-  { to: "/learn/denmark" as const, title: "denmark" as const },
 ];
 
 export function Home() {
@@ -23,39 +22,40 @@ export function Home() {
   return (
     <div className="mx-auto max-w-[var(--container)] px-6 pb-24 pt-14 sm:pt-20">
       <header className="max-w-[var(--measure)]">
-        <h1 className="text-[var(--text-3xl)]">{c.home.promise}</h1>
+        <h1 className="text-[var(--text-home)]">{c.home.promise}</h1>
         <p className="mt-4 text-[var(--text-lg)] text-[var(--ink-muted)]">{c.home.sub}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
           <Link
-            to={path("/learn")}
-            className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] bg-primary px-5 text-base font-medium text-[var(--on-primary)] no-underline"
+            to={path("/learn/symptoms")}
+            className="flex min-h-[120px] flex-col justify-center rounded-[var(--radius-md)] bg-primary px-5 py-4 text-[var(--on-primary)] no-underline"
           >
-            {c.home.readGuides}
+            <span className="text-[var(--text-lg)] font-semibold">{c.home.tileMightTitle}</span>
+            <span className="mt-2 text-base">{c.home.tileMightBody}</span>
           </Link>
           <Link
-            to={path("/evidence")}
-            className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] px-5 text-base font-medium text-[var(--ink)] no-underline ring-1 ring-[var(--border-strong)]"
+            to={path("/access")}
+            className="flex min-h-[120px] flex-col justify-center rounded-[var(--radius-md)] px-5 py-4 text-[var(--ink)] no-underline ring-1 ring-[var(--border-strong)]"
           >
-            {c.home.readEvidence}
+            <span className="text-[var(--text-lg)] font-semibold">{c.home.tileCareTitle}</span>
+            <span className="mt-2 text-base text-[var(--ink-muted)]">{c.home.tileCareBody}</span>
           </Link>
         </div>
       </header>
 
-      <section className="mt-16" aria-labelledby="guides-heading">
+      <section className="mt-10 max-w-[var(--measure)]" aria-labelledby="guides-heading">
         <h2 id="guides-heading" className="text-[var(--text-2xl)]">
-          {c.nav.guides}
+          {c.home.moreGuides}
         </h2>
-        <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-4 divide-y divide-hairline border-t border-hairline">
           {GUIDES.map((guide) => (
             <li key={guide.to}>
-              <Link
-                to={path(guide.to)}
-                className="block h-full rounded-[var(--radius-md)] bg-card p-5 text-[var(--ink)] no-underline shadow-[var(--shadow-card)]"
-              >
-                <h3 className="text-[var(--text-xl)]">{c.sections[guide.title].title}</h3>
-                <p className="mt-2 text-base text-[var(--ink-muted)]">
+              <Link to={path(guide.to)} className="block min-h-11 py-3 no-underline">
+                <span className="text-base font-semibold text-[var(--ink)]">
+                  {c.sections[guide.title].title}
+                </span>
+                <span className="mt-1 block text-base text-[var(--ink-muted)]">
                   {c.sections[guide.title].summary}
-                </p>
+                </span>
               </Link>
             </li>
           ))}
@@ -71,7 +71,9 @@ export function Home() {
             <p className="mt-2 text-sm text-[var(--ink-subtle)]">{digest.weekLabel}</p>
             <ul className="mt-4 list-disc space-y-2 pl-5 text-base">
               {digest.signals.slice(0, 3).map((signal) => (
-                <li key={signal.slice(0, 48)}>{signal}</li>
+                <li key={signal.slice(0, 48)} className="line-clamp-2">
+                  {plainHeadline(signal)}
+                </li>
               ))}
             </ul>
           </>
@@ -97,7 +99,7 @@ export function Home() {
           <DataCard
             label={c.dashboard.kpi.recruiting}
             value={data ? data.meta.counts.recruiting_global.toLocaleString(locale) : "—"}
-            context={c.home.cardRecruiting}
+            context={c.dashboard.meanings.recruiting}
             snapshot={snapshot}
             href={path("/dashboard")}
             staleLabel={c.home.staleChip}
@@ -105,7 +107,7 @@ export function Home() {
           <DataCard
             label={c.dashboard.kpi.denmark}
             value={data ? data.meta.counts.denmark.toLocaleString(locale) : "—"}
-            context={c.home.cardDenmark}
+            context={c.dashboard.meanings.denmark}
             snapshot={snapshot}
             href={path("/dashboard")}
             staleLabel={c.home.staleChip}
@@ -113,7 +115,7 @@ export function Home() {
           <DataCard
             label={c.dashboard.kpi.papers7}
             value={data ? data.meta.counts.pubmed_7d.toLocaleString(locale) : "—"}
-            context={c.home.cardPapers}
+            context={c.dashboard.meanings.papers7}
             snapshot={snapshot}
             href={path("/dashboard")}
             staleLabel={c.home.staleChip}

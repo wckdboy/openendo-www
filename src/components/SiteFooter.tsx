@@ -56,46 +56,22 @@ export function SiteFooter() {
             {c.footer.project}
           </h2>
           <ul className="mt-4 space-y-2.5 text-sm">
-            <li>
-              <Link to={path("/learn")} className="text-[var(--ink)] no-underline">
-                {c.nav.guides}
-              </Link>
-            </li>
-            <li>
-              <Link to={path("/about")} className="text-[var(--ink)] no-underline">
-                {c.nav.about}
-              </Link>
-            </li>
-            <li>
-              <Link to={path("/find")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.find}
-              </Link>
-            </li>
-            <li>
-              <Link to={path("/dashboard")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.dashboard}
-              </Link>
-            </li>
-            <li>
-              <Link to={path("/evidence")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.evidence}
-              </Link>
-            </li>
-            <li>
-              <Link to={path("/research")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.research}
-              </Link>
-            </li>
-            <li>
-              <Link to={path("/access")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.access}
-              </Link>
-            </li>
-            <li>
-              <Link to={path("/knowledge")} className="text-foreground/80 hover:text-foreground">
-                {c.nav.knowledge}
-              </Link>
-            </li>
+            {(
+              [
+                ["/learn", c.nav.guides],
+                ["/evidence", c.nav.evidenceNav],
+                ["/dashboard", c.nav.trials],
+                ["/access", c.nav.care],
+                ["/about", c.nav.about],
+                ["/find", c.nav.find],
+              ] as const
+            ).map(([to, label]) => (
+              <li key={to}>
+                <Link to={path(to)} className="text-[var(--ink)] no-underline">
+                  {label}
+                </Link>
+              </li>
+            ))}
             <li>
               <a
                 href={GITHUB_URL}

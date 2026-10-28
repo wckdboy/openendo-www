@@ -8,7 +8,7 @@
     "predev": "node --experimental-strip-types scripts/sync-openendo.mjs",
     "prebuild": "node --experimental-strip-types scripts/sync-openendo.mjs",
     "build": "vite build",
-    "test": "node --experimental-strip-types --test scripts/check-open-calls.mjs",
+    "test": "node --experimental-strip-types --test scripts/check-open-calls.mjs scripts/check-explainers.mjs scripts/check-charts.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",

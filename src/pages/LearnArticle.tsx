@@ -1,7 +1,10 @@
 import { Link } from "@tanstack/react-router";
+import { ChevronDown } from "lucide-react";
 import { LEARN_REVIEWED, learnPage, type Citation, type LearnSlug } from "@/content/learn";
 import { DenmarkAccess } from "@/components/DenmarkAccess";
+import { ExplainerSet, TreatmentExplainer } from "@/components/explainers/Explainers";
 import { useLang } from "@/lib/i18n";
+import { formatDate } from "@/lib/dates";
 import type { BasePath } from "@/lib/site";
 
 type SourceKind =
@@ -59,7 +62,10 @@ export function LearnArticle({ slug }: { slug: LearnSlug }) {
       <div className="mt-6 lg:grid lg:grid-cols-[var(--toc)_minmax(0,var(--content))] lg:gap-10">
         <nav aria-label={c.learn.toc} className="mb-8 lg:sticky lg:top-24 lg:mb-0 lg:self-start">
           <details className="lg:hidden">
-            <summary className="min-h-11 cursor-pointer text-base">{c.learn.toc}</summary>
+            <summary className="toc flex min-h-11 cursor-pointer items-center gap-2 text-base">
+              <ChevronDown className="h-4 w-4" aria-hidden />
+              {c.learn.toc}
+            </summary>
             <Toc sections={page.sections} />
           </details>
           <div className="hidden lg:block">
@@ -70,17 +76,18 @@ export function LearnArticle({ slug }: { slug: LearnSlug }) {
           </div>
         </nav>
         <article className="max-w-[var(--measure)]" lang={locale}>
-          <h1 className="text-[var(--text-3xl)]">{page.title}</h1>
+          <h1 className="text-[var(--text-3xl)]">{page.title.replace(/\.$/, "")}</h1>
           <div className="mt-6 rounded-[var(--radius-md)] bg-[var(--sunken)] p-5">
             <h2 className="text-base font-semibold">{c.learn.inShort}</h2>
             <p className="mt-2 text-[var(--text-md)]">{page.lede}</p>
           </div>
           <p className="mt-4 text-sm text-[var(--ink-subtle)]">
-            {c.learn.reviewed} <time dateTime={LEARN_REVIEWED}>28 Oct 2026</time>
+            {c.learn.writtenBy}
             {" · "}
-            {c.learn.nextReview} Jan 2027
+            {c.learn.reviewed}{" "}
+            <time dateTime={LEARN_REVIEWED}>{formatDate(LEARN_REVIEWED, locale)}</time>
             {" · "}
-            <Link to={path("/about")}>{c.nav.sources}</Link>
+            {c.learn.noClinicalReview}
           </p>
           <p className="mt-2 text-sm text-[var(--ink-subtle)]">
             {c.learn.quietDisclaimer} <Link to={path("/about")}>{c.learn.howToUse}</Link>
@@ -91,22 +98,79 @@ export function LearnArticle({ slug }: { slug: LearnSlug }) {
                 <h2 id={`${section.id}-title`} className="text-[var(--text-2xl)]">
                   {section.heading}
                 </h2>
-                {section.paragraphs.map((paragraph) => (
+                {section.paragraphs.map((paragraph, index) => (
                   <p key={paragraph.slice(0, 40)} className="mt-4">
                     {paragraph}
+                    {index === section.paragraphs.length - 1 && !section.items
+                      ? section.citations.map((citation) => (
+                          <Cite
+                            key={citation.href}
+                            n={numberOf(citation.href)}
+                            citation={citation}
+                          />
+                        ))
+                      : null}
                   </p>
                 ))}
-                <p className="mt-2">
-                  {section.citations.map((citation) => (
-                    <Cite key={citation.href} n={numberOf(citation.href)} citation={citation} />
-                  ))}
-                </p>
+                {section.items ? (
+                  <ul className="mt-4 space-y-3">
+                    {section.items.map((item) => (
+                      <li key={item.label}>
+                        <span className="font-semibold">{item.label}. </span>
+                        <span className="text-[var(--ink-muted)]">{item.detail}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {section.items
+                  ? section.citations.map((citation) => (
+                      <Cite key={citation.href} n={numberOf(citation.href)} citation={citation} />
+                    ))
+                  : null}
+                {section.callout ? (
+                  <div className="mt-4 rounded-[var(--radius-md)] bg-[var(--info-bg)] p-4">
+                    <h3 className="text-base font-semibold text-[var(--info)]">
+                      {section.callout.title}
+                    </h3>
+                    <p className="mt-2">{section.callout.body}</p>
+                  </div>
+                ) : null}
               </section>
             ))}
           </div>
+          {slug === "symptoms" || slug === "treatment" ? (
+            <div className="mt-10">
+              <TreatmentExplainer
+                locale={locale}
+                showAsText={c.learn.showAsText}
+                listHeading={c.learn.sources}
+              />
+              <p className="mt-4">
+                <Link to={path("/learn/managing-symptoms")}>
+                  {locale === "da" ? "Håndter symptomer" : "Managing symptoms"}
+                </Link>
+              </p>
+            </div>
+          ) : null}
           {slug === "diagnosis" ? (
-            <p className="mt-10">
-              <Link to={path("/access")}>{c.nav.care}</Link>
+            <div className="mt-10">
+              <ExplainerSet
+                locale={locale}
+                ids={["diagnosis"]}
+                showAsText={c.learn.showAsText}
+                anchorPrefix="diagnosis-source"
+                listHeading={c.learn.sources}
+              />
+              <p className="mt-4">
+                <Link to={path("/access")}>{c.nav.care}</Link>
+              </p>
+            </div>
+          ) : null}
+          {slug === "living" ? (
+            <p className="mt-8">
+              <Link to={path("/learn/managing-symptoms")}>
+                {locale === "da" ? "Håndter symptomer" : "Managing symptoms"}
+              </Link>
             </p>
           ) : null}
           {slug === "denmark" ? <DenmarkAccess /> : null}
@@ -150,7 +214,7 @@ function Cite({ n, citation }: { n: number; citation: Citation }) {
   return (
     <a
       href={`#source-${n}`}
-      className="group relative mr-2 text-sm no-underline"
+      className="group relative ml-0.5 text-sm no-underline align-super"
       title={citation.label}
     >
       [{n}]

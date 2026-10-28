@@ -17,6 +17,9 @@ export const PRIMARY_SECTIONS: { id: SectionId; path: BasePath }[] = [
 /** Extra pages included in the index, beyond the seven entry points. */
 export const INDEX_PATHS = [
   "/learn/symptoms",
+  "/learn/how-it-works",
+  "/learn/managing-symptoms",
+  "/learn/appointment",
   "/access",
   "/research",
   "/knowledge",

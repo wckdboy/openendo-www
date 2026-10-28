@@ -1,4 +1,5 @@
 import bundledAccess from "@/generated/access.json";
+import { reviewDenmark } from "@/content/denmark-review";
 import { RAW_BASE } from "@/lib/site";
 
 /**
@@ -97,13 +98,13 @@ export async function loadAccessData(): Promise<AccessData> {
     throw new Error("access.json: unexpected shape");
   }
 
-  return data;
+  return reviewDenmark(data);
 }
 
 export const accessQueryOptions = {
   queryKey: ["openendo-access"] as const,
   queryFn: loadAccessData,
-  initialData: bundledAccess as AccessData,
+  initialData: reviewDenmark(bundledAccess as AccessData),
   staleTime: Infinity,
   refetchOnMount: false as const,
   retry: 1,

@@ -20,6 +20,9 @@ export const BASE_PATHS = [
   "/learn/treatment",
   "/learn/living",
   "/learn/denmark",
+  "/learn/how-it-works",
+  "/learn/managing-symptoms",
+  "/learn/appointment",
   "/evidence",
   "/dashboard",
   "/research",
@@ -42,6 +45,9 @@ export type AppPath =
   | "/da/learn/treatment"
   | "/da/learn/living"
   | "/da/learn/denmark"
+  | "/da/learn/how-it-works"
+  | "/da/learn/managing-symptoms"
+  | "/da/learn/appointment"
   | "/da/evidence"
   | "/da/dashboard"
   | "/da/research"
@@ -60,6 +66,9 @@ const SITEMAP_META: Record<BasePath, { changefreq: string; priority: string }> =
   "/learn/treatment": { changefreq: "monthly", priority: "0.8" },
   "/learn/living": { changefreq: "monthly", priority: "0.8" },
   "/learn/denmark": { changefreq: "monthly", priority: "0.8" },
+  "/learn/how-it-works": { changefreq: "monthly", priority: "0.8" },
+  "/learn/managing-symptoms": { changefreq: "monthly", priority: "0.8" },
+  "/learn/appointment": { changefreq: "monthly", priority: "0.6" },
   "/evidence": { changefreq: "weekly", priority: "0.8" },
   "/dashboard": { changefreq: "daily", priority: "0.9" },
   "/research": { changefreq: "weekly", priority: "0.7" },

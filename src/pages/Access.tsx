@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ArrowUpRight, Info, MapPin, ShieldAlert } from "lucide-react";
 import { useLang } from "@/lib/i18n";
-import { GITHUB_URL } from "@/content/data";
+import { GITHUB_URL } from "@/lib/site";
 import {
   accessQueryOptions,
   pick,
@@ -13,7 +13,6 @@ import {
   type Medication,
   type Organization,
 } from "@/lib/access.functions";
-
 
 const LEVEL_STYLES: Record<string, string> = {
   reimbursed: "bg-emerald-50 text-emerald-800 ring-emerald-200",
@@ -279,7 +278,9 @@ function Results({
   const nearest =
     region && centers.length
       ? (centers.find((x) =>
-          region.side === "east" ? /rigshospital/i.test(x.id ?? "") : /skejby|aarhus|auh/i.test(x.id ?? ""),
+          region.side === "east"
+            ? /rigshospital/i.test(x.id ?? "")
+            : /skejby|aarhus|auh/i.test(x.id ?? ""),
         ) ?? null)
       : null;
 
@@ -311,7 +312,8 @@ function Results({
           <p className="numeral mt-2 text-2xl">{region.region}</p>
           {nearest && (
             <p className="mt-2 text-sm text-muted-foreground">
-              {t.nearestCenter}: <span className="text-foreground">{pick(nearest.name, locale)}</span>
+              {t.nearestCenter}:{" "}
+              <span className="text-foreground">{pick(nearest.name, locale)}</span>
             </p>
           )}
         </div>
@@ -399,9 +401,7 @@ function MedicationCard({ med }: { med: Medication }) {
         {med.prescription_note && (
           <p className="text-muted-foreground">{pick(med.prescription_note, locale)}</p>
         )}
-        {med.price_note && (
-          <p className="numeral text-[15px]">{pick(med.price_note, locale)}</p>
-        )}
+        {med.price_note && <p className="numeral text-[15px]">{pick(med.price_note, locale)}</p>}
       </div>
 
       <div className="mt-auto">

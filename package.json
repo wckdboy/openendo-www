@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "predev": "node --experimental-strip-types scripts/sync-openendo.mjs",
+    "prebuild": "node --experimental-strip-types scripts/sync-openendo.mjs",
     "build": "vite build",
+    "test": "node --experimental-strip-types --test scripts/check-open-calls.mjs",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
@@ -86,6 +89,7 @@
     "prettier": "^3.7.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "8.1.5"
+    "vite": "8.1.5",
+    "wrangler": "^4.154.0"
   }
 }

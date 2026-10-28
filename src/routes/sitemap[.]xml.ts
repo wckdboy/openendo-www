@@ -1,26 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
+import { SITE_ORIGIN, sitemapEntries } from "@/lib/site";
 
-const BASE_URL = "https://openendo.org";
-
-interface SitemapEntry {
-  path: string;
-  changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
-  priority?: string;
-}
-
-const entries: SitemapEntry[] = [
-  { path: "/", changefreq: "weekly", priority: "1.0" },
-  { path: "/dashboard", changefreq: "daily", priority: "0.9" },
-  { path: "/research", changefreq: "weekly", priority: "0.8" },
-  { path: "/access", changefreq: "weekly", priority: "0.8" },
-  { path: "/knowledge", changefreq: "monthly", priority: "0.7" },
-  { path: "/da", changefreq: "weekly", priority: "0.9" },
-  { path: "/da/dashboard", changefreq: "daily", priority: "0.8" },
-  { path: "/da/research", changefreq: "weekly", priority: "0.7" },
-  { path: "/da/access", changefreq: "weekly", priority: "0.7" },
-  { path: "/da/knowledge", changefreq: "monthly", priority: "0.6" },
-];
+const entries = sitemapEntries();
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -29,7 +11,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         const urls = entries.map((e) =>
           [
             `  <url>`,
-            `    <loc>${BASE_URL}${e.path}</loc>`,
+            `    <loc>${e.path === "/" ? `${SITE_ORIGIN}/` : `${SITE_ORIGIN}${e.path}`}</loc>`,
             e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
             e.priority ? `    <priority>${e.priority}</priority>` : null,
             `  </url>`,

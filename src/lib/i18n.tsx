@@ -1,36 +1,18 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, type ReactNode } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { copy, type Locale } from "@/content/copy";
+import { basePathFromPathname, localizedPath, type AppPath, type BasePath } from "@/lib/site";
 
-/** Canonical (English) paths of every public page. */
-export const BASE_PATHS = ["/", "/dashboard", "/research", "/access", "/knowledge"] as const;
-export type BasePath = (typeof BASE_PATHS)[number];
-
-const DA_PATHS = {
-  "/": "/da",
-  "/dashboard": "/da/dashboard",
-  "/research": "/da/research",
-  "/access": "/da/access",
-  "/knowledge": "/da/knowledge",
-} as const;
-
-export type AppPath = BasePath | (typeof DA_PATHS)[BasePath];
+export type { AppPath, BasePath };
+export { basePathFromPathname };
 
 /** Map a canonical path to the URL for a given language. */
 export function localePath(path: BasePath, locale: Locale): AppPath {
-  return locale === "da" ? DA_PATHS[path] : path;
+  return localizedPath(path, locale);
 }
 
 export function localeFromPathname(pathname: string): Locale {
   return pathname === "/da" || pathname.startsWith("/da/") ? "da" : "en";
-}
-
-export function basePathFromPathname(pathname: string): BasePath {
-  const stripped = pathname.replace(/^\/da/, "") || "/";
-  const normalised = stripped.length > 1 ? stripped.replace(/\/$/, "") : "/";
-  return (BASE_PATHS as readonly string[]).includes(normalised)
-    ? (normalised as BasePath)
-    : "/";
 }
 
 type Ctx = {

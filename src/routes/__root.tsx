@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import {
   Outlet,
   Link,
@@ -12,9 +12,10 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { LanguageProvider, localeFromPathname } from "../lib/i18n";
+import { LanguageProvider, localeFromPathname, useLang } from "../lib/i18n";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { canonicalQueryOptions } from "../lib/canonical";
 
 function NotFoundComponent() {
   return (
@@ -138,18 +139,40 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function SkipLink() {
+  const { c } = useLang();
+  return (
+    <a
+      href="#content"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-foreground focus:px-4 focus:py-2 focus:text-sm focus:text-background"
+    >
+      {c.nav.skip}
+    </a>
+  );
+}
+
+function RefreshCanonical() {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    void queryClient.refetchQueries({ queryKey: canonicalQueryOptions.queryKey });
+  }, [queryClient]);
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
+        <SkipLink />
         <SiteHeader />
-        <main>
+        <main id="content">
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </main>
         <SiteFooter />
+        <RefreshCanonical />
       </LanguageProvider>
     </QueryClientProvider>
   );

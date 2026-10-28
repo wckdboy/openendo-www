@@ -10,7 +10,10 @@ export const Route = createFileRoute("/da/access")({
     meta: [
       { title },
       { name: "description", content: description },
-      { property: "og:title", content: "Find hjælp — adgang til endometriosebehandling, land for land" },
+      {
+        property: "og:title",
+        content: "Find hjælp — adgang til endometriosebehandling, land for land",
+      },
       { property: "og:description", content: description },
       { property: "og:locale", content: "da_DK" },
       { property: "og:url", content: "https://openendo.org/da/access" },

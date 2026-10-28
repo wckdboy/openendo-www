@@ -1,12 +1,12 @@
-import { createServerFn } from "@tanstack/react-start";
+import { RAW_BASE } from "@/lib/site";
 
 /**
  * Access data lives in the OpenEndo repo as a curated, sourced JSON
  * (schema: openendo-access-v1). We never hard-code its contents — the file
  * grows with more countries over time.
  */
-const ACCESS_URL =
-  "https://raw.githubusercontent.com/wckdboy/openendo/main/docs/data/access.json";
+
+const ACCESS_URL = `${RAW_BASE}/docs/data/access.json`;
 
 export type Localized = { en: string; da: string };
 
@@ -85,29 +85,23 @@ export type AccessData = {
   countries: Record<string, Country>;
 };
 
-let cache: { at: number; data: AccessData } | null = null;
 const CACHE_MS = 1000 * 60 * 30;
 
-export const getAccessData = createServerFn({ method: "GET" }).handler(
-  async (): Promise<AccessData> => {
-    if (cache && Date.now() - cache.at < CACHE_MS) return cache.data;
+export async function loadAccessData(): Promise<AccessData> {
+  const res = await fetch(ACCESS_URL, { headers: { accept: "application/json" } });
+  if (!res.ok) throw new Error(`access.json ${res.status}`);
+  const data = (await res.json()) as AccessData;
 
-    const res = await fetch(ACCESS_URL, { headers: { accept: "application/json" } });
-    if (!res.ok) throw new Error(`access.json ${res.status}`);
-    const data = (await res.json()) as AccessData;
+  if (!data?.countries || typeof data.countries !== "object") {
+    throw new Error("access.json: unexpected shape");
+  }
 
-    if (!data?.countries || typeof data.countries !== "object") {
-      throw new Error("access.json: unexpected shape");
-    }
-
-    cache = { at: Date.now(), data };
-    return data;
-  },
-);
+  return data;
+}
 
 export const accessQueryOptions = {
   queryKey: ["openendo-access"] as const,
-  queryFn: () => getAccessData(),
+  queryFn: loadAccessData,
   staleTime: CACHE_MS,
   retry: 1,
 };

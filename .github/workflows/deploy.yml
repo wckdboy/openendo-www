@@ -1,0 +1,36 @@
+name: Deploy Cloudflare Workers
+
+# Deploys static assets only. No custom domain and no DNS changes:
+# openendo.org stays where it is until the zone is attached by hand.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "15 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Deploy when Cloudflare secrets are present
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is unset. Skipping deploy."
+            echo "Add both repository secrets, then re-run this workflow. Do not change openendo.org DNS from here."
+            exit 0
+          fi
+          npx wrangler deploy

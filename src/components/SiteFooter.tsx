@@ -1,16 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { RibbonMark } from "./RibbonMark";
 import { useLang } from "@/lib/i18n";
-import { GITHUB_URL } from "@/content/data";
+import { ESHRE_GUIDELINE, GITHUB_URL, NICE_NG73, WHO_FACT_SHEET } from "@/lib/site";
 
 const sources = [
   { label: "ClinicalTrials.gov", url: "https://clinicaltrials.gov/" },
   { label: "PubMed", url: "https://pubmed.ncbi.nlm.nih.gov/" },
-  { label: "WHO", url: "https://www.who.int/news-room/fact-sheets/detail/endometriosis" },
-  {
-    label: "ESHRE guideline",
-    url: "https://www.eshre.eu/Guidelines-and-Legal/Guidelines/Endometriosis-guideline",
-  },
+  { label: "WHO", url: WHO_FACT_SHEET },
+  { label: "ESHRE guideline", url: ESHRE_GUIDELINE },
+  { label: "NICE NG73", url: NICE_NG73 },
 ];
 
 export function SiteFooter() {
@@ -26,6 +24,9 @@ export function SiteFooter() {
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
             {c.footer.tagline}
+          </p>
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            {c.footer.notAdvice}
           </p>
           <p className="mt-6 text-xs text-muted-foreground">{c.footer.license}</p>
         </div>
@@ -56,8 +57,28 @@ export function SiteFooter() {
           </h2>
           <ul className="mt-4 space-y-2.5 text-sm">
             <li>
+              <Link to={path("/learn")} className="text-foreground/80 hover:text-foreground">
+                {c.nav.learn}
+              </Link>
+            </li>
+            <li>
               <Link to={path("/dashboard")} className="text-foreground/80 hover:text-foreground">
                 {c.nav.dashboard}
+              </Link>
+            </li>
+            <li>
+              <Link to={path("/evidence")} className="text-foreground/80 hover:text-foreground">
+                {c.nav.evidence}
+              </Link>
+            </li>
+            <li>
+              <Link to={path("/research")} className="text-foreground/80 hover:text-foreground">
+                {c.nav.research}
+              </Link>
+            </li>
+            <li>
+              <Link to={path("/access")} className="text-foreground/80 hover:text-foreground">
+                {c.nav.access}
               </Link>
             </li>
             <li>
@@ -85,6 +106,7 @@ export function SiteFooter() {
               <button
                 key={l}
                 onClick={() => setLocale(l)}
+                aria-pressed={locale === l}
                 className={
                   locale === l
                     ? "rounded-full bg-secondary px-3 py-1 text-foreground"

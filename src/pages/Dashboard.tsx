@@ -14,36 +14,87 @@ import {
 } from "recharts";
 import { ArrowUpRight } from "lucide-react";
 import { useLang } from "@/lib/i18n";
-import { openEndoQueryOptions, paperMonthlyQueryOptions } from "@/lib/openendo.functions";
-
+import {
+  canonicalQueryOptions,
+  displayPhase,
+  displayStatus,
+  monthLabel,
+  tally,
+} from "@/lib/canonical";
+import { useMounted } from "@/lib/use-mounted";
 
 type Tab = "global" | "denmark" | "papers";
 
 export function Dashboard() {
   const { c, locale } = useLang();
-  const { data, isLoading } = useQuery(openEndoQueryOptions);
-  const monthlyQuery = useQuery(paperMonthlyQueryOptions);
-  const monthly = monthlyQuery.data ?? [];
+  const { data, isFetching, isError } = useQuery(canonicalQueryOptions);
+  const mounted = useMounted();
   const [tab, setTab] = useState<Tab>("global");
   const [q, setQ] = useState("");
 
   const query = q.trim().toLowerCase();
-  const filtered = useMemo(() => {
-    if (!data) return { global: [], denmark: [], papers: [] };
-    const match = (...fields: string[]) =>
-      !query || fields.join(" ").toLowerCase().includes(query);
+  const model = useMemo(() => {
+    if (!data) return null;
+    const global = data.trialsGlobal.trials.map((trial) => ({
+      id: trial.nct_id,
+      title: trial.title,
+      status: displayStatus(trial.status),
+      phase: displayPhase(trial.phase),
+      sponsor: trial.sponsor,
+      countries: trial.countries,
+      url: trial.url,
+    }));
+    const denmark = data.trialsDenmark.trials.map((trial) => ({
+      id: trial.nct_id,
+      title: trial.title,
+      status: displayStatus(trial.status),
+      phase: displayPhase(trial.phase),
+      sponsor: trial.sponsor,
+      countries: trial.countries,
+      url: trial.url,
+    }));
+    const papers = data.pubmedRecent.papers.map((paper) => ({
+      id: paper.pmid,
+      title: paper.title,
+      journal: paper.journal,
+      date: paper.date,
+      url: paper.url,
+    }));
+    const monthly = data.pubmedMonthly.months.map((month) => ({
+      label: monthLabel(month.month),
+      month: month.month,
+      count: month.count,
+    }));
     return {
-      global: data.trials.global.filter((t) => match(t.title, t.sponsor, t.countries.join(" "))),
-      denmark: data.trials.denmark.filter((t) => match(t.title, t.sponsor, t.status)),
-      papers: data.papers.recent.filter((p) => match(p.title, p.journal)),
+      global,
+      denmark,
+      papers,
+      byCountry: tally(
+        global.flatMap((trial) => trial.countries),
+        10,
+      ),
+      denmarkByStatus: tally(denmark.map((trial) => trial.status)),
+      monthly,
     };
-  }, [data, query]);
+  }, [data]);
+
+  const filtered = useMemo(() => {
+    if (!model) return { global: [], denmark: [], papers: [] };
+    const match = (...fields: string[]) => !query || fields.join(" ").toLowerCase().includes(query);
+    return {
+      global: model.global.filter((trial) =>
+        match(trial.title, trial.sponsor, trial.countries.join(" ")),
+      ),
+      denmark: model.denmark.filter((trial) => match(trial.title, trial.sponsor, trial.status)),
+      papers: model.papers.filter((paper) => match(paper.title, paper.journal)),
+    };
+  }, [model, query]);
 
   const kpis = [
-    { value: data?.trials.globalTotal, label: c.dashboard.kpi.recruiting },
-    { value: data?.trials.denmarkTotal, label: c.dashboard.kpi.denmark },
-    { value: data?.papers.yearTotal, label: c.dashboard.kpi.papers },
-    { value: data?.papers.weekTotal, label: c.dashboard.kpi.papers7 },
+    { value: data?.meta.counts.recruiting_global, label: c.dashboard.kpi.recruiting },
+    { value: data?.meta.counts.denmark, label: c.dashboard.kpi.denmark },
+    { value: data?.meta.counts.denmark_recruiting, label: c.dashboard.kpi.denmarkRecruiting },
+    { value: data?.meta.counts.pubmed_7d, label: c.dashboard.kpi.papers7 },
   ];
 
   const tabs: { id: Tab; label: string }[] = [
@@ -70,9 +121,10 @@ export function Dashboard() {
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
             {c.dashboard.lede}
           </p>
-          {isLoading && (
-            <p className="mt-3 text-sm text-muted-foreground">{c.dashboard.loading}</p>
+          {isFetching && (
+            <p className="mt-3 text-sm text-muted-foreground">{c.common.refreshing}</p>
           )}
+          {isError && <p className="mt-3 text-sm text-muted-foreground">{c.common.unavailable}</p>}
         </div>
       </header>
 
@@ -94,43 +146,50 @@ export function Dashboard() {
         {/* Charts */}
         <div className="mt-12 grid gap-12 sm:mt-16 sm:gap-16 lg:grid-cols-2">
           <ChartBlock title={c.dashboard.charts.country}>
-            {data?.trials.byCountry.length ? (
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart
-                  data={data.trials.byCountry}
-                  layout="vertical"
-                  margin={{ left: 0, right: 24 }}
-                >
-                  <XAxis type="number" hide />
-                  <YAxis
-                    type="category"
-                    dataKey="label"
-                    width={84}
-                    tickLine={false}
-                    axisLine={false}
-                    tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
-                  />
-                  <Tooltip content={<Bubble />} cursor={{ fill: "var(--color-secondary)" }} />
-                  <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={12}>
-                    {data.trials.byCountry.map((_, i) => (
-                      <Cell
-                        key={i}
-                        fill={i === 0 ? "var(--color-ribbon)" : "var(--color-chart-4)"}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
+            {model?.byCountry.length ? (
+              <>
+                {mounted ? (
+                  <div className="h-[280px]" aria-hidden="true">
+                    <ResponsiveContainer width="100%" height={280}>
+                      <BarChart
+                        data={model.byCountry}
+                        layout="vertical"
+                        margin={{ left: 0, right: 24 }}
+                      >
+                        <XAxis type="number" hide />
+                        <YAxis
+                          type="category"
+                          dataKey="label"
+                          width={84}
+                          tickLine={false}
+                          axisLine={false}
+                          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+                        />
+                        <Tooltip content={<Bubble />} cursor={{ fill: "var(--color-secondary)" }} />
+                        <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={12}>
+                          {model.byCountry.map((_, i) => (
+                            <Cell
+                              key={i}
+                              fill={i === 0 ? "var(--color-ribbon)" : "var(--color-chart-4)"}
+                            />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                ) : null}
+                <CountryTable rows={model.byCountry} />
+              </>
             ) : (
               <Unavailable />
             )}
           </ChartBlock>
 
           <ChartBlock title={c.dashboard.charts.status}>
-            {data?.trials.denmarkByStatus.length ? (
+            {model?.denmarkByStatus.length ? (
               <ul className="divide-y divide-hairline border-t border-hairline">
-                {data.trials.denmarkByStatus.map((s) => {
-                  const max = data.trials.denmarkByStatus[0]?.count || 1;
+                {model.denmarkByStatus.map((s) => {
+                  const max = model.denmarkByStatus[0]?.count || 1;
                   return (
                     <li key={s.label} className="py-3 sm:flex sm:items-center sm:gap-4 sm:py-3.5">
                       <div className="flex items-baseline justify-between gap-3 sm:contents">
@@ -148,7 +207,6 @@ export function Dashboard() {
                         />
                       </span>
                     </li>
-
                   );
                 })}
               </ul>
@@ -159,40 +217,48 @@ export function Dashboard() {
 
           <div className="lg:col-span-2">
             <ChartBlock title={c.dashboard.charts.pubmed}>
-              {monthly.length ? (
-                <ResponsiveContainer width="100%" height={240}>
-                  <LineChart data={monthly} margin={{ left: 0, right: 8, top: 8 }}>
-                    <CartesianGrid stroke="var(--color-hairline)" vertical={false} />
-                    <XAxis
-                      dataKey="label"
-                      tickLine={false}
-                      axisLine={false}
-                      interval="preserveStartEnd"
-                      minTickGap={16}
-                      tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
-                    />
-                    <YAxis
-                      tickLine={false}
-                      axisLine={false}
-                      width={44}
-                      tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
-                    />
-                    <Tooltip content={<Bubble />} />
-                    <Line
-                      type="monotone"
-                      dataKey="count"
-                      stroke="var(--color-chart-2)"
-                      strokeWidth={2}
-                      dot={{ r: 2.5, fill: "var(--color-ribbon)", strokeWidth: 0 }}
-                      activeDot={{ r: 5, fill: "var(--color-ribbon)", strokeWidth: 0 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              ) : monthlyQuery.isPending ? (
-                <div className="h-[240px] animate-pulse rounded-xl bg-hairline/40" />
+              {model?.monthly.length ? (
+                <>
+                  {mounted ? (
+                    <ResponsiveContainer width="100%" height={240} aria-hidden="true">
+                      <LineChart data={model.monthly} margin={{ left: 0, right: 8, top: 8 }}>
+                        <CartesianGrid stroke="var(--color-hairline)" vertical={false} />
+                        <XAxis
+                          dataKey="label"
+                          tickLine={false}
+                          axisLine={false}
+                          interval="preserveStartEnd"
+                          minTickGap={16}
+                          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+                        />
+                        <YAxis
+                          tickLine={false}
+                          axisLine={false}
+                          width={44}
+                          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+                        />
+                        <Tooltip content={<Bubble />} />
+                        <Line
+                          type="monotone"
+                          dataKey="count"
+                          stroke="var(--color-chart-2)"
+                          strokeWidth={2}
+                          dot={{ r: 2.5, fill: "var(--color-ribbon)", strokeWidth: 0 }}
+                          activeDot={{ r: 5, fill: "var(--color-ribbon)", strokeWidth: 0 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  ) : null}
+                  <MonthTable rows={model.monthly} />
+                </>
               ) : (
                 <Unavailable />
               )}
+              {data && model?.monthly.at(-1)?.month === data.meta.updated.slice(0, 7) ? (
+                <p className="mt-3 text-xs text-muted-foreground">
+                  {c.dashboard.partialMonth} {data.meta.updated}.
+                </p>
+              ) : null}
             </ChartBlock>
           </div>
         </div>
@@ -227,7 +293,11 @@ export function Dashboard() {
 
           {tab === "papers" ? (
             <Feed
-              head={[c.dashboard.columns.date, c.dashboard.columns.paper, c.dashboard.columns.journal]}
+              head={[
+                c.dashboard.columns.date,
+                c.dashboard.columns.paper,
+                c.dashboard.columns.journal,
+              ]}
               widths={["w-[92px]", "", "w-[26%]"]}
               items={filtered.papers.map((p) => ({
                 key: p.id,
@@ -250,7 +320,7 @@ export function Dashboard() {
                   { label: c.dashboard.columns.date, value: p.date },
                 ],
               }))}
-              empty={data?.papers.ok === false ? c.dashboard.unavailable : c.dashboard.empty}
+              empty={isError ? c.dashboard.unavailable : c.dashboard.empty}
             />
           ) : tab === "denmark" ? (
             <Feed
@@ -281,7 +351,7 @@ export function Dashboard() {
                   { label: c.dashboard.columns.sponsor, value: t.sponsor },
                 ],
               }))}
-              empty={data?.trials.ok === false ? c.dashboard.unavailable : c.dashboard.empty}
+              empty={isError ? c.dashboard.unavailable : c.dashboard.empty}
             />
           ) : (
             <Feed
@@ -322,13 +392,13 @@ export function Dashboard() {
                   ],
                 };
               })}
-              empty={data?.trials.ok === false ? c.dashboard.unavailable : c.dashboard.empty}
+              empty={isError ? c.dashboard.unavailable : c.dashboard.empty}
             />
           )}
 
           <p className="mt-8 text-xs leading-relaxed text-muted-foreground">
             {c.dashboard.sources}
-            {data ? ` · ${c.common.updated} ${new Date(data.fetchedAt).toLocaleString(locale)}` : ""}
+            {data ? ` · ${c.common.updated} ${data.meta.updated}` : ""}
           </p>
         </div>
       </div>
@@ -390,11 +460,14 @@ function Feed({
                   </span>
                 ) : (
                   <span key={i} className="flex min-w-0 max-w-full items-center gap-2">
-                    {i > 0 && <span aria-hidden className="text-muted-foreground/50">·</span>}
+                    {i > 0 && (
+                      <span aria-hidden className="text-muted-foreground/50">
+                        ·
+                      </span>
+                    )}
                     <span className="min-w-0 truncate">{m.value}</span>
                   </span>
                 ),
-
               )}
             </div>
           </li>
@@ -433,6 +506,42 @@ function Feed({
   );
 }
 
+function CountryTable({ rows }: { rows: { label: string; count: number }[] }) {
+  return (
+    <table className="w-full text-sm">
+      <caption className="sr-only">Recruiting trials by country</caption>
+      <tbody>
+        {rows.map((row) => (
+          <tr key={row.label} className="border-b border-hairline">
+            <th scope="row" className="py-2 pr-4 text-left font-medium">
+              {row.label}
+            </th>
+            <td className="numeral py-2 text-right">{row.count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+function MonthTable({ rows }: { rows: { label: string; count: number }[] }) {
+  return (
+    <table className="w-full text-sm">
+      <caption className="sr-only">Papers published per month</caption>
+      <tbody>
+        {rows.map((row) => (
+          <tr key={row.label} className="border-b border-hairline">
+            <th scope="row" className="py-2 pr-4 text-left font-medium">
+              {row.label}
+            </th>
+            <td className="numeral py-2 text-right">{row.count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 function ChartBlock({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="min-w-0">
@@ -447,12 +556,21 @@ function Unavailable() {
   return <p className="py-12 text-sm text-muted-foreground">{c.dashboard.unavailable}</p>;
 }
 
-function Bubble({ active, payload, label }: any) {
-  if (!active || !payload?.length) return null;
+function Bubble({
+  active,
+  payload,
+  label,
+}: {
+  active?: boolean;
+  payload?: ReadonlyArray<{ value?: unknown }>;
+  label?: unknown;
+}) {
+  const value = payload?.[0]?.value;
+  if (!active || value == null) return null;
   return (
     <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-sm">
-      <p className="font-medium">{label}</p>
-      <p className="numeral text-muted-foreground">{payload[0].value}</p>
+      <p className="font-medium">{String(label ?? "")}</p>
+      <p className="numeral text-muted-foreground">{String(value)}</p>
     </div>
   );
 }

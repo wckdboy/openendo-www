@@ -3,13 +3,17 @@ export type Locale = "en" | "da";
 const en = {
   nav: {
     home: "Home",
+    learn: "Guides",
     dashboard: "Dashboard",
+    evidence: "Evidence",
     research: "Research",
     knowledge: "Knowledge",
     access: "Find help",
     github: "GitHub",
     switch: "Dansk",
     menu: "Menu",
+    skip: "Skip to content",
+    primary: "Primary",
   },
   research: {
     eyebrow: "Research",
@@ -92,7 +96,11 @@ const en = {
     whyTitle: "Four facts that should not still be true",
     liveEyebrow: "Live",
     liveTitle: "Research, as it happens",
-    liveLede: "Pulled straight from ClinicalTrials.gov and PubMed each time this page loads.",
+    liveLede:
+      "Weekly extract of ClinicalTrials.gov and PubMed, published in the open repository and refreshed when this page loads.",
+    fundingEmpty:
+      "No calls in the current dataset are still open. Deadlines that have passed are hidden, even if the file still marks them open.",
+    fundingChecking: "Checking which calls are still open…",
     liveCta: "Open the full dashboard",
     fundingEyebrow: "Funding",
     fundingTitle: "Grants worth chasing",
@@ -103,11 +111,11 @@ const en = {
   dashboard: {
     eyebrow: "Live dashboard",
     title: "Endometriosis research and clinical trials dashboard",
-    lede: "Clinical trial registrations and published research, fetched live from public registries. Nothing here is edited by hand.",
+    lede: "Clinical trial registrations and published research from the weekly OpenEndo extract. Nothing here is edited by hand.",
     kpi: {
       recruiting: "Trials recruiting worldwide",
       denmark: "Trials registered in Denmark",
-      papers: "Papers indexed this year",
+      denmarkRecruiting: "Recruiting in Denmark",
       papers7: "New papers, last 7 days",
     },
     charts: {
@@ -134,7 +142,9 @@ const en = {
     empty: "Nothing matches that search.",
     unavailable: "This source did not respond. Try reloading in a moment.",
     loading: "Fetching live data…",
-    sources: "Sources: ClinicalTrials.gov API v2, PubMed E-utilities.",
+    sources:
+      "Counts and lists are the OpenEndo weekly extract of ClinicalTrials.gov and PubMed. They are not edited by hand on this site.",
+    partialMonth: "The newest month is still incomplete. Snapshot date",
   },
   knowledge: {
     eyebrow: "Knowledge",
@@ -150,6 +160,9 @@ const en = {
     loading: "Loading the knowledge base…",
     openSource: "Open the source page",
     openIndex: "Browse the knowledge index",
+    errorTitle: "The knowledge base did not load",
+    errorBody: "The repository did not respond. Nothing older is substituted in its place.",
+    retry: "Try again",
     languageNote: "Articles are published in English from the open repository.",
     sections: {
       entities: "Entities",
@@ -158,8 +171,40 @@ const en = {
       queries: "Queries",
     },
   },
+  learn: {
+    eyebrow: "Guides",
+    titleA: "Endometriosis,",
+    titleAccent: "in plain language.",
+    lede: "Symptoms, diagnosis, treatment, daily life, and how care is organised in Denmark. Every medical claim links to WHO, NICE, or the open dataset. This is not a personal care plan.",
+    indexLabel: "All guides",
+    guidesLabel: "Guides",
+    readGuide: "Read the guide",
+    faqTitle: "Short answers",
+    reviewed: "Checked against the cited pages on",
+    notAdviceTitle: "Not medical advice",
+    notAdviceBody:
+      "OpenEndo explains published guidance and open data. It does not diagnose, prescribe, or replace a clinician. Decisions about your care belong with you and a qualified professional.",
+    loadingAccess: "Loading the Denmark access file…",
+    accessErrorTitle: "The Denmark access file did not load",
+    accessErrorBody:
+      "The care steps are not shown, because the sourced file did not respond. Use the links above, or try again.",
+  },
+  evidence: {
+    eyebrow: "Evidence",
+    titleA: "What was published",
+    titleAccent: "this week.",
+    lede: "The weekly OpenEndo digest of new endometriosis papers, with PMIDs. It is the repository file, not a rewrite.",
+    archive: "Digests",
+    sourceNote: "Source file",
+    loading: "Loading the digest…",
+    error: "That digest did not load.",
+    disclaimer:
+      "A digest reports what papers say and how sure that evidence is. It is not a recommendation to start, stop, or change treatment.",
+  },
   footer: {
     tagline: "Open analytics on endometriosis research, trials and funding.",
+    notAdvice:
+      "Not medical advice. Figures come from the open OpenEndo dataset and from the guidelines linked on each page.",
     sources: "Data sources",
     project: "Project",
     license: "MIT licensed. Reuse everything.",
@@ -171,6 +216,9 @@ const en = {
     dueToday: "due today",
     closed: "closed",
     updated: "Updated",
+    noDeadline: "No fixed deadline",
+    refreshing: "Refreshing from the repository…",
+    unavailable: "The open dataset did not respond.",
   },
 };
 
@@ -179,13 +227,17 @@ type Copy = typeof en;
 const da: Copy = {
   nav: {
     home: "Forside",
+    learn: "Guider",
     dashboard: "Dashboard",
+    evidence: "Evidens",
     research: "Forskning",
     knowledge: "Viden",
     access: "Find hjælp",
     github: "GitHub",
     switch: "English",
     menu: "Menu",
+    skip: "Spring til indhold",
+    primary: "Primær",
   },
   research: {
     eyebrow: "Forskning",
@@ -268,7 +320,11 @@ const da: Copy = {
     whyTitle: "Fire fakta der ikke burde være sande",
     liveEyebrow: "Live",
     liveTitle: "Forskning, mens den sker",
-    liveLede: "Hentet direkte fra ClinicalTrials.gov og PubMed hver gang siden indlæses.",
+    liveLede:
+      "Ugentligt udtræk fra ClinicalTrials.gov og PubMed, udgivet i det åbne repositorium og genhentet når siden indlæses.",
+    fundingEmpty:
+      "Ingen puljer i det aktuelle datasæt er stadig åbne. Frister der er passeret, skjules, også hvis filen stadig markerer dem som åbne.",
+    fundingChecking: "Tjekker hvilke puljer der stadig er åbne…",
     liveCta: "Åbn hele dashboardet",
     fundingEyebrow: "Bevillinger",
     fundingTitle: "Puljer værd at søge",
@@ -279,11 +335,11 @@ const da: Copy = {
   dashboard: {
     eyebrow: "Live dashboard",
     title: "Dashboard for endometrioseforskning og kliniske forsøg",
-    lede: "Kliniske forsøg og publiceret forskning, hentet live fra offentlige registre. Intet er redigeret i hånden.",
+    lede: "Kliniske forsøg og publiceret forskning fra OpenEndos ugentlige udtræk. Intet er redigeret i hånden.",
     kpi: {
       recruiting: "Forsøg der rekrutterer globalt",
       denmark: "Forsøg registreret i Danmark",
-      papers: "Studier indekseret i år",
+      denmarkRecruiting: "Rekrutterer i Danmark",
       papers7: "Nye studier, seneste 7 dage",
     },
     charts: {
@@ -310,7 +366,9 @@ const da: Copy = {
     empty: "Ingen resultater for den søgning.",
     unavailable: "Kilden svarede ikke. Prøv at genindlæse om et øjeblik.",
     loading: "Henter live data…",
-    sources: "Kilder: ClinicalTrials.gov API v2, PubMed E-utilities.",
+    sources:
+      "Tal og lister er OpenEndos ugentlige udtræk fra ClinicalTrials.gov og PubMed. De redigeres ikke i hånden på denne side.",
+    partialMonth: "Den seneste måned er endnu ikke afsluttet. Snapshot-dato",
   },
   knowledge: {
     eyebrow: "Viden",
@@ -326,6 +384,9 @@ const da: Copy = {
     loading: "Henter vidensbasen…",
     openSource: "Åbn kildesiden",
     openIndex: "Gennemse vidensindekset",
+    errorTitle: "Vidensbasen blev ikke hentet",
+    errorBody: "Repositoriet svarede ikke. Der indsættes ikke en ældre tekst i stedet.",
+    retry: "Prøv igen",
     languageNote: "Artiklerne publiceres på engelsk fra det åbne repositorium.",
     sections: {
       entities: "Enheder",
@@ -334,8 +395,40 @@ const da: Copy = {
       queries: "Forespørgsler",
     },
   },
+  learn: {
+    eyebrow: "Guider",
+    titleA: "Endometriose,",
+    titleAccent: "på almindeligt dansk.",
+    lede: "Symptomer, diagnose, behandling, hverdag og hvordan forløbet er organiseret i Danmark. Ethvert medicinsk udsagn linker til WHO, NICE eller det åbne datasæt. Det er ikke en personlig behandlingsplan.",
+    indexLabel: "Alle guider",
+    guidesLabel: "Guider",
+    readGuide: "Læs guiden",
+    faqTitle: "Korte svar",
+    reviewed: "Tjekket mod de citerede sider den",
+    notAdviceTitle: "Ikke lægefaglig rådgivning",
+    notAdviceBody:
+      "OpenEndo forklarer udgivne retningslinjer og åbne data. Siden stiller ikke diagnoser, udskriver ikke medicin og erstatter ikke en læge. Beslutninger om din behandling hører til hos dig og en kvalificeret behandler.",
+    loadingAccess: "Henter den danske adgangsfil…",
+    accessErrorTitle: "Den danske adgangsfil blev ikke hentet",
+    accessErrorBody:
+      "Behandlingstrinene vises ikke, fordi kildefilen ikke svarede. Brug linkene ovenfor, eller prøv igen.",
+  },
+  evidence: {
+    eyebrow: "Evidens",
+    titleA: "Det der blev publiceret",
+    titleAccent: "i denne uge.",
+    lede: "OpenEndos ugentlige digest af nye endometrioseartikler, med PMID. Det er filen fra repositoriet, ikke en omskrivning.",
+    archive: "Digests",
+    sourceNote: "Kildefil",
+    loading: "Henter digestet…",
+    error: "Det digest blev ikke hentet.",
+    disclaimer:
+      "Et digest gengiver, hvad artiklerne siger, og hvor sikker evidensen er. Det er ikke en anbefaling om at starte, stoppe eller ændre behandling.",
+  },
   footer: {
     tagline: "Åbne analyser af endometrioseforskning, forsøg og bevillinger.",
+    notAdvice:
+      "Ikke lægefaglig rådgivning. Tallene kommer fra det åbne OpenEndo-datasæt og fra de retningslinjer, siderne linker til.",
     sources: "Datakilder",
     project: "Projekt",
     license: "MIT-licens. Genbrug det hele.",
@@ -347,6 +440,9 @@ const da: Copy = {
     dueToday: "frist i dag",
     closed: "lukket",
     updated: "Opdateret",
+    noDeadline: "Ingen fast frist",
+    refreshing: "Genhenter fra repositoriet…",
+    unavailable: "Det åbne datasæt svarede ikke.",
   },
 };
 

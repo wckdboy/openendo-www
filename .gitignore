@@ -19,6 +19,8 @@ dist-ssr
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
+src/generated/snapshot.json
+public/sitemap.xml
 
 # Editor directories and files
 .vscode/*

@@ -1,0 +1,29 @@
+# OpenEndo
+
+> Patient-facing explainers and an open data hub for endometriosis. Not medical advice.
+> Canonical datasets, weekly digests, and knowledge pages live in https://github.com/wckdboy/openendo and are fetched at build time and again in the browser from raw.githubusercontent.com. This file describes the public site.
+
+## Guides
+- [Guides](https://openendo.org/learn): symptoms, diagnosis, treatment, living with endometriosis, Denmark
+- [Symptoms](https://openendo.org/learn/symptoms)
+- [Diagnosis](https://openendo.org/learn/diagnosis)
+- [Treatment](https://openendo.org/learn/treatment)
+- [Living with endometriosis](https://openendo.org/learn/living)
+- [Denmark](https://openendo.org/learn/denmark)
+- Danish editions use the `/da` prefix, for example https://openendo.org/da/learn
+
+## Data on this site
+- [Dashboard](https://openendo.org/dashboard): recruiting trials, Denmark trials, PubMed counts from the weekly OpenEndo extract
+- [Evidence digests](https://openendo.org/evidence): weekly literature digests with PMIDs
+- [Research explainer](https://openendo.org/research): docs/what-we-know.html from the data repository
+- [Find help](https://openendo.org/access): sourced access.json (medicines, centres, organisations)
+- [Knowledge](https://openendo.org/knowledge): docs/knowledge markdown from the data repository
+
+## Canonical repository
+- [Data repository llms.txt](https://raw.githubusercontent.com/wckdboy/openendo/main/docs/llms.txt)
+- [meta.json](https://raw.githubusercontent.com/wckdboy/openendo/main/docs/data/meta.json)
+- [funding.json](https://raw.githubusercontent.com/wckdboy/openendo/main/docs/data/funding.json)
+- [Latest digest pointer](https://raw.githubusercontent.com/wckdboy/openendo/main/docs/research/evidence/weekly/LATEST)
+
+## Citation policy
+Medical claims on the guides cite the WHO fact sheet, NICE NG73, or the ESHRE 2022 guideline (PMID 35350465). Trial, paper, and funding figures are the OpenEndo dataset, not hand-maintained copies. A funding call whose deadline has passed is not shown as open.

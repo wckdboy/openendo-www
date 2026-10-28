@@ -1,11 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useLang } from "@/lib/i18n";
-import {
-  fallbackKnowledge,
-  KNOWLEDGE_INDEX_URL,
-  knowledgeQueryOptions,
-} from "@/lib/knowledge.functions";
+import { KNOWLEDGE_INDEX_URL, knowledgeQueryOptions } from "@/lib/knowledge.functions";
 import type { KnowledgeConfidence, KnowledgeKind, KnowledgePage } from "@/lib/knowledge.types";
 
 const focusRing =
@@ -71,10 +67,8 @@ export function Knowledge() {
   const t = c.knowledge;
   const query = useQuery(knowledgeQueryOptions);
 
-  const live = query.data?.pages ?? [];
-  const fromRepo = live.length > 0;
-  const entries = query.isPending ? [] : fromRepo ? live : fallbackKnowledge(locale);
-  const groups = fromRepo ? groupPages(entries) : [];
+  const entries = query.data?.pages ?? [];
+  const groups = groupPages(entries);
 
   return (
     <div className="mx-auto max-w-6xl px-6 pb-24 pt-16 sm:pt-20">
@@ -86,7 +80,7 @@ export function Knowledge() {
           <span className="accent font-normal">{t.title.split(",").slice(1).join(",").trim()}</span>
         </h1>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
-        {fromRepo && (
+        {entries.length > 0 && (
           <div className="mt-3 max-w-xl space-y-1 text-sm text-muted-foreground">
             <p>{t.caption}</p>
             {locale === "da" ? <p>{t.languageNote}</p> : null}
@@ -103,7 +97,21 @@ export function Knowledge() {
         </div>
       )}
 
-      {!query.isPending && (
+      {query.isError && (
+        <div className="mt-16 max-w-xl rounded-2xl border border-hairline bg-secondary/50 p-6">
+          <h2 className="text-[17px] font-semibold tracking-tight">{t.errorTitle}</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.errorBody}</p>
+          <button
+            type="button"
+            onClick={() => void query.refetch()}
+            className={`mt-5 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background ${focusRing}`}
+          >
+            {t.retry}
+          </button>
+        </div>
+      )}
+
+      {!query.isPending && !query.isError && (
         <div className="mt-16 gap-16 lg:flex">
           <aside className="mb-14 lg:sticky lg:top-24 lg:mb-0 lg:h-fit lg:w-56 lg:shrink-0">
             <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
@@ -205,9 +213,7 @@ export function Knowledge() {
                   rel="noopener noreferrer"
                   className={`mt-4 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-foreground ${focusRing}`}
                 >
-                  {fromRepo
-                    ? t.openSource
-                    : `${t.source}: ${page.sources[0]?.label ?? page.heading}`}
+                  {t.openSource}
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               </article>
@@ -216,7 +222,7 @@ export function Knowledge() {
         </div>
       )}
 
-      {fromRepo && (
+      {entries.length > 0 && (
         <p className="mt-16 text-sm text-muted-foreground">
           <a
             href={KNOWLEDGE_INDEX_URL}

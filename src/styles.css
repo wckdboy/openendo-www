@@ -98,6 +98,16 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    .rise {
+      animation: none;
+    }
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -152,6 +162,12 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* Off-screen sections only. Paired with contain-intrinsic-size so unsupported browsers ignore it and supported ones do not collapse height. */
+.below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 32rem;
 }
 
 /* Repo markdown, rendered inside Knowledge articles. */

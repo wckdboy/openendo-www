@@ -1,22 +1,19 @@
-import { createServerFn } from "@tanstack/react-start";
-import { KNOWLEDGE_INDEX_FALLBACK, type KnowledgeIndexEntry } from "@/content/knowledge-index";
-import { articles } from "@/content/data";
-import type { Locale } from "@/content/copy";
+import type { KnowledgeIndexEntry } from "@/content/knowledge-index";
 import {
-  escapeHtml,
   parseKnowledgeIndex,
   parseKnowledgePage,
   renderKnowledgeMarkdown,
 } from "@/lib/knowledge-markdown";
 import type { KnowledgePage, KnowledgePayload } from "@/lib/knowledge.types";
+import { RAW_BASE } from "@/lib/site";
 
 /**
  * Knowledge pages live in the OpenEndo repo as sourced markdown.
  * The repo is canonical — we fetch the index and listed pages live and never
- * copy their bodies into app code. Bundled articles are a fallback only.
+ * copy their bodies into app code. If the repository does not respond, the
+ * page shows an error instead of a bundled article.
  */
-export const KNOWLEDGE_RAW_BASE =
-  "https://raw.githubusercontent.com/wckdboy/openendo/main/docs/knowledge";
+export const KNOWLEDGE_RAW_BASE = `${RAW_BASE}/docs/knowledge`;
 
 export const KNOWLEDGE_BLOB_BASE = "https://github.com/wckdboy/openendo/blob/main/docs/knowledge";
 
@@ -25,8 +22,6 @@ export const KNOWLEDGE_INDEX_URL = `${KNOWLEDGE_RAW_BASE}/index.md`;
 const CACHE_MS = 1000 * 60 * 30;
 const FETCH_MS = 10_000;
 const MAX_PAGES = 30;
-
-let cache: { at: number; data: KnowledgePayload } | null = null;
 
 async function fetchText(url: string): Promise<string> {
   const res = await fetch(url, {
@@ -38,14 +33,10 @@ async function fetchText(url: string): Promise<string> {
 }
 
 async function loadCatalog(): Promise<KnowledgeIndexEntry[]> {
-  try {
-    const markdown = await fetchText(KNOWLEDGE_INDEX_URL);
-    const parsed = parseKnowledgeIndex(markdown);
-    if (parsed.length) return parsed;
-  } catch (error) {
-    console.error("knowledge index fetch failed", error);
-  }
-  return KNOWLEDGE_INDEX_FALLBACK;
+  const markdown = await fetchText(KNOWLEDGE_INDEX_URL);
+  const parsed = parseKnowledgeIndex(markdown);
+  if (!parsed.length) throw new Error("knowledge index was empty");
+  return parsed;
 }
 
 function rawPageUrl(entry: KnowledgeIndexEntry): string {
@@ -90,36 +81,15 @@ async function loadLivePages(): Promise<KnowledgePage[]> {
   });
 }
 
-export function fallbackKnowledge(locale: Locale): KnowledgePage[] {
-  return articles[locale].map((article) => ({
-    id: article.id,
-    heading: article.heading,
-    html: article.body.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join(""),
-    sources: [{ label: article.source, url: article.url }],
-    url: article.url,
-  }));
+export async function loadKnowledge(): Promise<KnowledgePayload> {
+  const pages = await loadLivePages();
+  if (!pages.length) throw new Error("knowledge: no pages loaded");
+  return { source: "live", pages };
 }
-
-export const getKnowledge = createServerFn({ method: "GET" }).handler(
-  async (): Promise<KnowledgePayload> => {
-    if (cache && Date.now() - cache.at < CACHE_MS) return cache.data;
-
-    try {
-      const pages = await loadLivePages();
-      if (!pages.length) throw new Error("knowledge: no pages loaded");
-      const data: KnowledgePayload = { source: "live", pages };
-      cache = { at: Date.now(), data };
-      return data;
-    } catch (error) {
-      console.error("knowledge fetch failed", error);
-      throw error;
-    }
-  },
-);
 
 export const knowledgeQueryOptions = {
   queryKey: ["openendo-knowledge"] as const,
-  queryFn: () => getKnowledge(),
+  queryFn: loadKnowledge,
   staleTime: CACHE_MS,
   retry: 1,
 };

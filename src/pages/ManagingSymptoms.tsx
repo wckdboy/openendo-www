@@ -26,15 +26,13 @@ export function ManagingSymptoms() {
         {locale === "da" ? "Håndter symptomer" : "Managing symptoms"}
       </p>
       <article className="mt-6 max-w-[720px]" lang={locale}>
-        <h1 className="text-[var(--text-3xl)]">
-          {locale === "da" ? "Håndter symptomer" : "Managing symptoms"}
-        </h1>
+        <h1>{locale === "da" ? "Håndter symptomer" : "Managing symptoms"}</h1>
         <div className="mt-6 rounded-[var(--radius-md)] bg-[var(--sunken)] p-5">
           <h2 className="text-base font-semibold">{c.learn.inShort}</h2>
           <p className="mt-2 text-[var(--text-md)]">
             {locale === "da"
-              ? "Smertebehandling, hormoner og operation kan dæmpe symptomer. Ingen af dem kurerer sygdommen. Varme har ingen evidensgrad i NICE eller ESHRE."
-              : "Pain medicines, hormones, and surgery can ease symptoms. None of them cures the disease. Heat has no evidence grade in NICE or ESHRE."}
+              ? "Smertebehandling, hormoner og operation kan dæmpe symptomer. Ingen af dem kurerer sygdommen. Varme har ingen evidensgrad for endometriose."
+              : "Pain medicines, hormones, and surgery can ease symptoms. None of them cures the disease. Heat has no evidence grade for endometriosis."}
           </p>
         </div>
         <p className="mt-4 text-sm text-[var(--ink-subtle)]">

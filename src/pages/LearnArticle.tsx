@@ -76,7 +76,7 @@ export function LearnArticle({ slug }: { slug: LearnSlug }) {
           </div>
         </nav>
         <article className="max-w-[var(--measure)]" lang={locale}>
-          <h1 className="text-[var(--text-3xl)]">{page.title.replace(/\.$/, "")}</h1>
+          <h1>{page.title.replace(/\.$/, "")}</h1>
           <div className="mt-6 rounded-[var(--radius-md)] bg-[var(--sunken)] p-5">
             <h2 className="text-base font-semibold">{c.learn.inShort}</h2>
             <p className="mt-2 text-[var(--text-md)]">{page.lede}</p>

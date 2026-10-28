@@ -98,17 +98,41 @@ export async function loadAccessData(): Promise<AccessData> {
     throw new Error("access.json: unexpected shape");
   }
 
-  return reviewDenmark(data);
+  return publishAccess(data);
 }
 
 export const accessQueryOptions = {
   queryKey: ["openendo-access"] as const,
   queryFn: loadAccessData,
-  initialData: reviewDenmark(bundledAccess as AccessData),
+  initialData: publishAccess(bundledAccess as AccessData),
   staleTime: Infinity,
   refetchOnMount: false as const,
   retry: 1,
 };
+
+/** Drop entries that have no confidence tag, or are marked unverified placeholders. */
+export function publishAccess(data: AccessData): AccessData {
+  const reviewed = reviewDenmark(data);
+  const countries: AccessData["countries"] = {};
+  for (const [iso, country] of Object.entries(reviewed.countries)) {
+    countries[iso] = publishCountry(country);
+  }
+  return { ...reviewed, countries };
+}
+
+function publishCountry(country: Country): Country {
+  const next: Country = { ...country };
+  if (country.medications) next.medications = country.medications.filter(isPublished);
+  if (country.centers) next.centers = country.centers.filter(isPublished);
+  if (country.organizations) next.organizations = country.organizations.filter(isPublished);
+  return next;
+}
+
+function isPublished(entry: { confidence?: string | undefined }): boolean {
+  const tag = entry.confidence?.trim().toLowerCase() ?? "";
+  if (!tag) return false;
+  return !/unverified|placeholder/.test(tag);
+}
 
 /** Pick a localized string, falling back to English then to an empty string. */
 export function pick(value: Localized | undefined, locale: "en" | "da"): string {

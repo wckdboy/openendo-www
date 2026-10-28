@@ -112,6 +112,28 @@
     letter-spacing: 0;
   }
 
+  /* Tailwind's text-* utility is also a colour. text-[var(--text-h1)] sets a
+     colour and leaves the heading at body size. Sizes live on the elements. */
+  h1 {
+    font-size: var(--text-h1);
+  }
+
+  h1.home-title {
+    font-size: var(--text-home);
+  }
+
+  h2 {
+    font-size: var(--text-2xl);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+  }
+
+  h4 {
+    font-size: var(--text-lg);
+  }
+
   main a {
     color: var(--primary);
   }
@@ -145,6 +167,30 @@
   font-family: var(--font-mono);
   font-size: 0.875rem;
   color: var(--ink-muted);
+}
+
+/* Diagrams size to the article, not the viewport. Two columns once the
+   article is wide enough that a column can hold a sentence. */
+.diagram-grid {
+  container-type: inline-size;
+}
+
+.diagram-nodes {
+  display: grid;
+  align-items: start;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.diagram-nodes > * {
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+}
+
+@container (min-width: 36rem) {
+  .diagram-nodes.wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 summary.toc {

@@ -43,7 +43,7 @@ export function Evidence() {
       <header>
         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{t.eyebrow}</p>
         <div className="mt-3 h-1 w-16 rounded-full bg-ribbon" />
-        <h1 className="mt-5 text-[var(--text-3xl)]">
+        <h1 className="mt-5">
           {t.titleA} {t.titleAccent}
         </h1>
         <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>

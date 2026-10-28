@@ -57,6 +57,9 @@ const en = {
     errorTitle: "We could not load the access data",
     errorBody: "The curated data file did not respond. Try again in a moment.",
     retry: "Try again",
+    aboutData: "About this data",
+    aboutDataBody:
+      "Each card links the official page that entry was checked against. Entries without a verified source are left out.",
     disclaimerTitle: "Read this first",
     updated: "Data updated",
     verified: "Verified",
@@ -433,6 +436,9 @@ const da: Copy = {
     errorTitle: "Vi kunne ikke hente adgangsdata",
     errorBody: "Datafilen svarede ikke. Prøv igen om et øjeblik.",
     retry: "Prøv igen",
+    aboutData: "Om disse data",
+    aboutDataBody:
+      "Hvert kort linker til den officielle side, opslaget er tjekket imod. Opslag uden en verificeret kilde vises ikke.",
     disclaimerTitle: "Læs dette først",
     updated: "Data opdateret",
     verified: "Verificeret",

@@ -22,7 +22,7 @@ export function Home() {
   return (
     <div className="mx-auto max-w-[var(--container)] px-6 pb-24 pt-14 sm:pt-20">
       <header className="max-w-[var(--measure)]">
-        <h1 className="text-[var(--text-home)]">{c.home.promise}</h1>
+        <h1 className="home-title">{c.home.promise}</h1>
         <p className="mt-4 text-[var(--text-lg)] text-[var(--ink-muted)]">{c.home.sub}</p>
         <div className="mt-8 grid gap-3 sm:grid-cols-2">
           <Link
@@ -71,9 +71,7 @@ export function Home() {
             <p className="mt-2 text-sm text-[var(--ink-subtle)]">{digest.weekLabel}</p>
             <ul className="mt-4 list-disc space-y-2 pl-5 text-base">
               {digest.signals.slice(0, 3).map((signal) => (
-                <li key={signal.slice(0, 48)} className="line-clamp-2">
-                  {plainHeadline(signal)}
-                </li>
+                <li key={signal.slice(0, 48)}>{plainHeadline(signal)}</li>
               ))}
             </ul>
           </>

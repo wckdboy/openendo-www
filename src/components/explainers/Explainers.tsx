@@ -10,6 +10,8 @@ import {
   type Diagram,
   type FlowDiagram,
   type Locale,
+  type MechEdge,
+  type MechNode,
   type MechanismDiagram,
   type Strength,
 } from "@/content/explainers/diagrams";
@@ -343,45 +345,11 @@ function FlowView({
   setHover: (ids: SourceId[]) => void;
 }) {
   return (
-    <>
-      <ol className="hidden items-start gap-1 md:flex">
-        {diagram.nodes.map((node, index) => (
-          <li key={node.id} className="flex min-w-0 flex-1 flex-col items-stretch">
-            <div className="flex items-center">
-              <Node
-                claim={node}
-                locale={locale}
-                order={order}
-                open={openId === node.id}
-                onOpen={() => setOpenId(openId === node.id ? null : node.id)}
-                onHover={setHover}
-                icon={flowIcon(node.id)}
-              />
-              {index < diagram.nodes.length - 1 ? (
-                <Arrow direction="right" strength="established" />
-              ) : null}
-            </div>
-            {diagram.side && diagram.sideAfter === node.id ? (
-              <div className="mt-3">
-                <Node
-                  claim={diagram.side}
-                  locale={locale}
-                  order={order}
-                  open={openId === diagram.side.id}
-                  onOpen={() =>
-                    setOpenId(openId === diagram.side?.id ? null : (diagram.side?.id ?? null))
-                  }
-                  onHover={setHover}
-                  info
-                />
-              </div>
-            ) : null}
-          </li>
-        ))}
-      </ol>
-      <ol className="space-y-2 md:hidden">
+    <div className="diagram-grid">
+      <ol className="diagram-nodes wide" aria-labelledby={`${titleId} ${captionId}`}>
         {diagram.nodes.map((node, index) => (
           <li key={node.id}>
+            <p className="mb-1 text-sm tabular-nums text-[var(--ink-subtle)]">{index + 1}</p>
             <Node
               claim={node}
               locale={locale}
@@ -406,16 +374,10 @@ function FlowView({
                 />
               </div>
             ) : null}
-            {index < diagram.nodes.length - 1 ? (
-              <div className="flex justify-center py-1">
-                <Arrow direction="down" strength="established" />
-              </div>
-            ) : null}
           </li>
         ))}
       </ol>
-      <svg className="sr-only" role="img" aria-labelledby={`${titleId} ${captionId}`} />
-    </>
+    </div>
   );
 }
 
@@ -509,146 +471,106 @@ function MechanismView({
   setHover: (ids: SourceId[]) => void;
 }) {
   const anchorPrefix = useContext(AnchorContext);
-  const col = [0, 230, 460];
-  const rowH = 88;
-  const width = 200;
-  const height = 76;
-  const box = (node: (typeof diagram.nodes)[number]) => ({
-    x: col[node.col] ?? 0,
-    y: 8 + node.row * rowH,
-    w: width,
-    h: height,
-  });
-  const byId = new Map(diagram.nodes.map((node) => [node.id, node]));
+  const roots = diagram.nodes.filter((node) => node.col === 0);
   return (
-    <>
-      <div className="relative hidden h-[460px] md:block" style={{ maxWidth: 660 }}>
-        <svg
-          className="absolute inset-0 h-full w-full"
-          role="img"
-          aria-labelledby={`${titleId} ${captionId}`}
-        >
-          {diagram.edges.map((edge) => {
-            const from = byId.get(edge.from);
-            const to = byId.get(edge.to);
-            if (!from || !to) return null;
-            const a = box(from);
-            const b = box(to);
-            const x1 = a.x + a.w;
-            const y1 = a.y + a.h / 2;
-            const x2 = b.x;
-            const y2 = b.y + b.h / 2;
-            const elbow = x2 - 14;
-            const stroke = STROKE[edge.strength];
-            const cites = edge.sources.map((id) => order.indexOf(id) + 1).join(" ");
-            return (
-              <g key={`${edge.from}-${edge.to}`}>
-                <path
-                  d={`M ${x1} ${y1} H ${elbow} V ${y2} H ${x2 - 6} M ${x2 - 7} ${y2 - 4} L ${x2 - 1} ${y2} L ${x2 - 7} ${y2 + 4}`}
-                  fill="none"
-                  stroke={stroke.color}
-                  strokeWidth={stroke.width}
-                  strokeDasharray={stroke.dash}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+    <ul className="space-y-8" aria-labelledby={`${titleId} ${captionId}`}>
+      {roots.map((root) => {
+        const effects = linked(diagram, root.id);
+        const symptoms = effects.flatMap((effect) => linked(diagram, effect.node.id));
+        return (
+          <li key={root.id} className="space-y-3">
+            <div className="diagram-grid">
+              <div className="diagram-nodes wide">
+                <Node
+                  claim={root}
+                  locale={locale}
+                  order={order}
+                  open={openId === root.id}
+                  onOpen={() => setOpenId(openId === root.id ? null : root.id)}
+                  onHover={setHover}
                 />
-                <text
-                  x={elbow - 4}
-                  y={y2 - 6}
-                  textAnchor="end"
-                  fontSize="12"
-                  fontFamily="Atkinson Hyperlegible Next, system-ui, sans-serif"
-                  fill="var(--primary)"
-                >
-                  {cites}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-        {diagram.nodes.map((node) => {
-          const place = box(node);
-          return (
-            <div
-              key={node.id}
-              className="absolute"
-              style={{ left: place.x, top: place.y, width: place.w }}
-            >
-              <Node
-                claim={node}
-                locale={locale}
-                order={order}
-                open={openId === node.id}
-                onOpen={() => setOpenId(openId === node.id ? null : node.id)}
-                onHover={setHover}
-              />
+                {effects.map(({ edge, node }) => (
+                  <div key={node.id}>
+                    <EdgeNote
+                      edge={edge}
+                      locale={locale}
+                      order={order}
+                      anchorPrefix={anchorPrefix}
+                    />
+                    <Node
+                      claim={node}
+                      locale={locale}
+                      order={order}
+                      open={openId === node.id}
+                      onOpen={() => setOpenId(openId === node.id ? null : node.id)}
+                      onHover={setHover}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          );
-        })}
-      </div>
-      <ul className="space-y-4 md:hidden">
-        {diagram.nodes
-          .filter((node) => node.col === 0)
-          .map((node) => (
-            <li key={node.id}>
-              <Node
-                claim={node}
-                locale={locale}
-                order={order}
-                open={openId === node.id}
-                onOpen={() => setOpenId(openId === node.id ? null : node.id)}
-                onHover={setHover}
-              />
-              <ul className="mt-2 space-y-2 border-l border-[var(--border-strong)] pl-3">
-                {follow(diagram, node.id).map((child) => {
-                  const edge = diagram.edges.find((item) => item.to === child.id);
-                  return (
-                    <li key={child.id}>
-                      {edge ? (
-                        <p className="mb-1 text-sm text-[var(--ink-muted)]">
-                          {strengthLabel(edge.strength, locale)}
-                          {edge.sources.map((id) => (
-                            <sup key={id} className="ml-0.5">
-                              <a href={`#${anchorPrefix}-${order.indexOf(id) + 1}`}>
-                                {order.indexOf(id) + 1}
-                              </a>
-                            </sup>
-                          ))}
-                        </p>
-                      ) : null}
-                      <Node
-                        claim={child}
+            {symptoms.length > 0 ? (
+              <div className="diagram-grid">
+                <ul className="diagram-nodes wide border-l border-[var(--border-strong)] pl-3">
+                  {symptoms.map(({ edge, node }) => (
+                    <li key={node.id}>
+                      <EdgeNote
+                        edge={edge}
                         locale={locale}
                         order={order}
-                        open={openId === child.id}
-                        onOpen={() => setOpenId(openId === child.id ? null : child.id)}
+                        anchorPrefix={anchorPrefix}
+                      />
+                      <Node
+                        claim={node}
+                        locale={locale}
+                        order={order}
+                        open={openId === node.id}
+                        onOpen={() => setOpenId(openId === node.id ? null : node.id)}
                         onHover={setHover}
                       />
                     </li>
-                  );
-                })}
-              </ul>
-            </li>
-          ))}
-      </ul>
-    </>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
-function follow(diagram: MechanismDiagram, id: string): Claim[] {
-  const byId = new Map(diagram.nodes.map((node) => [node.id, node]));
-  const next = diagram.edges.filter((edge) => edge.from === id).map((edge) => edge.to);
-  const out: Claim[] = [];
-  for (const target of next) {
-    const node = byId.get(target);
-    if (!node) continue;
-    out.push(node);
-    for (const grandchild of diagram.edges.filter((edge) => edge.from === target)) {
-      const child = byId.get(grandchild.to);
-      if (child) out.push(child);
-    }
+function linked(diagram: MechanismDiagram, from: string) {
+  const out: { edge: MechEdge; node: MechNode }[] = [];
+  for (const edge of diagram.edges) {
+    if (edge.from !== from) continue;
+    const node = diagram.nodes.find((item) => item.id === edge.to);
+    if (node) out.push({ edge, node });
   }
   return out;
+}
+
+function EdgeNote({
+  edge,
+  locale,
+  order,
+  anchorPrefix,
+}: {
+  edge: MechEdge;
+  locale: Locale;
+  order: SourceId[];
+  anchorPrefix: string;
+}) {
+  return (
+    <p className="mb-1 text-sm text-[var(--ink-muted)]">
+      {strengthLabel(edge.strength, locale)}
+      {edge.sources.map((id) => (
+        <sup key={id} className="ml-0.5">
+          <a href={`#${anchorPrefix}-${order.indexOf(id) + 1}`}>{order.indexOf(id) + 1}</a>
+        </sup>
+      ))}
+    </p>
+  );
 }
 
 function TreatmentView(props: {
@@ -872,24 +794,6 @@ function Pill({ children }: { children: ReactNode }) {
     <span className="inline-flex rounded-full border border-[var(--border-strong)] bg-[var(--surface-2)] px-1.5 text-[12px] leading-4 text-[var(--ink)]">
       {children}
     </span>
-  );
-}
-
-function Arrow({ direction, strength }: { direction: "right" | "down"; strength: Strength }) {
-  const stroke = STROKE[strength];
-  const d = direction === "right" ? "M2 8 H22 M16 3 L23 8 L16 13" : "M8 2 V22 M3 16 L8 23 L13 16";
-  return (
-    <svg width="28" height="28" aria-hidden="true" className="shrink-0">
-      <path
-        d={d}
-        fill="none"
-        stroke={stroke.color}
-        strokeWidth={stroke.width}
-        strokeDasharray={stroke.dash}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }
 

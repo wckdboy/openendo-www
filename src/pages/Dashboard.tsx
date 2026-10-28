@@ -103,7 +103,7 @@ export function Dashboard() {
           <p className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:text-xs">
             {c.dashboard.eyebrow}
           </p>
-          <h1 className="mt-3 max-w-2xl text-[var(--text-3xl)]">{c.dashboard.title}</h1>
+          <h1 className="mt-3 max-w-2xl">{c.dashboard.title}</h1>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
             {c.dashboard.lede}
           </p>

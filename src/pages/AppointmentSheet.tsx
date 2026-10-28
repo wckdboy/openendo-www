@@ -38,7 +38,7 @@ export function AppointmentSheet() {
         </Link>
       </p>
       <article lang={locale}>
-        <h1 className="text-[var(--text-3xl)]">{title}</h1>
+        <h1>{title}</h1>
         <p className="mt-3 text-base text-[var(--ink-muted)]">
           {locale === "da"
             ? "Listen er de tegn, NICE NG73 siger, man skal mistænke endometriose ved. Dagbogen er den, NICE siger kan hjælpe samtalen."

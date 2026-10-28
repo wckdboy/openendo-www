@@ -1,10 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { ArrowUpRight, Info, MapPin, ShieldAlert } from "lucide-react";
+import { ArrowUpRight, Info, MapPin } from "lucide-react";
 import { PageCredits } from "@/components/PageCredits";
-import { LEARN_REVIEWED } from "@/content/learn";
-import { formatDate } from "@/lib/dates";
 import { useLang } from "@/lib/i18n";
 import { GITHUB_URL, RAW_BASE } from "@/lib/site";
 import {
@@ -56,12 +54,16 @@ export function Access() {
   return (
     <div className="mx-auto max-w-5xl px-6 pt-16 sm:pt-20">
       <header>
-        <h1 className="max-w-2xl text-[var(--text-3xl)]">{t.titleA}</h1>
+        <h1 className="max-w-2xl">{t.titleA}</h1>
         <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">{t.lede}</p>
-        <PageCredits
-          reviewed={selected?.verified ?? query.data?.updated ?? LEARN_REVIEWED}
-          citations={[{ label: "OpenEndo access.json", href: `${RAW_BASE}/docs/data/access.json` }]}
-        />
+        {selected?.verified ? <PageCredits reviewed={selected.verified} citations={[]} /> : null}
+        <details className="mt-4 max-w-xl text-sm">
+          <summary className="cursor-pointer font-medium">{t.aboutData}</summary>
+          <p className="mt-2 leading-relaxed text-muted-foreground">{t.aboutDataBody}</p>
+          <p className="mt-2">
+            <a href={`${RAW_BASE}/docs/data/access.json`}>OpenEndo access.json</a>
+          </p>
+        </details>
       </header>
 
       {/* Input card */}
@@ -153,12 +155,7 @@ export function Access() {
       {query.data && (
         <div className="mt-14 pb-8">
           {selected ? (
-            <Results
-              country={selected}
-              postcode={submitted?.postcode ?? ""}
-              disclaimer={pick(query.data.disclaimer, locale)}
-              updated={query.data.updated}
-            />
+            <Results country={selected} postcode={submitted?.postcode ?? ""} />
           ) : submitted.code ? (
             <MissingCountry code={submitted.code} />
           ) : null}
@@ -263,17 +260,7 @@ function ExternalLink({ href, label }: { href?: string | undefined; label: strin
   );
 }
 
-function Results({
-  country,
-  postcode,
-  disclaimer,
-  updated,
-}: {
-  country: Country;
-  postcode: string;
-  disclaimer: string;
-  updated?: string | undefined;
-}) {
+function Results({ country, postcode }: { country: Country; postcode: string }) {
   const { c, locale } = useLang();
   const t = c.access;
   const meds = country.medications ?? [];
@@ -296,19 +283,6 @@ function Results({
       <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
         <span className="marker">{pick(country.name, locale)}</span>
       </h2>
-      {updated && (
-        <p className="mt-2 text-[13px] text-muted-foreground">
-          {t.updated} {formatDate(updated, locale)}
-        </p>
-      )}
-
-      <div className="mt-6 rounded-2xl border border-hairline bg-ribbon-soft p-5">
-        <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em]">
-          <ShieldAlert className="h-3.5 w-3.5" aria-hidden />
-          {t.disclaimerTitle}
-        </p>
-        <p className="mt-2.5 text-[13px] leading-relaxed text-foreground/80">{disclaimer}</p>
-      </div>
 
       {region && (
         <div className="mt-6 rounded-2xl border border-hairline bg-card p-5">

@@ -12,7 +12,7 @@ export function About() {
   const { c, path } = useLang();
   return (
     <div className="mx-auto max-w-[var(--measure)] px-6 pb-24 pt-14">
-      <h1 className="text-[var(--text-3xl)]">{c.about.title}</h1>
+      <h1>{c.about.title}</h1>
       <p className="mt-4 text-[var(--text-lg)] text-[var(--ink-muted)]">{c.about.lede}</p>
       <PageCredits
         reviewed={LEARN_REVIEWED}
@@ -67,7 +67,7 @@ export function DecisionMakers() {
 
   return (
     <div className="mx-auto max-w-[var(--measure)] px-6 pb-24 pt-14">
-      <h1 className="text-[var(--text-3xl)]">{c.about.decision}</h1>
+      <h1>{c.about.decision}</h1>
       <p className="mt-4 text-[var(--ink-muted)]">{c.about.decisionLede}</p>
       <h2 className="mt-10 text-[var(--text-xl)]">{c.home.fundingTitle}</h2>
       <ul className="mt-4 space-y-3">

@@ -35,18 +35,20 @@ const TOPIC: Record<string, string> = {
   "pharmacology and supportive care": "Treatment",
 };
 
-/** One plain sentence for the homepage. Drops study shorthand and parentheticals. */
+/** A complete short headline. Long digest paragraphs keep the lead, not a mid-sentence cut. */
 export function plainHeadline(signal: string): string {
   const cleaned = signal
     .replace(/\([^)]*\)/g, "")
     .replace(/\[[^\]]*\]/g, "")
     .replace(/\bPMID\s*\d+/gi, "")
-    .replace(/\bGRADE\b/gi, "")
     .replace(/\s+/g, " ")
     .replace(/\s+([.;,])/g, "$1")
     .trim();
-  const sentence = cleaned.split(/(?<=\.)\s/)[0] ?? cleaned;
-  return sentence.length > 180 ? `${sentence.slice(0, 177).replace(/\s+\S*$/, "")}` : sentence;
+  const sentence = (cleaned.split(/(?<=\.)\s/)[0] ?? cleaned).replace(/\.$/, "").trim();
+  if (sentence.length <= 110) return sentence;
+  const lead = cleaned.split(/\s+(?:is|repeats|reports|are|covers|gives)\b/i)[0]?.trim() ?? "";
+  if (lead.length >= 12 && lead.length <= 90) return lead.replace(/\.$/, "");
+  return `${sentence.slice(0, 100).replace(/\s+\S*$/, "")}…`;
 }
 
 export function parseDigest(markdown: string): ParsedDigest {

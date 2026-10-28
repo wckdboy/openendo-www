@@ -5,7 +5,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { property: "og:locale", content: "en_GB" },
-      { title: "OpenEndo — open data on endometriosis research, trials and funding" },
+      { title: "OpenEndo — clear, sourced information about endometriosis" },
       {
         name: "description",
         content:
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:title",
-        content: "OpenEndo — open data on endometriosis research, trials and funding",
+        content: "OpenEndo — clear, sourced information about endometriosis",
       },
       {
         property: "og:description",

@@ -165,6 +165,7 @@ const en = {
       Completed: "Completed",
       Terminated: "Terminated",
       Unknown: "Unknown",
+      "Enrolling by invitation": "Enrolling by invitation",
     } as Record<string, string>,
     kpi: {
       recruiting: "Trials recruiting worldwide",
@@ -539,6 +540,7 @@ const da: Copy = {
       Completed: "Afsluttet",
       Terminated: "Afbrudt",
       Unknown: "Ukendt",
+      "Enrolling by invitation": "Tilmelding efter invitation",
     } as Record<string, string>,
     kpi: {
       recruiting: "Forsøg der rekrutterer globalt",

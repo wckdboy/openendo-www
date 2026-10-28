@@ -62,7 +62,8 @@ export function countryBars(
 
 export function statusBucket(raw: string): string {
   const value = raw.toUpperCase().replace(/[\s-]+/g, "_");
-  if (value === "RECRUITING" || value === "ENROLLING_BY_INVITATION") return "Recruiting";
+  if (value === "RECRUITING") return "Recruiting";
+  if (value === "ENROLLING_BY_INVITATION") return "Enrolling by invitation";
   if (value === "NOT_YET_RECRUITING") return "Not yet recruiting";
   if (value === "ACTIVE_NOT_RECRUITING" || value === "ACTIVE") return "Active";
   if (value === "COMPLETED") return "Completed";

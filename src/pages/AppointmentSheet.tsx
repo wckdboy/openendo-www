@@ -9,7 +9,7 @@ const ITEMS = {
     ["Bowel", "Painful bowel movements, or other bowel symptoms, around your period"],
     ["Bladder", "Pain passing urine, or blood in the urine, around your period"],
     ["Pregnancy", "Trouble getting pregnant, together with one of the symptoms above"],
-    ["Family", "A parent, sister, or child with endometriosis"],
+    ["Family", "A mother, sister or daughter (a first-degree relative) with endometriosis"],
   ],
   da: [
     [
@@ -21,7 +21,7 @@ const ITEMS = {
     ["Tarm", "Smerter ved afføring eller andre tarmsymptomer omkring menstruationen"],
     ["Blære", "Smerter ved vandladning eller blod i urinen omkring menstruationen"],
     ["Graviditet", "Svært ved at blive gravid sammen med et af symptomerne ovenfor"],
-    ["Familie", "En forælder, søster eller et barn med endometriose"],
+    ["Familie", "En mor, søster eller datter (en førstegradsslægtning) med endometriose"],
   ],
 } as const;
 

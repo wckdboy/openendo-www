@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { allClaims, sourceIdsUsed } from "../src/content/explainers/diagrams.ts";
+import { allClaims, mechanismEdges, sourceIdsUsed } from "../src/content/explainers/diagrams.ts";
 import { SOURCES } from "../src/content/explainers/sources.ts";
 
 const BANNED =
@@ -18,6 +18,19 @@ test("every explainer citation id resolves to a source with a URL", () => {
       assert.match(source.url, /^https:\/\//, `${id} url`);
       assert.ok(source.section.length > 0, `${id} section`);
       assert.equal(source.accessed, "2026-10-28");
+      used.add(id);
+    }
+  }
+  for (const edge of mechanismEdges()) {
+    assert.ok(edge.strength, `${edge.from}->${edge.to} has no strength`);
+    assert.ok(
+      edge.sources?.length,
+      `${edge.from}->${edge.to} has strength ${edge.strength} but no citation`,
+    );
+    for (const id of edge.sources) {
+      const source = SOURCES[id];
+      assert.ok(source, `${edge.from}->${edge.to} cites missing source ${id}`);
+      assert.match(source.url, /^https:\/\//, `${id} url`);
       used.add(id);
     }
   }

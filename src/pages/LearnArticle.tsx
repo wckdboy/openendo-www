@@ -135,6 +135,14 @@ export function LearnArticle({ slug }: { slug: LearnSlug }) {
                     <p className="mt-2">{section.callout.body}</p>
                   </div>
                 ) : null}
+                {section.urgent ? (
+                  <div className="mt-4 rounded-[var(--radius-md)] bg-[var(--danger-bg)] p-4">
+                    <h3 className="text-base font-semibold text-[var(--danger)]">
+                      {section.urgent.title}
+                    </h3>
+                    <p className="mt-2">{section.urgent.body}</p>
+                  </div>
+                ) : null}
               </section>
             ))}
           </div>

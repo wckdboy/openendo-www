@@ -34,7 +34,7 @@ export type TheoryDiagram = {
 };
 
 export type MechNode = Claim & { col: 0 | 1 | 2; row: number };
-export type MechEdge = { from: string; to: string; strength: Strength };
+export type MechEdge = { from: string; to: string; strength: Strength; sources: SourceId[] };
 
 export type MechanismDiagram = {
   kind: "mechanisms";
@@ -158,21 +158,24 @@ const theories: TheoryDiagram = {
     {
       id: "retrograde",
       level: 3,
-      title: { en: "Retrograde menstruation", da: "Retrograd menstruation" },
+      title: {
+        en: "Retrograde menstruation",
+        da: "Retrograd menstruation (implantationsteorien)",
+      },
       detail: {
-        en: "The leading idea: lining shed during a period flows backward through the tubes and implants. It is common, and it is not proven to be the cause.",
-        da: "Den førende idé: slimhinde, der afstødes under menstruationen, løber baglæns gennem æggelederne og sætter sig fast. Det er almindeligt, og det er ikke bevist som årsag.",
+        en: "Backward flow happens in about 90% of women who menstruate, so on its own it does not explain who gets endometriosis.",
+        da: "Tilbageløb sker hos de fleste kvinder. En oversigt angiver omkring 90 procent. Det forklarer ikke i sig selv, hvem der får endometriose.",
       },
       strength: "likely",
-      sources: ["eshre-patient", "cmaj"],
+      sources: ["cmaj", "sundhed-patient"],
     },
     {
       id: "coelomic",
       level: 2,
-      title: { en: "Coelomic metaplasia", da: "Cølomisk metaplasi" },
+      title: { en: "Coelomic metaplasia", da: "Bughinden omdannes (metaplasiteorien)" },
       detail: {
-        en: "A proposal that the lining of the abdomen changes into this tissue. It would not explain disease away from the abdomen.",
-        da: "Et forslag om, at bughinden ændrer sig til dette væv. Det forklarer ikke sygdom væk fra maven.",
+        en: "It could only explain lesions on the peritoneum (the lining of the abdomen), not lesions elsewhere.",
+        da: "Den kan kun forklare forandringer på bughinden, ikke andre steder.",
       },
       strength: "uncertain",
       sources: ["cmaj", "cell"],
@@ -180,7 +183,7 @@ const theories: TheoryDiagram = {
     {
       id: "remnants",
       level: 2,
-      title: { en: "Embryonic remnants", da: "Rester fra fosterlivet" },
+      title: { en: "Embryonic remnants", da: "Rester fra fosterlivet (embryonale rester)" },
       detail: {
         en: "A proposal that leftover embryonic tissue becomes endometriosis. A 2024 review found low-certainty evidence and did not support it as the main route.",
         da: "Et forslag om, at rester af fostervæv bliver til endometriose. En oversigt fra 2024 fandt evidens med lav sikkerhed og støttede det ikke som hovedvejen.",
@@ -191,7 +194,10 @@ const theories: TheoryDiagram = {
     {
       id: "spread",
       level: 2,
-      title: { en: "Blood or lymph spread", da: "Spredning med blod eller lymfe" },
+      title: {
+        en: "Blood or lymph spread",
+        da: "Spredning med blod eller lymfe (metastaseteorien)",
+      },
       detail: {
         en: "Suggested to explain disease outside the pelvis, including the chest. Not proven.",
         da: "Foreslået for at forklare sygdom uden for bækkenet, også i brystkassen. Ikke bevist.",
@@ -263,8 +269,8 @@ const mechanisms: MechanismDiagram = {
       row: 4,
       title: { en: "Nerve changes", da: "Nerveændringer" },
       detail: {
-        en: "Ongoing pain can involve the nerves, called central sensitisation.",
-        da: "Vedvarende smerte kan involvere nerverne. Det kaldes central sensibilisering.",
+        en: "Ongoing pain can involve the nerves. The nervous system can become more sensitive to pain (central sensitisation).",
+        da: "Vedvarende smerte kan involvere nerverne. Nervesystemet bliver mere følsomt for smerte (central sensibilisering).",
       },
       strength: "uncertain",
       sources: ["eshre", "cmaj"],
@@ -335,11 +341,11 @@ const mechanisms: MechanismDiagram = {
       row: 2,
       title: { en: "Bowel or bladder", da: "Tarm eller blære" },
       detail: {
-        en: "Pain passing stool or urine around a period.",
-        da: "Smerter ved afføring eller vandladning omkring menstruation.",
+        en: "Deep disease can involve the bowel or bladder and cause pain there.",
+        da: "Dyb sygdom kan sidde på tarm eller blære og give smerter der.",
       },
       strength: "established",
-      sources: ["nice", "who"],
+      sources: ["laege", "sundhed-patient"],
     },
     {
       id: "s-fertility",
@@ -367,14 +373,19 @@ const mechanisms: MechanismDiagram = {
     },
   ],
   edges: [
-    { from: "m-oestrogen", to: "e-growth", strength: "established" },
-    { from: "m-inflammation", to: "e-scar", strength: "established" },
-    { from: "m-nerves", to: "e-sens", strength: "uncertain" },
-    { from: "e-growth", to: "s-period", strength: "established" },
-    { from: "e-growth", to: "s-sex", strength: "likely" },
-    { from: "e-scar", to: "s-bowel", strength: "likely" },
-    { from: "e-scar", to: "s-fertility", strength: "likely" },
-    { from: "e-sens", to: "s-fatigue", strength: "uncertain" },
+    { from: "m-oestrogen", to: "e-growth", strength: "established", sources: ["eshre"] },
+    { from: "m-inflammation", to: "e-scar", strength: "established", sources: ["who"] },
+    { from: "m-nerves", to: "e-sens", strength: "uncertain", sources: ["eshre", "cmaj"] },
+    { from: "e-growth", to: "s-period", strength: "established", sources: ["who", "nhs"] },
+    { from: "e-growth", to: "s-sex", strength: "likely", sources: ["nice"] },
+    {
+      from: "e-growth",
+      to: "s-bowel",
+      strength: "established",
+      sources: ["laege", "sundhed-patient"],
+    },
+    { from: "e-growth", to: "s-fatigue", strength: "established", sources: ["who"] },
+    { from: "e-scar", to: "s-fertility", strength: "uncertain", sources: ["sundhed-patient"] },
   ],
 };
 
@@ -401,8 +412,8 @@ const diagnosisEn: FlowDiagram = {
       id: "exam",
       title: { en: "Examination", da: "Undersøgelse" },
       detail: {
-        en: "An abdominal or pelvic exam is offered. A normal exam does not rule it out.",
-        da: "En undersøgelse af maven eller underlivet tilbydes. En normal undersøgelse udelukker det ikke.",
+        en: "An abdominal and pelvic exam is offered. A normal exam does not rule it out.",
+        da: "En undersøgelse af maven og underlivet tilbydes. En normal undersøgelse udelukker det ikke.",
       },
       strength: "established",
       sources: ["nice"],
@@ -464,8 +475,8 @@ const diagnosisDa: FlowDiagram = {
       id: "gp",
       title: { en: "Your GP", da: "Egen læge" },
       detail: {
-        en: "For suspected mild disease, the GP can try a continuous progestogen coil or a continuous pill, plus paracetamol and an NSAID.",
-        da: "Ved mistanke om mild sygdom kan egen læge prøve en kontinuerlig gestagenspiral eller kontinuerlige p-piller, plus paracetamol og et NSAID.",
+        en: "For suspected mild disease, the GP can try a continuous progestogen coil or a continuous pill, and, if needed, paracetamol with an NSAID.",
+        da: "Ved mistanke om mild sygdom kan egen læge prøve en kontinuerlig gestagenspiral eller kontinuerlige p-piller, om nødvendigt sammen med paracetamol og et NSAID.",
       },
       strength: "established",
       sources: ["laege"],
@@ -516,8 +527,8 @@ const diagnosisDa: FlowDiagram = {
     id: "settles",
     title: { en: "Pain settles?", da: "Smerten letter?" },
     detail: {
-      en: "If symptoms ease on the pill or pain medicine, further tests are often not needed.",
-      da: "Hvis symptomerne letter på p-piller eller smertestillende, er der ofte ikke grund til flere undersøgelser.",
+      en: "With mild disease, if symptoms ease on the pill or pain medicine, further tests are often not needed.",
+      da: "Ved mild sygdom er der ofte ikke grund til flere undersøgelser, hvis symptomerne letter på p-piller eller smertestillende.",
     },
     strength: "likely",
     sources: ["laege"],
@@ -553,10 +564,10 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "ESHRE", da: "ESHRE" },
           title: { en: "TENS", da: "TENS" },
           detail: {
-            en: "Electrical stimulation through the skin. ESHRE makes no recommendation for electrotherapy. Benefits and harms are unclear.",
-            da: "Elektrisk stimulation gennem huden. ESHRE giver ingen anbefaling om elektroterapi. Gavn og skade er uklare.",
+            en: "Small trials found some improvement in pain or quality of life. They are low quality, and ESHRE makes no recommendation.",
+            da: "Små forsøg fandt en vis bedring i smerte eller livskvalitet. De er af lav kvalitet, og ESHRE giver ingen anbefaling.",
           },
-          strength: "not-yet-shown",
+          strength: "uncertain",
           sources: ["eshre"],
         },
       ],
@@ -570,10 +581,10 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "NICE, ESHRE", da: "NICE, ESHRE" },
           title: { en: "Combined pill", da: "Kombinations-p-pille" },
           detail: {
-            en: "Offered to reduce pain. It does not permanently reduce later fertility. It is not used to help you conceive.",
-            da: "Tilbydes for at mindske smerter. Den nedsætter ikke senere fertilitet varigt. Den bruges ikke til at hjælpe dig med at blive gravid.",
+            en: "It reduces pain with periods, pain with sex, and pelvic pain. It does not permanently reduce later fertility. It is not used to help you conceive.",
+            da: "Den mindsker menstruationssmerter, smerter ved sex og underlivssmerter. Den nedsætter ikke senere fertilitet varigt. Den bruges ikke til at hjælpe dig med at blive gravid.",
           },
-          strength: "likely",
+          strength: "established",
           sources: ["nice", "eshre", "who"],
         },
         {
@@ -581,10 +592,10 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "NICE, ESHRE", da: "NICE, ESHRE" },
           title: { en: "Progestogens", da: "Gestagener" },
           detail: {
-            en: "A progestogen pill or injection can reduce pain. Side effects differ between products.",
-            da: "En gestagenpille eller en indsprøjtning kan mindske smerter. Bivirkningerne er forskellige fra præparat til præparat.",
+            en: "Progestogens reduce endometriosis pain. Side effects differ between products.",
+            da: "Gestagener mindsker endometrioserelaterede smerter. Bivirkningerne er forskellige fra præparat til præparat.",
           },
-          strength: "likely",
+          strength: "established",
           sources: ["nice", "eshre"],
         },
         {
@@ -592,10 +603,10 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "ESHRE, WHO", da: "ESHRE, WHO" },
           title: { en: "Hormonal coil", da: "Hormonspiral" },
           detail: {
-            en: "A levonorgestrel coil is recommended to reduce pain. It is also a contraceptive.",
-            da: "En hormonspiral med levonorgestrel anbefales for at mindske smerter. Den er også prævention.",
+            en: "A levonorgestrel coil reduces endometriosis pain. It is also a contraceptive.",
+            da: "En hormonspiral med levonorgestrel mindsker endometrioserelaterede smerter. Den er også prævention.",
           },
-          strength: "likely",
+          strength: "established",
           sources: ["eshre", "who"],
         },
         {
@@ -603,8 +614,8 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "ESHRE", da: "ESHRE" },
           title: { en: "GnRH agonist", da: "GnRH-agonist" },
           detail: {
-            en: "Second line, because of side effects from low oestrogen. Add-back hormones are used to protect bone and limit those effects.",
-            da: "Andet valg på grund af bivirkninger fra lavt østrogen. Add-back-hormoner bruges for at beskytte knoglerne og dæmpe bivirkningerne.",
+            en: "Second line, because of side effects from low oestrogen. Add-back treatment (low-dose oestrogen and progestogen) is used to protect bone and limit those effects.",
+            da: "Andet valg på grund af bivirkninger fra lavt østrogen. Add-back-behandling (lavdosis østrogen og gestagen) bruges for at beskytte knoglerne og dæmpe bivirkningerne.",
           },
           strength: "likely",
           sources: ["eshre", "who"],
@@ -614,8 +625,8 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "ESHRE, NICE", da: "ESHRE, NICE" },
           title: { en: "GnRH antagonist", da: "GnRH-antagonist" },
           detail: {
-            en: "Also second line. NICE points to separate appraisals after other treatment. Add-back hormones limit low-oestrogen effects.",
-            da: "Også andet valg. NICE henviser til særskilte vurderinger efter anden behandling. Add-back-hormoner dæmper virkningerne af lavt østrogen.",
+            en: "ESHRE says this can be considered. The recommendation is weak, and it is second line. Add-back treatment (low-dose oestrogen and progestogen) limits low-oestrogen effects.",
+            da: "ESHRE siger, at det kan overvejes. Anbefalingen er svag, og det er andet valg. Add-back-behandling (lavdosis østrogen og gestagen) dæmper virkningerne af lavt østrogen.",
           },
           strength: "likely",
           sources: ["eshre", "nice"],
@@ -631,22 +642,22 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "NICE, ESHRE", da: "NICE, ESHRE" },
           title: { en: "Excision or ablation", da: "Fjernelse eller afbrænding" },
           detail: {
-            en: "Keyhole surgery can remove or destroy lesions and divide adhesions. ESHRE is uncertain how much it changes overall pain. Lesions can return.",
-            da: "En kikkertoperation kan fjerne eller ødelægge læsioner og løsne sammenvoksninger. ESHRE er usikker på, hvor meget det ændrer den samlede smerte. Vævet kan komme igen.",
+            en: "ESHRE recommends surgery as one option to reduce pain. A Cochrane review it cites is uncertain about the size of the effect on overall pain. Lesions can return.",
+            da: "ESHRE anbefaler operation som én mulighed for at mindske smerter. Et Cochrane-review, som ESHRE citerer, er usikker på størrelsen af effekten på den samlede smerte. Vævet kan komme igen.",
           },
-          strength: "uncertain",
+          strength: "likely",
           sources: ["nice", "eshre", "who"],
         },
         {
           id: "endometrioma",
-          guideline: { en: "NICE", da: "NICE" },
+          guideline: { en: "NICE, ESHRE", da: "NICE, ESHRE" },
           title: { en: "Ovarian cyst surgery", da: "Operation for cyste" },
           detail: {
-            en: "For an endometrioma, a cyst of old blood on the ovary, excision or drainage can be considered. The choice affects ovarian reserve.",
-            da: "Ved et endometriom, en cyste med gammelt blod på æggestokken, kan fjernelse eller tømning overvejes. Valget påvirker ægreserven.",
+            en: "Removing the cyst wall (cystectomy) is preferred to reduce pain and recurrence. Draining and ablating it may spare more ovarian reserve when fertility is a priority.",
+            da: "Fjernelse af cystevæggen (cystektomi) foretrækkes for at mindske smerter og tilbagefald. Tømning og afbrænding kan spare mere af ægreserven, når fertilitet er vigtigst.",
           },
           strength: "likely",
-          sources: ["nice"],
+          sources: ["nice", "eshre"],
         },
         {
           id: "hysterectomy",
@@ -692,8 +703,8 @@ const treatment: TreatmentDiagram = {
           guideline: { en: "WHO", da: "WHO" },
           title: { en: "Fertility treatment", da: "Fertilitetsbehandling" },
           detail: {
-            en: "Ovulation induction, insemination, or IVF may be offered. Among people already being seen for infertility, as many as 25 to 50 percent have endometriosis.",
-            da: "Ægløsningsstimulation, insemination eller IVF kan tilbydes. Blandt personer der allerede udredes for infertilitet, har helt op til 25 til 50 procent endometriose.",
+            en: "Ovulation induction, insemination, or IVF may be offered. Among women with infertility, as many as 25 to 50 percent have endometriosis.",
+            da: "Ægløsningsstimulation, insemination eller IVF kan tilbydes. Blandt kvinder med infertilitet har helt op til 25 til 50 procent endometriose.",
           },
           strength: "likely",
           sources: ["who"],
@@ -733,8 +744,8 @@ const known: KnownDiagram = {
       id: "prevalence",
       title: { en: "About 1 in 10", da: "Omkring 1 ud af 10" },
       detail: {
-        en: "WHO estimates about 10 percent (190 million) of reproductive-age women and girls. ESHRE says the exact figure is unknown and cites a range of 2 to 10 percent.",
-        da: "WHO anslår omkring 10 procent (190 millioner) af kvinder og piger i den fertile alder. ESHRE skriver, at det præcise tal er ukendt, og nævner et spænd fra 2 til 10 procent.",
+        en: "WHO estimates about 10 percent (190 million) of women of reproductive age. ESHRE says the exact figure is unknown and cites a range of 2 to 10 percent.",
+        da: "WHO anslår omkring 10 procent (190 millioner) af kvinder i den fertile alder. ESHRE skriver, at det præcise tal er ukendt, og nævner et spænd fra 2 til 10 procent.",
       },
       strength: "likely",
       sources: ["who", "eshre"],
@@ -926,7 +937,7 @@ export function allClaims(): Claim[] {
   return [...EXPLAINERS.flatMap(claimsIn), ...extra, ...MANAGING];
 }
 
-export function claimSourceIds(claims: Claim[]): SourceId[] {
+export function claimSourceIds(claims: { sources: SourceId[] }[]): SourceId[] {
   const ids: SourceId[] = [];
   for (const claim of claims) {
     for (const id of claim.sources) {
@@ -936,14 +947,28 @@ export function claimSourceIds(claims: Claim[]): SourceId[] {
   return ids;
 }
 
+export function mechanismEdges(): MechEdge[] {
+  return mechanisms.edges;
+}
+
 export function pageSourceIds(locale: Locale): SourceId[] {
-  return claimSourceIds(diagramsFor(locale).flatMap((diagram) => claimsIn(diagram)));
+  const items: { sources: SourceId[] }[] = [];
+  for (const diagram of diagramsFor(locale)) {
+    items.push(...claimsIn(diagram));
+    if (diagram.kind === "mechanisms") items.push(...diagram.edges);
+  }
+  return claimSourceIds(items);
 }
 
 export function sourceIdsUsed(): string[] {
   const ids: string[] = [];
   for (const claim of allClaims()) {
     for (const id of claim.sources) {
+      if (!ids.includes(id)) ids.push(id);
+    }
+  }
+  for (const edge of mechanisms.edges) {
+    for (const id of edge.sources) {
       if (!ids.includes(id)) ids.push(id);
     }
   }

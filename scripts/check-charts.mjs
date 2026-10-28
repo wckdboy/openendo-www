@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { countryBars, monthPoints, snapshotUpdateDue, statusBars } from "../src/lib/charts.ts";
+import {
+  countryBars,
+  monthPoints,
+  snapshotUpdateDue,
+  statusBars,
+  statusBucket,
+} from "../src/lib/charts.ts";
 
 test("country bars keep Denmark and group the rest", () => {
   const trials = [
@@ -49,6 +55,11 @@ test("the newest month in the snapshot is marked incomplete", () => {
   );
   assert.equal(points.at(-1)?.partial, true);
   assert.equal(points[0]?.partial, false);
+});
+
+test("enrolling by invitation is not labelled as recruiting", () => {
+  assert.equal(statusBucket("ENROLLING_BY_INVITATION"), "Enrolling by invitation");
+  assert.notEqual(statusBucket("ENROLLING_BY_INVITATION"), "Recruiting");
 });
 
 test("a snapshot older than 10 days is due an update", () => {

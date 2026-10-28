@@ -5,6 +5,8 @@ const LAEGE =
 const DKMA = "https://laegemiddelstyrelsen.dk/da/nyheder/2024/ryeqo-bevarer-generelt-tilskud/";
 const MEDICIN = "https://pro.medicin.dk/Medicin/Praeparater/9905";
 const AUH = "https://www.auh.dk/afdelinger/kvindesygdomme-og-fodsler/klinik-for-kvindesygdomme/";
+const FORLOEB =
+  "https://www.sundhed.dk/sundhedsfaglig/information-til-praksis/hovedstaden/almen-praksis/patientbehandling/patientforloeb/forloebsbeskrivelser-icpc/x-kvindelige-koensorganer/endomitrose/";
 const ENDO = "https://www.endo.dk/radgivning/";
 const CHECKED = "2026-10-28";
 
@@ -12,7 +14,7 @@ const CHECKED = "2026-10-28";
  * Denmark entries checked on 28 Oct 2026 against Lægehåndbogen, Lægemiddelstyrelsen,
  * medicin.dk, Aarhus University Hospital, and Endometriose Fællesskabet.
  * Anything not confirmed on those pages is removed. Other countries are unchanged.
- * Rigshospitalet's own page did not load, so that centre is not listed.
+ * Rigshospitalet is named from Lægehåndbogen and the Capital Region pathway, not from the hospital's own page.
  */
 const denmark: Country = {
   name: { en: "Denmark", da: "Danmark" },
@@ -20,12 +22,12 @@ const denmark: Country = {
   verified: CHECKED,
   access_path: {
     en: [
-      "Start with your GP. If mild disease is suspected, the GP can try a continuous progestogen coil or a continuous combined pill, and paracetamol with an NSAID for period pain.",
+      "Start with your GP. If mild disease is suspected, the GP can try a continuous progestogen coil or a continuous combined pill, and, if needed, paracetamol with an NSAID.",
       "If the disease seems severe, or pelvic pain continues despite that treatment, ask for a referral to a gynaecologist in a specialist clinic or a hospital department.",
       "If deep disease is suspected, with bladder or bowel symptoms, the referral should be to a highly specialised centre.",
     ],
     da: [
-      "Start hos egen læge. Ved mistanke om mild sygdom kan lægen prøve en kontinuerlig gestagenspiral eller kontinuerlige p-piller og paracetamol sammen med et NSAID mod menstruationssmerter.",
+      "Start hos egen læge. Ved mistanke om mild sygdom kan lægen prøve en kontinuerlig gestagenspiral eller kontinuerlige p-piller, om nødvendigt sammen med paracetamol og et NSAID.",
       "Ved mistanke om svær sygdom, eller hvis underlivssmerterne fortsætter trods behandlingen, så bed om henvisning til en gynækolog i speciallægepraksis eller på en hospitalsafdeling.",
       "Ved mistanke om dyb sygdom med symptomer fra blære eller tarm bør henvisningen gå til et højt specialiseret center.",
     ],
@@ -56,8 +58,8 @@ const denmark: Country = {
       approved: true,
       access_level: "reimbursed",
       access_note: {
-        en: "Lægemiddelstyrelsen says general reimbursement remains for symptomatic endometriosis after earlier medical or surgical treatment.",
-        da: "Lægemiddelstyrelsen skriver, at generelt tilskud består ved symptomatisk endometriose efter tidligere medicinsk eller kirurgisk behandling.",
+        en: "Ryeqo keeps general reimbursement after its approval was extended to endometriosis in people treated before.",
+        da: "Ryeqo beholder generelt tilskud, efter godkendelsen blev udvidet til endometriose hos personer, der er behandlet før.",
       },
       approval_note: {
         en: "medicin.dk lists that indication.",
@@ -70,6 +72,20 @@ const denmark: Country = {
   ],
   centers: [
     {
+      id: "rigshospitalet",
+      name: { en: "Rigshospitalet", da: "Rigshospitalet" },
+      type: "specialised department",
+      area: { en: "Eastern Denmark", da: "Østdanmark" },
+      note: {
+        en: "Lægehåndbogen says surgery for deep endometriosis, when pain continues despite medicine, should be at Rigshospitalet or Aarhus University Hospital, Skejby. The Capital Region pathway names the same two teams.",
+        da: "Lægehåndbogen skriver, at operation for dyb endometriose, når smerterne fortsætter trods medicin, skal foregå på Rigshospitalet eller Aarhus Universitetshospital, Skejby. Region Hovedstadens forløb nævner de samme to teams.",
+      },
+      url: FORLOEB,
+      confidence: "high",
+      verified: CHECKED,
+      sources: [LAEGE, FORLOEB],
+    },
+    {
       id: "auh-kvindesygdomme",
       name: {
         en: "Aarhus University Hospital, Clinic for Women's Diseases",
@@ -78,13 +94,13 @@ const denmark: Country = {
       type: "hospital clinic",
       area: { en: "Aarhus", da: "Aarhus" },
       note: {
-        en: "The clinic page says one of its four teams treats endometriosis.",
-        da: "Klinikkens side skriver, at et af fire teams behandler endometriose.",
+        en: "The clinic page says one of its four teams treats endometriosis. Lægehåndbogen names Aarhus University Hospital, Skejby, with Rigshospitalet for deep disease.",
+        da: "Klinikkens side skriver, at et af fire teams behandler endometriose. Lægehåndbogen nævner Aarhus Universitetshospital, Skejby, sammen med Rigshospitalet ved dyb sygdom.",
       },
       url: AUH,
       confidence: "high",
       verified: CHECKED,
-      sources: [AUH, LAEGE],
+      sources: [AUH, LAEGE, FORLOEB],
     },
   ],
   organizations: [

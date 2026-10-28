@@ -12,6 +12,7 @@ export type LearnSection = {
   paragraphs: string[];
   items?: { label: string; detail: string }[];
   callout?: { title: string; body: string };
+  urgent?: { title: string; body: string };
   citations: Citation[];
 };
 
@@ -33,6 +34,10 @@ const nice: Citation = { label: "NICE NG73 recommendations", href: NICE_NG73_REC
 const nhs: Citation = {
   label: "NHS, endometriosis",
   href: "https://www.nhs.uk/conditions/endometriosis/",
+};
+const nhsCough: Citation = {
+  label: "NHS, coughing up blood",
+  href: "https://www.nhs.uk/symptoms/coughing-up-blood/",
 };
 const eshre: Citation = {
   label: "ESHRE guideline: endometriosis, 2022 (PMID 35350465)",
@@ -70,7 +75,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           heading: "When NICE says to suspect it",
           paragraphs: [
             "NICE guideline NG73, written for the NHS in England, says to suspect endometriosis, including in people aged 17 and under, when one or more of these are present.",
-            "A pain and symptom diary can help the conversation. A normal examination does not rule the condition out. A parent, sister, brother, or child with endometriosis makes it more likely.",
+            "A pain and symptom diary can help the conversation. A normal examination does not rule the condition out. A mother, sister or daughter (a first-degree relative) with endometriosis makes it more likely.",
           ],
           items: [
             { label: "Pelvic pain", detail: "Pain in the pelvis that continues" },
@@ -88,9 +93,13 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           ],
           callout: {
             title: "When to see a doctor",
-            body: "See a GP if you think you might have endometriosis, if symptoms affect everyday life, work, or relationships, or if treatment has not helped. NHS marks this as non-urgent. Chest pain, shortness of breath, or coughing up blood should be told to a doctor.",
+            body: "See a GP if you think you might have endometriosis, if symptoms affect everyday life, work, or relationships, or if treatment has not helped. NHS marks this as non-urgent.",
           },
-          citations: [nice, nhs],
+          urgent: {
+            title: "Coughing up blood",
+            body: "Endometriosis in the chest can cause chest pain, breathlessness or coughing up blood. Coughing up blood needs urgent care. Get emergency help if there is more than a streak, or it comes with breathlessness or chest pain.",
+          },
+          citations: [nice, nhs, nhsCough],
         },
         {
           id: "daily-life",
@@ -308,7 +317,7 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           heading: "Hvornår NICE siger, man skal mistænke det",
           paragraphs: [
             "NICE-retningslinjen NG73, skrevet til NHS i England, siger, at man skal mistænke endometriose, også hos personer på 17 år og derunder, når ét eller flere af disse tegn er der.",
-            "En smerte- og symptomdagbog kan hjælpe samtalen. En normal undersøgelse udelukker ikke sygdommen. En forælder, søster, bror eller et barn med endometriose gør den mere sandsynlig.",
+            "En smerte- og symptomdagbog kan hjælpe samtalen. En normal undersøgelse udelukker ikke sygdommen. En mor, søster eller datter (en førstegradsslægtning) med endometriose gør den mere sandsynlig.",
           ],
           items: [
             { label: "Underlivssmerter", detail: "Smerter i underlivet, der fortsætter" },
@@ -329,9 +338,13 @@ const pages: Record<Locale, Record<LearnSlug, LearnPage>> = {
           ],
           callout: {
             title: "Hvornår du skal til læge",
-            body: "Gå til lægen, hvis du tror, du kan have endometriose, hvis symptomerne påvirker hverdag, arbejde eller relationer, eller hvis behandling ikke har hjulpet. NHS markerer det som ikke-akut. Brystsmerter, åndenød eller blodig hoste skal siges til en læge.",
+            body: "Gå til lægen, hvis du tror, du kan have endometriose, hvis symptomerne påvirker hverdag, arbejde eller relationer, eller hvis behandling ikke har hjulpet. NHS markerer det som ikke-akut.",
           },
-          citations: [nice, nhs],
+          urgent: {
+            title: "Hoste med blod",
+            body: "Endometriose i brystkassen kan give brystsmerter, åndenød eller hoste med blod. Hoste med blod kræver akut hjælp. Søg akut hjælp, hvis det er mere end en stribe, eller det kommer sammen med åndenød eller brystsmerter.",
+          },
+          citations: [nice, nhs, nhsCough],
         },
         {
           id: "daily-life",

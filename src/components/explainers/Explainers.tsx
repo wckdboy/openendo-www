@@ -113,6 +113,13 @@ function sourceOrder(diagrams: Diagram[]): SourceId[] {
         if (!ids.includes(id)) ids.push(id);
       }
     }
+    if (diagram.kind === "mechanisms") {
+      for (const edge of diagram.edges) {
+        for (const id of edge.sources) {
+          if (!ids.includes(id)) ids.push(id);
+        }
+      }
+    }
   }
   return ids;
 }
@@ -501,6 +508,7 @@ function MechanismView({
   setOpenId: (id: string | null) => void;
   setHover: (ids: SourceId[]) => void;
 }) {
+  const anchorPrefix = useContext(AnchorContext);
   const col = [0, 230, 460];
   const rowH = 88;
   const width = 200;
@@ -532,17 +540,29 @@ function MechanismView({
             const y2 = b.y + b.h / 2;
             const elbow = x2 - 14;
             const stroke = STROKE[edge.strength];
+            const cites = edge.sources.map((id) => order.indexOf(id) + 1).join(" ");
             return (
-              <path
-                key={`${edge.from}-${edge.to}`}
-                d={`M ${x1} ${y1} H ${elbow} V ${y2} H ${x2 - 6} M ${x2 - 7} ${y2 - 4} L ${x2 - 1} ${y2} L ${x2 - 7} ${y2 + 4}`}
-                fill="none"
-                stroke={stroke.color}
-                strokeWidth={stroke.width}
-                strokeDasharray={stroke.dash}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <g key={`${edge.from}-${edge.to}`}>
+                <path
+                  d={`M ${x1} ${y1} H ${elbow} V ${y2} H ${x2 - 6} M ${x2 - 7} ${y2 - 4} L ${x2 - 1} ${y2} L ${x2 - 7} ${y2 + 4}`}
+                  fill="none"
+                  stroke={stroke.color}
+                  strokeWidth={stroke.width}
+                  strokeDasharray={stroke.dash}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <text
+                  x={elbow - 4}
+                  y={y2 - 6}
+                  textAnchor="end"
+                  fontSize="12"
+                  fontFamily="Atkinson Hyperlegible Next, system-ui, sans-serif"
+                  fill="var(--primary)"
+                >
+                  {cites}
+                </text>
+              </g>
             );
           })}
         </svg>
@@ -580,18 +600,33 @@ function MechanismView({
                 onHover={setHover}
               />
               <ul className="mt-2 space-y-2 border-l border-[var(--border-strong)] pl-3">
-                {follow(diagram, node.id).map((child) => (
-                  <li key={child.id}>
-                    <Node
-                      claim={child}
-                      locale={locale}
-                      order={order}
-                      open={openId === child.id}
-                      onOpen={() => setOpenId(openId === child.id ? null : child.id)}
-                      onHover={setHover}
-                    />
-                  </li>
-                ))}
+                {follow(diagram, node.id).map((child) => {
+                  const edge = diagram.edges.find((item) => item.to === child.id);
+                  return (
+                    <li key={child.id}>
+                      {edge ? (
+                        <p className="mb-1 text-sm text-[var(--ink-muted)]">
+                          {strengthLabel(edge.strength, locale)}
+                          {edge.sources.map((id) => (
+                            <sup key={id} className="ml-0.5">
+                              <a href={`#${anchorPrefix}-${order.indexOf(id) + 1}`}>
+                                {order.indexOf(id) + 1}
+                              </a>
+                            </sup>
+                          ))}
+                        </p>
+                      ) : null}
+                      <Node
+                        claim={child}
+                        locale={locale}
+                        order={order}
+                        open={openId === child.id}
+                        onOpen={() => setOpenId(openId === child.id ? null : child.id)}
+                        onHover={setHover}
+                      />
+                    </li>
+                  );
+                })}
               </ul>
             </li>
           ))}
@@ -885,16 +920,34 @@ function TextVersion({
     );
   }
   const claims = claimsOf(diagram);
+  const byId =
+    diagram.kind === "mechanisms" ? new Map(diagram.nodes.map((node) => [node.id, node])) : null;
   return (
-    <ol className="mt-3 list-decimal space-y-2 pl-5 text-base">
-      {claims.map((claim) => (
-        <li key={claim.id}>
-          <span className="font-semibold">{text(claim.title, locale)}. </span>
-          {text(claim.detail, locale)} ({strengthLabel(claim.strength, locale)}
-          {claim.sources.map((id) => ` [${order.indexOf(id) + 1}]`).join("")})
-        </li>
-      ))}
-    </ol>
+    <>
+      <ol className="mt-3 list-decimal space-y-2 pl-5 text-base">
+        {claims.map((claim) => (
+          <li key={claim.id}>
+            <span className="font-semibold">{text(claim.title, locale)}. </span>
+            {text(claim.detail, locale)} ({strengthLabel(claim.strength, locale)}
+            {claim.sources.map((id) => ` [${order.indexOf(id) + 1}]`).join("")})
+          </li>
+        ))}
+      </ol>
+      {diagram.kind === "mechanisms" && byId ? (
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-base">
+          {diagram.edges.map((edge) => (
+            <li key={`${edge.from}-${edge.to}`}>
+              {text(byId.get(edge.from)?.title ?? { en: edge.from, da: edge.from }, locale)}
+              {" → "}
+              {text(byId.get(edge.to)?.title ?? { en: edge.to, da: edge.to }, locale)}
+              {". "}
+              {strengthLabel(edge.strength, locale)}
+              {edge.sources.map((id) => ` [${order.indexOf(id) + 1}]`).join("")}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </>
   );
 }
 

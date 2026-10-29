@@ -201,8 +201,10 @@ class KnowledgeRenderer extends Renderer {
 
 const marked = new Marked({
   gfm: true,
-  renderer: new KnowledgeRenderer(),
 });
+// Constructor/use renderer extensions copy enumerable methods. Class prototype
+// overrides are not enumerable, so install the renderer instance as an option.
+marked.setOptions({ renderer: new KnowledgeRenderer() });
 
 export function renderKnowledgeMarkdown(markdown: string, titles: Map<string, string>): string {
   const prepared = replaceCitations(replaceWikilinks(stripLeadingH1(markdown), titles));
